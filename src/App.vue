@@ -21,8 +21,9 @@
   color: #2c3e50;
   width: 100vw;
   height: 100vh;
-  background:url('/background.jpg') no-repeat;
+  background:url('/back-2.jpg') no-repeat;
   background-size: cover;
+  user-select: none;
 }
 
 </style>
