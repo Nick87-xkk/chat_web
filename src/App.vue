@@ -11,6 +11,7 @@
 *{
   margin: 0;
   padding: 0;
+  clear: both;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -20,7 +21,8 @@
   color: #2c3e50;
   width: 100vw;
   height: 100vh;
-  background:url('https://th.bing.com/th/id/R.dab436e6a9d23101d719c1f3dd1a76a4?rik=ecsSPgiqEPBeNQ&riu=http%3a%2f%2fwww.shijuepi.com%2fuploads%2fallimg%2f201115%2f1-2011151G454.jpg&ehk=61OG%2bh8posKeFHHqLOOPJLQh6brnOHElxrxY9xRbGY4%3d&risl=&pid=ImgRaw&r=0') no-repeat;
+  background:url('/background.jpg') no-repeat;
+  background-size: cover;
 }
 
 </style>
