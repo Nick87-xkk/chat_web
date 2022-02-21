@@ -8,12 +8,31 @@
         <el-container>
           <el-aside>
             <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
-              <li v-for="item in count" :key="item" @mouseover="item.active = true" @mouseleave="item.active = false"
-                  :class="{'infinite-list-item-hover':item.active,'infinite-list-item':true}">{{ item.num }}
+              <li v-for="item in friendList" :key="item" class="infinite-list-item">
+                <el-avatar class="infinite-list-item-avatar" :src="item.headPortrait" ></el-avatar>
+                <div class="infinite-list-item-info">
+                  <h2>{{ item.name }}</h2>
+                  <h4>{{item.lastMessage}}</h4>
+                </div>
+                <div>
+                  <el-badge :value="item.unreadMessageNum" class="item"></el-badge>
+                  <h4>{{item.lastTime}}</h4>
+                </div>
+
               </li>
             </ul>
           </el-aside>
           <el-main>
+            <div class="card-box">
+              <div class="weather-card">
+                <div id="he-plugin-standard"></div>
+              </div>
+              <div class="card"></div>
+              <div class="card"></div>
+              <div class="card"></div>
+              <div class="card"></div>
+              <div class="card"></div>
+            </div>
 
           </el-main>
         </el-container>
@@ -24,33 +43,92 @@
 </template>
 
 <script lang="ts" setup>
-import {reactive, nextTick} from "vue";
+import {onMounted, reactive} from "vue";
 
-const count: Array<object> = reactive([
+interface FriendListInterface {
+  name?: string // 昵称
+  active?: boolean
+  headPortrait?: string // 头像
+  lastMessage?: string // 最新消息
+  lastTime?: string // 最新消息时间
+  unreadMessageNum: number //未读消息条数
+}
+
+// 好友列表
+const friendList: Array<FriendListInterface> = reactive([
   {
-    num: 1,
-    active: false
+    name: 'Tom',
+    active: false,
+    headPortrait: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    lastMessage: 'hello',
+    lastTime: '9:30',
+    unreadMessageNum: 1
   },
   {
-    num: 1,
-    active: false
+    name: 'Jerry',
+    active: false,
+    headPortrait: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    lastMessage: 'hello',
+    lastTime: '10:10',
+    unreadMessageNum: 21
   },
   {
-    num: 1,
-    active: false
+    name: 'Lucy',
+    active: false,
+    headPortrait: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    lastMessage: 'hello',
+    lastTime: '12:01',
+    unreadMessageNum: 100
   },
   {
-    num: 1,
-    active: false
+    name: 'Ben',
+    active: false,
+    headPortrait: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    lastMessage: 'hello',
+    lastTime: '11:01',
+    unreadMessageNum: 2
   },
   {
-    num: 1,
-    active: false
+    name: 'Json',
+    active: false,
+    headPortrait: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    lastMessage: 'hello',
+    lastTime: '00:00',
+    unreadMessageNum:50
   },
 ])
 const load = () => {
-  count.push({num: 1, active: false});
+  friendList.push({
+    name: 'Tom', active: false,
+    headPortrait: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    lastMessage: 'hello',
+    lastTime: '6:30',
+    unreadMessageNum: 2
+  });
 }
+window.WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "5",
+    "dataColor": "1e1212",
+    "modules": "10",
+    "key": "2bee78c5a0034885bf513acfe4645e2a"
+  }
+}
+onMounted(()=>{
+  (function (d) {
+    var c = d.createElement('link')
+    c.rel = 'stylesheet'
+    c.href = 'https://widget.heweather.net/standard/static/css/he-standard.css?v=1.4.0'
+    var s = d.createElement('script')
+    s.src = 'https://widget.heweather.net/standard/static/js/he-standard.js?v=1.4.0'
+    var sn = d.getElementsByTagName('script')[0]
+    sn.parentNode.insertBefore(c, sn)
+    sn.parentNode.insertBefore(s, sn)
+  })(document)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -61,35 +139,54 @@ const load = () => {
   list-style: none;
 }
 
-.infinite-list::-webkit-scrollbar{
-  width: 5px;     /*高宽分别对应横竖滚动条的尺寸*/
+.infinite-list::-webkit-scrollbar {
+  width: 5px; /*高宽分别对应横竖滚动条的尺寸*/
   height: 4px;
   scrollbar-arrow-color: #989b9d;
 }
-.infinite-list::-webkit-scrollbar-thumb{
+
+.infinite-list::-webkit-scrollbar-thumb {
   border-radius: 5px;
-  -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-  background: rgba(0,0,0,0.2);
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
   scrollbar-arrow-color: #98bfed;
 }
-.infinite-list::-webkit-scrollbar-track{
-  -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+
+.infinite-list::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   border-radius: 0;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .infinite-list-item {
   overflow: hidden;
   display: flex;
+  justify-content: space-around;
   align-items: center;
-  justify-content: center;
   height: 70px;
   box-shadow: 0 0 0 1px;
   margin-top: 1px;
+
 }
 
-.infinite-list-item-hover {
+.infinite-list-item:hover {
   background: rgba(167, 164, 164, 0.2);
+}
+
+.infinite-list-item-avatar {
+  margin: 0 10px 0 10px;
+}
+
+.infinite-list-item-info {
+  width: 60%;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  h2{
+    color: black;
+    font-weight: 400;
+  }
 }
 
 .index-box {
@@ -127,4 +224,27 @@ const load = () => {
     box-shadow: 0 0 5px 0;
   }
 }
+
+.card-box{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: space-between;
+  .card{
+    width: 220px;
+    height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px 0;
+    background-size: cover;
+  }
+  .weather-card{
+    border-radius: 10px;
+    box-shadow: 0 0 5px 0;
+    color: black;
+  }
+}
+
 </style>
