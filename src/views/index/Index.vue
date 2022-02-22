@@ -9,14 +9,14 @@
           <el-aside>
             <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
               <li v-for="item in friendList" :key="item" class="infinite-list-item">
-                <el-avatar class="infinite-list-item-avatar" :src="item.headPortrait" ></el-avatar>
+                <el-avatar class="infinite-list-item-avatar" :src="item.headPortrait"></el-avatar>
                 <div class="infinite-list-item-info">
                   <h2>{{ item.name }}</h2>
-                  <h4>{{item.lastMessage}}</h4>
+                  <h4>{{ item.lastMessage }}</h4>
                 </div>
                 <div>
-                  <el-badge :value="item.unreadMessageNum" class="item"></el-badge>
-                  <h4>{{item.lastTime}}</h4>
+                  <el-badge v-show="item.unreadMessageNum>0" :value="item.unreadMessageNum" class="item"></el-badge>
+                  <h4>{{ item.lastTime }}</h4>
                 </div>
 
               </li>
@@ -24,14 +24,16 @@
           </el-aside>
           <el-main>
             <div class="card-box">
-              <div class="weather-card">
-                <div id="he-plugin-standard"></div>
+              <div class="card">
+                <weather-card></weather-card>
               </div>
               <div class="card"></div>
+
+<!--
               <div class="card"></div>
               <div class="card"></div>
               <div class="card"></div>
-              <div class="card"></div>
+              <div class="card"></div>-->
             </div>
 
           </el-main>
@@ -43,7 +45,8 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, reactive} from "vue";
+import {reactive} from "vue";
+import WeatherCard from "../../components/WeatherCard.vue";
 
 interface FriendListInterface {
   name?: string // 昵称
@@ -94,7 +97,7 @@ const friendList: Array<FriendListInterface> = reactive([
     headPortrait: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
     lastMessage: 'hello',
     lastTime: '00:00',
-    unreadMessageNum:50
+    unreadMessageNum: 50
   },
 ])
 const load = () => {
@@ -106,29 +109,7 @@ const load = () => {
     unreadMessageNum: 2
   });
 }
-window.WIDGET = {
-  "CONFIG": {
-    "layout": "2",
-    "width": 230,
-    "height": 270,
-    "background": "5",
-    "dataColor": "1e1212",
-    "modules": "10",
-    "key": "2bee78c5a0034885bf513acfe4645e2a"
-  }
-}
-onMounted(()=>{
-  (function (d) {
-    var c = d.createElement('link')
-    c.rel = 'stylesheet'
-    c.href = 'https://widget.heweather.net/standard/static/css/he-standard.css?v=1.4.0'
-    var s = d.createElement('script')
-    s.src = 'https://widget.heweather.net/standard/static/js/he-standard.js?v=1.4.0'
-    var sn = d.getElementsByTagName('script')[0]
-    sn.parentNode.insertBefore(c, sn)
-    sn.parentNode.insertBefore(s, sn)
-  })(document)
-})
+
 </script>
 
 <style lang="scss" scoped>
@@ -183,7 +164,8 @@ onMounted(()=>{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  h2{
+
+  h2 {
     color: black;
     font-weight: 400;
   }
@@ -225,26 +207,27 @@ onMounted(()=>{
   }
 }
 
-.card-box{
+.card-box {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: space-between;
-  flex-direction: row;
   flex-wrap: wrap;
   align-content: space-between;
-  .card{
-    width: 220px;
+
+  .card {
+    width: 100%;
     height: 300px;
     border-radius: 10px;
     box-shadow: 0 0 5px 0;
     background-size: cover;
   }
-  .weather-card{
+
+  /*.weather-card {
     border-radius: 10px;
     box-shadow: 0 0 5px 0;
     color: black;
-  }
+  }*/
 }
 
 </style>

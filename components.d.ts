@@ -16,6 +16,8 @@ declare module 'vue' {
     ElRow: typeof import('element-plus/es')['ElRow']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     InfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
+    MusicPlayer: typeof import('./src/components/MusicPlayer.vue')['default']
+    WeatherCard: typeof import('./src/components/WeatherCard.vue')['default']
   }
 }
 
