@@ -4,6 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    DialougeList: typeof import('./src/components/DialougeList.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBadge: typeof import('element-plus/es')['ElBadge']
@@ -17,6 +18,7 @@ declare module 'vue' {
     ElMain: typeof import('element-plus/es')['ElMain']
     ElRow: typeof import('element-plus/es')['ElRow']
     FriendChat: typeof import('./src/components/FriendChat.vue')['default']
+    FriendGroups: typeof import('./src/components/FriendGroups.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     InfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
     MusicPlayer: typeof import('./src/components/Ribbon/MusicPlayer.vue')['default']
