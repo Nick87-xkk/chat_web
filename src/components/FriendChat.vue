@@ -26,7 +26,7 @@
       </div>
       <!-- 输入框 -->
       <div>
-        <textarea rows="4" class="friend-chat-textarea"></textarea>
+        <textarea rows="4" class="friend-chat-textarea" autofocus></textarea>
       </div>
       <!-- 发送按钮 -->
       <el-row justify="end">

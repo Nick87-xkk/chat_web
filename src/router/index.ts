@@ -5,11 +5,13 @@ const routes:Array<RouteRecordRaw> = [
         path:'/index',
         component:()=>import('/@/views/index/Index.vue'),
         children:[
+            // 显示功能卡片
             {
                 path:'ribbon',
                 component:()=>import('/@/components/Ribbon/Ribbon.vue')
             }
             ,
+            // 显示对话框
             {
             path:'chat',
             component:()=>import('/@/components/FriendChat.vue')
