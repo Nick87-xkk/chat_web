@@ -9,7 +9,7 @@
           <el-aside>
             <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
               <li v-for="item in friendList" :key="item" class="infinite-list-item">
-                <el-avatar class="infinite-list-item-avatar" :src="item.headPortrait"></el-avatar>
+                <el-avatar class="infinite-list-item-avatar" :fit="'fill'" :src="item.headPortrait"></el-avatar>
                 <div class="infinite-list-item-info">
                   <h2>{{ item.name }}</h2>
                   <h4>{{ item.lastMessage }}</h4>
@@ -22,20 +22,14 @@
               </li>
             </ul>
           </el-aside>
-          <el-main>
-            <div class="card-box">
+          <el-main style="padding:0;">
+            <div v-show="false" class="card-box">
               <div class="card">
                 <weather-card></weather-card>
               </div>
               <div class="card"></div>
-
-<!--
-              <div class="card"></div>
-              <div class="card"></div>
-              <div class="card"></div>
-              <div class="card"></div>-->
             </div>
-
+            <friend-chat></friend-chat>
           </el-main>
         </el-container>
       </el-container>
@@ -47,6 +41,7 @@
 <script lang="ts" setup>
 import {reactive} from "vue";
 import WeatherCard from "../../components/WeatherCard.vue";
+import FriendChat from "../../components/FriendChat.vue";
 
 interface FriendListInterface {
   name?: string // 昵称
@@ -62,7 +57,7 @@ const friendList: Array<FriendListInterface> = reactive([
   {
     name: 'Tom',
     active: false,
-    headPortrait: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    headPortrait: 'https://tse1-mm.cn.bing.net/th/id/R-C.853ea6f74f3414c937f8ca0df324048a?rik=aMv%2fvuKN9ffVLQ&riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f56e62e2c906115c3587d456a6ab179e9d25c0fa0.jpg&ehk=QYbvsF8KPhxkj2Hf8GXBg%2fOFGq1okiDGqtfsAlR83M8%3d&risl=&pid=ImgRaw&r=0',
     lastMessage: 'hello',
     lastTime: '9:30',
     unreadMessageNum: 1
