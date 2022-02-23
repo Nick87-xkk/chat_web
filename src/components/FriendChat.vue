@@ -29,9 +29,9 @@
         <textarea rows="4" class="friend-chat-textarea"></textarea>
       </div>
       <!-- 发送按钮 -->
-       <el-row justify="end">
-          <el-button style="margin: 0 5px 5px 0;" type="primary">Send</el-button>
-       </el-row> 
+      <el-row justify="end">
+        <el-button style="margin: 0 5px 5px 0;" type="primary">Send</el-button>
+      </el-row>
     </div>
   </div>
 </template>
@@ -39,6 +39,8 @@
 <script setup lang="ts">
 // 导入图标
 import { Search, Edit, Check, Message, Star, Delete, } from '@element-plus/icons-vue'
+
+
 
 </script>
 
@@ -66,13 +68,12 @@ import { Search, Edit, Check, Message, Star, Delete, } from '@element-plus/icons
   .friend-chat-input {
     background: rgba(133, 129, 129, 0.445);
 
-  .friend-chat-textarea{
-    width: 95%;
-    height: 100%;
-    margin: 10px;
+    .friend-chat-textarea {
+      width: 95%;
+      height: 100%;
+      margin: 10px;
+    }
   }
-}
-
 }
 
 :deep(textarea) {

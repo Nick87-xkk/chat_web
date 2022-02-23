@@ -23,13 +23,7 @@
             </ul>
           </el-aside>
           <el-main style="padding:0;">
-            <div v-show="false" class="card-box">
-              <div class="card">
-                <weather-card></weather-card>
-              </div>
-              <div class="card"></div>
-            </div>
-            <friend-chat></friend-chat>
+            <router-view style="width:100%;height:100%;"></router-view>
           </el-main>
         </el-container>
       </el-container>
@@ -40,8 +34,6 @@
 
 <script lang="ts" setup>
 import {reactive} from "vue";
-import WeatherCard from "../../components/WeatherCard.vue";
-import FriendChat from "../../components/FriendChat.vue";
 
 interface FriendListInterface {
   name?: string // 昵称
@@ -202,27 +194,6 @@ const load = () => {
   }
 }
 
-.card-box {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  align-content: space-between;
 
-  .card {
-    width: 100%;
-    height: 300px;
-    border-radius: 10px;
-    box-shadow: 0 0 5px 0;
-    background-size: cover;
-  }
-
-  /*.weather-card {
-    border-radius: 10px;
-    box-shadow: 0 0 5px 0;
-    color: black;
-  }*/
-}
 
 </style>

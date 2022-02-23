@@ -19,8 +19,9 @@ declare module 'vue' {
     FriendChat: typeof import('./src/components/FriendChat.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     InfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
-    MusicPlayer: typeof import('./src/components/MusicPlayer.vue')['default']
-    WeatherCard: typeof import('./src/components/WeatherCard.vue')['default']
+    MusicPlayer: typeof import('./src/components/Ribbon/MusicPlayer.vue')['default']
+    Ribbon: typeof import('./src/components/Ribbon/Ribbon.vue')['default']
+    WeatherCard: typeof import('./src/components/Ribbon/WeatherCard.vue')['default']
   }
 }
 

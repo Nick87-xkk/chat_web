@@ -33,9 +33,4 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.weather-card {
-  border-radius: 10px;
-  box-shadow: 0 0 5px 0;
-  color: black;
-}
 </style>
