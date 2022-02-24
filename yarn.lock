@@ -105,6 +105,13 @@
   resolved "https://mirrors.cloud.tencent.com/npm/@socket.io%2fcomponent-emitter/-/component-emitter-3.0.0.tgz#8863915676f837d9dad7b76f50cb500c1e9422e9"
   integrity sha512-2pTGuibAXJswAPJjaKisthqS/NOK5ypG4LYT6tEAV0S/mxW0zOIvYvGK0V8w8+SHxAm6vRMSjqSalFXeBAqs+Q==
 
+"@types/axios@^0.14.0":
+  version "0.14.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@types%2faxios/-/axios-0.14.0.tgz#ec2300fbe7d7dddd7eb9d3abf87999964cafce46"
+  integrity sha1-7CMA++fX3d1+udOr+HmZlkyvzkY=
+  dependencies:
+    axios "*"
+
 "@types/node@^17.0.16":
   version "17.0.16"
   resolved "https://mirrors.cloud.tencent.com/npm/@types%2fnode/-/node-17.0.16.tgz#e3733f46797b9df9e853ca9f719c8a6f7b84cd26"
@@ -324,6 +331,13 @@ async-validator@^4.0.7:
   version "4.0.7"
   resolved "https://mirrors.cloud.tencent.com/npm/async-validator/-/async-validator-4.0.7.tgz#034a0fd2103a6b2ebf010da75183bec299247afe"
   integrity sha512-Pj2IR7u8hmUEDOwB++su6baaRi+QvsgajuFB9j95foM1N2gy5HM4z60hfusIO0fBPG5uLAEl6yCJr1jNSVugEQ==
+
+axios@*:
+  version "0.26.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/axios/-/axios-0.26.0.tgz#9a318f1c69ec108f8cd5f3c3d390366635e13928"
+  integrity sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==
+  dependencies:
+    follow-redirects "^1.14.8"
 
 babel-walk@3.0.0-canary-5:
   version "3.0.0-canary-5"
@@ -651,6 +665,11 @@ fill-range@^7.0.1:
   integrity sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==
   dependencies:
     to-regex-range "^5.0.1"
+
+follow-redirects@^1.14.8:
+  version "1.14.9"
+  resolved "https://mirrors.cloud.tencent.com/npm/follow-redirects/-/follow-redirects-1.14.9.tgz#dd4ea157de7bfaf9ea9b3fbd85aa16951f78d8d7"
+  integrity sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w==
 
 fsevents@~2.3.2:
   version "2.3.2"

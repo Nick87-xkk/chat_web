@@ -2,9 +2,7 @@
   <div class="index-box">
     <div class="login-box">
       <el-container>
-        <el-header>
-
-        </el-header>
+        <el-header></el-header>
         <el-container>
           <el-aside>
             <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
@@ -15,10 +13,13 @@
                   <h4>{{ item.lastMessage }}</h4>
                 </div>
                 <div>
-                  <el-badge v-show="item.unreadMessageNum>0" :value="item.unreadMessageNum" class="item"></el-badge>
+                  <el-badge
+                    v-show="item.unreadMessageNum > 0"
+                    :value="item.unreadMessageNum"
+                    class="item"
+                  ></el-badge>
                   <h4>{{ item.lastTime }}</h4>
                 </div>
-
               </li>
             </ul>
           </el-aside>
@@ -29,11 +30,10 @@
       </el-container>
     </div>
   </div>
-
 </template>
 
 <script lang="ts" setup>
-import {reactive} from "vue";
+import { reactive } from "vue";
 
 interface FriendListInterface {
   name?: string // 昵称
@@ -107,7 +107,6 @@ const load = () => {
   list-style: none;
 }
 
-
 .infinite-list-item {
   overflow: hidden;
   display: flex;
@@ -116,7 +115,6 @@ const load = () => {
   height: 70px;
   box-shadow: 0 0 0 1px;
   margin-top: 1px;
-
 }
 
 .infinite-list-item:hover {
@@ -175,7 +173,4 @@ const load = () => {
     box-shadow: 0 0 5px 0;
   }
 }
-
-
-
 </style>
