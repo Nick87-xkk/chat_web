@@ -4,6 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ChatBubbles: typeof import('./src/components/chatBubbles.vue')['default']
     DialougeList: typeof import('./src/components/DialougeList.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
