@@ -10,10 +10,7 @@ declare module 'vue' {
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElCard: typeof import('element-plus/es')['ElCard']
-    ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
-    ElFooter: typeof import('element-plus/es')['ElFooter']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElHeader: typeof import('element-plus/es')['ElHeader']
@@ -24,9 +21,9 @@ declare module 'vue' {
     FriendGroups: typeof import('./src/components/FriendGroups.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     InfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
-    MusicPlayer: typeof import('./src/components/Ribbon/MusicPlayer.vue')['default']
-    Ribbon: typeof import('./src/components/Ribbon/Ribbon.vue')['default']
-    WeatherCard: typeof import('./src/components/Ribbon/WeatherCard.vue')['default']
+    MusicPlayer: typeof import('./src/components/ribbon/MusicPlayer.vue')['default']
+    Ribbon: typeof import('./src/components/ribbon/Ribbon.vue')['default']
+    WeatherCard: typeof import('./src/components/ribbon/WeatherCard.vue')['default']
   }
 }
 

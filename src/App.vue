@@ -20,7 +20,7 @@
   color: #2c3e50 !important;
   width: 100vw;
   height: 100vh;
-  background: url('./public/back-2.jpg') no-repeat;
+  background: url('assets/back-2.webp') no-repeat;
   background-size: cover;
   user-select: none;
 }

@@ -12,7 +12,7 @@
             >
               <li
                 v-for="item in friendList"
-                :key="item"
+                :key="item.name"
                 class="infinite-list-item"
               >
                 <el-avatar
@@ -57,7 +57,7 @@ interface FriendListInterface {
 }
 
 // 好友列表
-const friendList: Array<FriendListInterface> = reactive([
+const friendList:Array<FriendListInterface>|null = reactive([
   {
     name: 'Tom',
     active: false,
