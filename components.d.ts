@@ -24,9 +24,9 @@ declare module 'vue' {
     FriendGroups: typeof import('./src/components/FriendGroups.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     InfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
-    MusicPlayer: typeof import('./src/components/ribbon/MusicPlayer.vue')['default']
-    Ribbon: typeof import('./src/components/ribbon/Ribbon.vue')['default']
-    WeatherCard: typeof import('./src/components/ribbon/WeatherCard.vue')['default']
+    MusicPlayer: typeof import('./src/components/Ribbon/MusicPlayer.vue')['default']
+    Ribbon: typeof import('./src/components/Ribbon/Ribbon.vue')['default']
+    WeatherCard: typeof import('./src/components/Ribbon/WeatherCard.vue')['default']
   }
 }
 

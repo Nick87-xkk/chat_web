@@ -1,8 +1,8 @@
-import service from "../service";
+import service from '../service';
 
-export const getTest = () =>{
-    service({
-        url:'',
-        method:'get'
-    })
-}
+export const getTest = () => {
+  service({
+    url: '',
+    method: 'get'
+  });
+};

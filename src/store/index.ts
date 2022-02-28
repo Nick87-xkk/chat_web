@@ -1,10 +1,9 @@
-import { createStore } from "vuex";
-import user from "./modules/user";
-
+import { createStore } from 'vuex';
+import user from './modules/user';
 
 export type State = {
-  count: number
-}
+  count: number;
+};
 
 export default createStore({
   state: {

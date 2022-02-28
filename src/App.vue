@@ -4,11 +4,11 @@
 </script>
 
 <template>
-   <router-view style="width: 100%;height: 100%;"></router-view>
+  <router-view style="width: 100%; height: 100%"></router-view>
 </template>
 
 <style>
-*{
+* {
   margin: 0;
   padding: 0;
 }
@@ -20,7 +20,7 @@
   color: #2c3e50 !important;
   width: 100vw;
   height: 100vh;
-  background:url('./public/back-2.jpg') no-repeat;
+  background: url('./public/back-2.jpg') no-repeat;
   background-size: cover;
   user-select: none;
 }
@@ -43,5 +43,4 @@
   border-radius: 0;
   background: rgba(0, 0, 0, 0.1);
 }
-
 </style>

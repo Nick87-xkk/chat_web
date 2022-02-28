@@ -2,16 +2,20 @@
   <div class="login">
     <div class="login-box">
       <el-form
-          :label-position="'top'"
-          label-width="100px"
-          :model="userInfo"
-          style="max-width: 460px"
+        :label-position="'top'"
+        label-width="100px"
+        :model="userInfo"
+        style="max-width: 460px"
       >
         <el-form-item label="Account">
           <el-input v-model="userInfo.account" clearable></el-input>
         </el-form-item>
         <el-form-item label="PassWord">
-          <el-input type="password" v-model="userInfo.passWord" show-password></el-input>
+          <el-input
+            type="password"
+            v-model="userInfo.passWord"
+            show-password
+          ></el-input>
         </el-form-item>
         <el-form-item label="Verification Code">
           <el-input v-model="userInfo.verification" clearable></el-input>
@@ -26,20 +30,19 @@
 </template>
 
 <script lang="ts" setup>
-import {reactive} from "vue";
-import {useRouter} from "vue-router";
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
 
 const userInfo = reactive({
-  account: '',//账户
-  passWord: '',//密码
-  verification: ''//验证码
-})
+  account: '', //账户
+  passWord: '', //密码
+  verification: '' //验证码
+});
 
-const router = useRouter()
-const LoginButton = () =>{
-  router.push('/index/ribbon')
-}
-
+const router = useRouter();
+const LoginButton = () => {
+  router.push('/index/ribbon');
+};
 </script>
 
 <style lang="scss" scoped>
@@ -63,10 +66,10 @@ const LoginButton = () =>{
   }
 }
 
-:deep(.el-form-item__label){
+:deep(.el-form-item__label) {
   color: black;
 }
-:deep(.el-input__inner::-ms-reveal){
+:deep(.el-input__inner::-ms-reveal) {
   display: none;
 }
 </style>
