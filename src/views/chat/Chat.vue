@@ -25,9 +25,9 @@ const socket = socketIO('ws://127.0.0.1:9892')
 let message = ref('')
 
 // 消息列表
-const messageList: { type: string; user_name: string; data: string; options: {} | {}; }[] = reactive([])
+const messageList: { type: string; user_name: string; data: string; options: {}; }[] = reactive([])
 
-// 发送消息  
+// 发送消息
 const sendMessage = () => {
     if (message.value) {
         socket.emit('chat message', message.value)

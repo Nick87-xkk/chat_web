@@ -1,3 +1,3 @@
 interface Window {
-    WIDGET:any
+    WIDGET:any // 和风天气配置
 }

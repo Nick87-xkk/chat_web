@@ -17,7 +17,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #2c3e50 !important;
   width: 100vw;
   height: 100vh;
   background:url('./public/back-2.jpg') no-repeat;
@@ -43,6 +43,5 @@
   border-radius: 0;
   background: rgba(0, 0, 0, 0.1);
 }
-
 
 </style>
