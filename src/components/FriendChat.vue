@@ -2,11 +2,34 @@
   <div class="friend-chat">
     <!-- 聊天时好友好友状态信息 包括视频通话按钮 -->
     <div class="friend-chat-header">
-      <el-avatar shape="square" :size="50"></el-avatar>
+      <el-avatar shape="square" :src="route.query.headPortrait" :size="50"></el-avatar>
       <div>
-        <el-button :icon="Search" circle></el-button>
-        <el-button type="primary" :icon="Edit" circle></el-button>
-        <el-button type="success" :icon="Check" circle></el-button>
+        <el-tooltip
+          class="box-item"
+          effect="light"
+          content="视频"
+          placement="bottom"
+        >
+          <el-button type="success" :icon="VideoCamera" circle></el-button>
+        </el-tooltip>
+
+        <el-tooltip
+          class="box-item"
+          effect="light"
+          content="语音"
+          placement="bottom"
+        >
+          <el-button type="success" :icon="Phone" circle></el-button>
+        </el-tooltip>
+
+        <el-tooltip
+          class="box-item"
+          effect="light"
+          content="搜索"
+          placement="bottom"
+        >
+          <el-button type="success" :icon="Search" circle></el-button>
+        </el-tooltip>
       </div>
     </div>
     <!-- 聊天信息列表 -->
@@ -32,12 +55,25 @@
       <!-- 功能框 例如表情 -->
       <div>
         <el-row>
-          <el-button :icon="Search" circle></el-button>
-          <el-button type="primary" :icon="Edit" circle></el-button>
-          <el-button type="success" :icon="Check" circle></el-button>
-          <el-button type="info" :icon="Message" circle></el-button>
-          <el-button type="warning" :icon="Star" circle></el-button>
-          <el-button type="danger" :icon="Delete" circle></el-button>
+          <el-tooltip
+              class="box-item"
+              effect="light"
+              content="表情"
+              placement="bottom"
+          >
+            <el-button type="primary" :icon="PictureRounded" circle></el-button>
+          </el-tooltip>
+
+          <el-tooltip
+              class="box-item"
+              effect="light"
+              content="文件发送"
+              placement="bottom"
+          >
+            <el-button type="primary" :icon="FolderAdd" circle></el-button>
+          </el-tooltip>
+
+
         </el-row>
       </div>
       <!-- 输入框 -->
@@ -55,8 +91,8 @@
           style="margin: 0 5px 5px 0"
           type="primary"
           @click="sendMessage"
-          >Send</el-button
-        >
+          >Send
+        </el-button>
       </el-row>
     </div>
   </div>
@@ -65,25 +101,27 @@
 <script setup lang="ts">
 // 导入图标
 import {
+  Phone,
+  VideoCamera,
   Search,
-  Edit,
-  Check,
-  Message,
-  Star,
-  Delete
+  PictureRounded,
+  FolderAdd,
 } from '@element-plus/icons-vue';
 import socketIO from 'socket.io-client';
 import { reactive, ref } from 'vue';
+import {useRoute} from "vue-router";
+
+const route = useRoute()
+
 const socket = socketIO('ws://127.0.0.1:9892');
 
 let message = ref('');
-
 // 消息列表
 const messageList: {
   type: string;
   user_name: string;
   data: string;
-  options: {} | {};
+  options: {};
 }[] = reactive([]);
 
 // 发送消息
@@ -130,7 +168,6 @@ socket.on('chat message', (msg) => {
   margin: 0;
   height: 100%;
   display: flex;
-  margin: 0;
   flex-direction: column;
   align-content: space-between;
 

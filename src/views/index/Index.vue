@@ -2,18 +2,54 @@
   <div class="index-box">
     <div class="login-box">
       <el-container>
-        <el-header></el-header>
+        <el-header>
+          <el-row
+            style="height: 100%; width: 100%"
+            :align="'middle'"
+            :justify="'space-between'"
+          >
+            <div>
+              <el-tooltip
+                class="box-item"
+                effect="light"
+                content="主页"
+                placement="bottom"
+              >
+                <el-button type="primary" :icon="House" circle></el-button>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="light"
+                content="好友分组"
+                placement="bottom"
+              >
+                <el-button type="success" :icon="User" circle></el-button>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="light"
+                content="添加好友/群"
+                placement="bottom"
+              >
+                <el-button type="info" :icon="Plus" circle></el-button>
+              </el-tooltip>
+            </div>
+
+            <el-avatar
+              class="infinite-list-item-avatar"
+              :fit="'fill'"
+              :src="'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'"
+            ></el-avatar>
+          </el-row>
+        </el-header>
         <el-container>
           <el-aside>
-            <ul
-              v-infinite-scroll="load"
-              class="infinite-list"
-              style="overflow: auto"
-            >
+            <ul class="infinite-list" style="overflow: auto">
               <li
                 v-for="item in friendList"
                 :key="item.name"
                 class="infinite-list-item"
+                @click="friendChat(item)"
               >
                 <el-avatar
                   class="infinite-list-item-avatar"
@@ -23,6 +59,11 @@
                 <div class="infinite-list-item-info">
                   <h2>{{ item.name }}</h2>
                   <h4>{{ item.lastMessage }}</h4>
+                  <!--
+                  <el-row>
+                    <h6>{{item.active?'[在线]':'[离线]'}}</h6>
+                  </el-row>
+-->
                 </div>
                 <div>
                   <el-badge
@@ -35,6 +76,7 @@
               </li>
             </ul>
           </el-aside>
+          <!--          主页右侧聊天框或功能区-->
           <el-main style="padding: 0">
             <router-view style="width: 100%; height: 100%"></router-view>
           </el-main>
@@ -46,21 +88,35 @@
 
 <script lang="ts" setup>
 import { reactive } from 'vue';
+import router from '../../router';
+import { House, User, Plus } from '@element-plus/icons-vue';
 
-interface FriendListInterface {
+interface FriendListInterface{
+  account:number, // 账号
   name?: string; // 昵称
-  active?: boolean;
+  active?: boolean; // 是否在线
   headPortrait?: string; // 头像
   lastMessage?: string; // 最新消息
   lastTime?: string; // 最新消息时间
   unreadMessageNum: number; //未读消息条数
 }
 
+// 点击好友进入聊天
+const friendChat = (item:any) => {
+  // 路由传参
+  router.push(
+      {
+        path:'/index/chat',
+        query:item
+      }
+  );
+};
 // 好友列表
-const friendList:Array<FriendListInterface>|null = reactive([
+const friendList: Array<FriendListInterface> | null = reactive([
   {
+    account:123456789,
     name: 'Tom',
-    active: false,
+    active: true,
     headPortrait:
       'https://tse1-mm.cn.bing.net/th/id/R-C.853ea6f74f3414c937f8ca0df324048a?rik=aMv%2fvuKN9ffVLQ&riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f56e62e2c906115c3587d456a6ab179e9d25c0fa0.jpg&ehk=QYbvsF8KPhxkj2Hf8GXBg%2fOFGq1okiDGqtfsAlR83M8%3d&risl=&pid=ImgRaw&r=0',
     lastMessage: 'hello',
@@ -68,6 +124,7 @@ const friendList:Array<FriendListInterface>|null = reactive([
     unreadMessageNum: 1
   },
   {
+    account:123456788,
     name: 'Jerry',
     active: false,
     headPortrait:
@@ -77,6 +134,7 @@ const friendList:Array<FriendListInterface>|null = reactive([
     unreadMessageNum: 21
   },
   {
+    account:123456787,
     name: 'Lucy',
     active: false,
     headPortrait:
@@ -86,8 +144,9 @@ const friendList:Array<FriendListInterface>|null = reactive([
     unreadMessageNum: 100
   },
   {
+    account:123456786,
     name: 'Ben',
-    active: false,
+    active: true,
     headPortrait:
       'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
     lastMessage: 'hello',
@@ -95,6 +154,7 @@ const friendList:Array<FriendListInterface>|null = reactive([
     unreadMessageNum: 2
   },
   {
+    account:123456785,
     name: 'Json',
     active: false,
     headPortrait:
@@ -104,7 +164,7 @@ const friendList:Array<FriendListInterface>|null = reactive([
     unreadMessageNum: 50
   }
 ]);
-const load = () => {
+/*const load = () => {
   friendList.push({
     name: 'Tom',
     active: false,
@@ -114,7 +174,7 @@ const load = () => {
     lastTime: '6:30',
     unreadMessageNum: 2
   });
-};
+};*/
 </script>
 
 <style lang="scss" scoped>
