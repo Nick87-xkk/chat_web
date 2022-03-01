@@ -18,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
       // 显示对话框
       {
         path: 'chat',
-        component: () => import('/@/components/FriendChat.vue')
+        component: () => import('/@/components/chat/FriendChat.vue')
       }
     ]
   },

@@ -2,7 +2,11 @@
   <div class="friend-chat">
     <!-- 聊天时好友好友状态信息 包括视频通话按钮 -->
     <div class="friend-chat-header">
-      <el-avatar shape="square" :src="route.query.headPortrait" :size="50"></el-avatar>
+      <el-avatar
+        shape="square"
+        :src="route.query.headPortrait"
+        :size="50"
+      ></el-avatar>
       <div>
         <el-tooltip
           class="box-item"
@@ -55,25 +59,34 @@
       <!-- 功能框 例如表情 -->
       <div>
         <el-row>
-          <el-tooltip
-              class="box-item"
-              effect="light"
-              content="表情"
-              placement="bottom"
-          >
-            <el-button type="primary" :icon="PictureRounded" circle></el-button>
-          </el-tooltip>
+          <el-popover placement="top" :width="400" trigger="hover">
+            <template #reference>
+              <el-button
+                type="primary"
+                :icon="PictureRounded"
+                circle
+              ></el-button>
+            </template>
+            <div class="emoji-list">
+              <!--表情-->
+              <a
+                href="javascript:;"
+                v-for="it in emojiData"
+                @click="inputEmoji(it)"
+                :key="it.codes"
+                >{{ it.char }}</a
+              >
+            </div>
+          </el-popover>
 
           <el-tooltip
-              class="box-item"
-              effect="light"
-              content="文件发送"
-              placement="bottom"
+            class="box-item"
+            effect="light"
+            content="文件发送"
+            placement="bottom"
           >
             <el-button type="primary" :icon="FolderAdd" circle></el-button>
           </el-tooltip>
-
-
         </el-row>
       </div>
       <!-- 输入框 -->
@@ -105,19 +118,23 @@ import {
   VideoCamera,
   Search,
   PictureRounded,
-  FolderAdd,
+  FolderAdd
 } from '@element-plus/icons-vue';
 import socketIO from 'socket.io-client';
 import { reactive, ref } from 'vue';
-import {useRoute} from "vue-router";
+import { LocationQueryValue, useRoute } from 'vue-router';
+import emojiData from '../../assets/emoji.json';
+import {inputEmoji,message} from "./chat";
 
-const route = useRoute()
+const route = useRoute();
 
-const socket = socketIO('ws://127.0.0.1:9892');
+const socket = socketIO(`ws://127.0.0.1:9892?id=${route.query.account}`);
 
-let message = ref('');
+
 // 消息列表
 const messageList: {
+  send: LocationQueryValue[] | LocationQueryValue;
+  receive: string;
   type: string;
   user_name: string;
   data: string;
@@ -129,6 +146,8 @@ const sendMessage = () => {
   if (message.value) {
     socket.emit('chat message', message.value);
     messageList.push({
+      send: route.query.name,
+      receive: 'nick',
       type: 'send',
       user_name: 'nick',
       data: message.value,
@@ -149,6 +168,8 @@ socket.on('chat message', (msg) => {
   returnMessage.value = msg;
   if (returnMessage.value) {
     messageList.push({
+      send: '',
+      receive: '',
       type: 'receive',
       user_name: 'Tom',
       data: returnMessage.value.split(':')[1],
@@ -161,6 +182,8 @@ socket.on('chat message', (msg) => {
     }, 500);
   }
 });
+
+
 </script>
 
 <style scoped lang="scss">
@@ -251,5 +274,35 @@ socket.on('chat message', (msg) => {
 .bubble {
   margin: 0 5px 0 5px;
   border-radius: 5px;
+}
+
+.emoji-list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px;
+
+  a {
+    width: 10%;
+    font-size: 20px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  a:link {
+    text-decoration: none;
+  }
+
+  a:visited {
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: none;
+    background: rgba(122, 121, 121, 0.3);
+  }
+
+  a:active {
+    text-decoration: none;
+  }
 }
 </style>

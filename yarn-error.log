@@ -1,5 +1,5 @@
 Arguments: 
-  D:\node\node.exe C:\Users\M1760\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @types/@element-plus/icons-vue
+  D:\node\node.exe C:\Users\M1760\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @types/si-grenoble --dev
 
 PATH: 
   C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\iCLS\;C:\Program Files\Intel\Intel(R) Management Engine Components\iCLS\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Git\cmd;D:\nvm;C:\Program Files\nodejs;D:\node\;D:\jdk1.8\bin;%CATALINA_HOME%\lib;%CATALINA_HOME%\bin;%CATALINA_HOME%\lib\servlet-api.jar;D:\xftp\;D:\微信web开发者工具\dll;C:\Users\M1760\AppData\Local\Microsoft\WindowsApps;D:\Microsoft VS Code\bin;D:\WebStorm 2021.2.3\bin;C:\Users\M1760\AppData\Local\GitHubDesktop\bin;D:\nvm;C:\Program Files\nodejs;C:\Users\M1760\AppData\Roaming\npm;D:\IntelliJ IDEA Community Edition 2019.3.5\bin;D:\Fiddler;D:\Bandizip\;D:\Bandizip\Bandizip;D:\Bandizip
@@ -14,22 +14,34 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: connect ETIMEDOUT 20.205.243.166:443
-      at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1159:16)
+  Error: https://mirrors.cloud.tencent.com/npm/@types%2fsi-grenoble: no such package available
+      at Request.params.callback [as _callback] (C:\Users\M1760\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:67029:18)
+      at Request.self.callback (C:\Users\M1760\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140883:22)
+      at Request.emit (events.js:400:28)
+      at Request.<anonymous> (C:\Users\M1760\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141855:10)
+      at Request.emit (events.js:400:28)
+      at IncomingMessage.<anonymous> (C:\Users\M1760\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141777:12)
+      at Object.onceWrapper (events.js:519:28)
+      at IncomingMessage.emit (events.js:412:35)
+      at endReadableNT (internal/streams/readable.js:1334:12)
+      at processTicksAndRejections (internal/process/task_queues.js:82:21)
 
 npm manifest: 
   {
-    "name": "vue-ts-vite",
     "version": "0.0.0",
     "scripts": {
-      "dev": "vite",
-      "build": "vue-tsc --noEmit && vite build",
+      "dev": "vite --host --open",
+      "build": "vue-tsc --noEmit  --skipLibCheck && vite build",
       "preview": "vite preview"
     },
     "dependencies": {
+      "@element-plus/icons-vue": "^0.2.7",
+      "@types/axios": "^0.14.0",
       "element-plus": "^2.0.2",
+      "prettier": "^2.5.1",
       "sass": "^1.49.7",
       "scss": "^0.2.4",
+      "si-grenoble": "^0.6.0",
       "socket.io-client": "^4.4.1",
       "unplugin-auto-import": "^0.6.0",
       "unplugin-vue-components": "^0.17.18",
@@ -89,7 +101,7 @@ Lockfile:
     resolved "https://mirrors.cloud.tencent.com/npm/@ctrl%2ftinycolor/-/tinycolor-3.4.0.tgz#c3c5ae543c897caa9c2a68630bed355be5f9990f"
     integrity sha512-JZButFdZ1+/xAfpguQHoabIXkcqRRKpMrWKBkpEZZyxfY9C1DpADFB8PEqGSTeFr135SaTRfKqGKx5xSCLI7ZQ==
   
-  "@element-plus/icons-vue@^0.2.6":
+  "@element-plus/icons-vue@^0.2.6", "@element-plus/icons-vue@^0.2.7":
     version "0.2.7"
     resolved "https://mirrors.cloud.tencent.com/npm/@element-plus%2ficons-vue/-/icons-vue-0.2.7.tgz#c0b75363098bf1fba414e18706604bfe5057ae1b"
     integrity sha512-S8kDbfVaWkQvbUYQE1ui448tzaHfUvyESCep9J6uPRlViyQPXjdIfwLBhV6AmQSOfFS8rL+xehJGhvzPXLrSBg==
@@ -156,6 +168,13 @@ Lockfile:
     version "3.0.0"
     resolved "https://mirrors.cloud.tencent.com/npm/@socket.io%2fcomponent-emitter/-/component-emitter-3.0.0.tgz#8863915676f837d9dad7b76f50cb500c1e9422e9"
     integrity sha512-2pTGuibAXJswAPJjaKisthqS/NOK5ypG4LYT6tEAV0S/mxW0zOIvYvGK0V8w8+SHxAm6vRMSjqSalFXeBAqs+Q==
+  
+  "@types/axios@^0.14.0":
+    version "0.14.0"
+    resolved "https://mirrors.cloud.tencent.com/npm/@types%2faxios/-/axios-0.14.0.tgz#ec2300fbe7d7dddd7eb9d3abf87999964cafce46"
+    integrity sha1-7CMA++fX3d1+udOr+HmZlkyvzkY=
+    dependencies:
+      axios "*"
   
   "@types/node@^17.0.16":
     version "17.0.16"
@@ -249,6 +268,16 @@ Lockfile:
       estree-walker "^2.0.2"
       source-map "^0.6.1"
   
+  "@vue/compiler-core@3.2.31":
+    version "3.2.31"
+    resolved "https://mirrors.cloud.tencent.com/npm/@vue%2fcompiler-core/-/compiler-core-3.2.31.tgz#d38f06c2cf845742403b523ab4596a3fda152e89"
+    integrity sha512-aKno00qoA4o+V/kR6i/pE+aP+esng5siNAVQ422TkBNM6qA4veXiZbSe8OTXHXquEi/f6Akc+nLfB4JGfe4/WQ==
+    dependencies:
+      "@babel/parser" "^7.16.4"
+      "@vue/shared" "3.2.31"
+      estree-walker "^2.0.2"
+      source-map "^0.6.1"
+  
   "@vue/compiler-dom@3.2.30", "@vue/compiler-dom@^3.2.21":
     version "3.2.30"
     resolved "https://mirrors.cloud.tencent.com/npm/@vue%2fcompiler-dom/-/compiler-dom-3.2.30.tgz#ed15e6243227baeaa445d04df804aee6e4926eab"
@@ -256,6 +285,14 @@ Lockfile:
     dependencies:
       "@vue/compiler-core" "3.2.30"
       "@vue/shared" "3.2.30"
+  
+  "@vue/compiler-dom@3.2.31":
+    version "3.2.31"
+    resolved "https://mirrors.cloud.tencent.com/npm/@vue%2fcompiler-dom/-/compiler-dom-3.2.31.tgz#b1b7dfad55c96c8cc2b919cd7eb5fd7e4ddbf00e"
+    integrity sha512-60zIlFfzIDf3u91cqfqy9KhCKIJgPeqxgveH2L+87RcGU/alT6BRrk5JtUso0OibH3O7NXuNOQ0cDc9beT0wrg==
+    dependencies:
+      "@vue/compiler-core" "3.2.31"
+      "@vue/shared" "3.2.31"
   
   "@vue/compiler-sfc@3.2.30":
     version "3.2.30"
@@ -273,6 +310,22 @@ Lockfile:
       postcss "^8.1.10"
       source-map "^0.6.1"
   
+  "@vue/compiler-sfc@3.2.31":
+    version "3.2.31"
+    resolved "https://mirrors.cloud.tencent.com/npm/@vue%2fcompiler-sfc/-/compiler-sfc-3.2.31.tgz#d02b29c3fe34d599a52c5ae1c6937b4d69f11c2f"
+    integrity sha512-748adc9msSPGzXgibHiO6T7RWgfnDcVQD+VVwYgSsyyY8Ans64tALHZANrKtOzvkwznV/F4H7OAod/jIlp/dkQ==
+    dependencies:
+      "@babel/parser" "^7.16.4"
+      "@vue/compiler-core" "3.2.31"
+      "@vue/compiler-dom" "3.2.31"
+      "@vue/compiler-ssr" "3.2.31"
+      "@vue/reactivity-transform" "3.2.31"
+      "@vue/shared" "3.2.31"
+      estree-walker "^2.0.2"
+      magic-string "^0.25.7"
+      postcss "^8.1.10"
+      source-map "^0.6.1"
+  
   "@vue/compiler-ssr@3.2.30":
     version "3.2.30"
     resolved "https://mirrors.cloud.tencent.com/npm/@vue%2fcompiler-ssr/-/compiler-ssr-3.2.30.tgz#fc2bc13a9cdfd70fcffab3f0bc7de141cd9c3411"
@@ -280,6 +333,14 @@ Lockfile:
     dependencies:
       "@vue/compiler-dom" "3.2.30"
       "@vue/shared" "3.2.30"
+  
+  "@vue/compiler-ssr@3.2.31":
+    version "3.2.31"
+    resolved "https://mirrors.cloud.tencent.com/npm/@vue%2fcompiler-ssr/-/compiler-ssr-3.2.31.tgz#4fa00f486c9c4580b40a4177871ebbd650ecb99c"
+    integrity sha512-mjN0rqig+A8TVDnsGPYJM5dpbjlXeHUm2oZHZwGyMYiGT/F4fhJf/cXy8QpjnLQK4Y9Et4GWzHn9PS8AHUnSkw==
+    dependencies:
+      "@vue/compiler-dom" "3.2.31"
+      "@vue/shared" "3.2.31"
   
   "@vue/devtools-api@^6.0.0-beta.11", "@vue/devtools-api@^6.0.0-beta.18":
     version "6.0.1"
@@ -297,12 +358,30 @@ Lockfile:
       estree-walker "^2.0.2"
       magic-string "^0.25.7"
   
+  "@vue/reactivity-transform@3.2.31":
+    version "3.2.31"
+    resolved "https://mirrors.cloud.tencent.com/npm/@vue%2freactivity-transform/-/reactivity-transform-3.2.31.tgz#0f5b25c24e70edab2b613d5305c465b50fc00911"
+    integrity sha512-uS4l4z/W7wXdI+Va5pgVxBJ345wyGFKvpPYtdSgvfJfX/x2Ymm6ophQlXXB6acqGHtXuBqNyyO3zVp9b1r0MOA==
+    dependencies:
+      "@babel/parser" "^7.16.4"
+      "@vue/compiler-core" "3.2.31"
+      "@vue/shared" "3.2.31"
+      estree-walker "^2.0.2"
+      magic-string "^0.25.7"
+  
   "@vue/reactivity@3.2.30", "@vue/reactivity@^3.2.21":
     version "3.2.30"
     resolved "https://mirrors.cloud.tencent.com/npm/@vue%2freactivity/-/reactivity-3.2.30.tgz#fdae2bb66d075c34593ea7e15c6831300a1ad39e"
     integrity sha512-qlNKbkRn2JiGxVUEdoXbLAy+vcuHUCcq+YH2uXWz0BNMvXY2plmz+oqsw+694llwmYLkke5lbdYF4DIupisIkg==
     dependencies:
       "@vue/shared" "3.2.30"
+  
+  "@vue/reactivity@3.2.31":
+    version "3.2.31"
+    resolved "https://mirrors.cloud.tencent.com/npm/@vue%2freactivity/-/reactivity-3.2.31.tgz#fc90aa2cdf695418b79e534783aca90d63a46bbd"
+    integrity sha512-HVr0l211gbhpEKYr2hYe7hRsV91uIVGFYNHj73njbARVGHQvIojkImKMaZNDdoDZOIkMsBc9a1sMqR+WZwfSCw==
+    dependencies:
+      "@vue/shared" "3.2.31"
   
   "@vue/runtime-core@3.2.30":
     version "3.2.30"
@@ -311,6 +390,14 @@ Lockfile:
     dependencies:
       "@vue/reactivity" "3.2.30"
       "@vue/shared" "3.2.30"
+  
+  "@vue/runtime-core@3.2.31":
+    version "3.2.31"
+    resolved "https://mirrors.cloud.tencent.com/npm/@vue%2fruntime-core/-/runtime-core-3.2.31.tgz#9d284c382f5f981b7a7b5971052a1dc4ef39ac7a"
+    integrity sha512-Kcog5XmSY7VHFEMuk4+Gap8gUssYMZ2+w+cmGI6OpZWYOEIcbE0TPzzPHi+8XTzAgx1w/ZxDFcXhZeXN5eKWsA==
+    dependencies:
+      "@vue/reactivity" "3.2.31"
+      "@vue/shared" "3.2.31"
   
   "@vue/runtime-dom@3.2.30":
     version "3.2.30"
@@ -321,6 +408,15 @@ Lockfile:
       "@vue/shared" "3.2.30"
       csstype "^2.6.8"
   
+  "@vue/runtime-dom@3.2.31":
+    version "3.2.31"
+    resolved "https://mirrors.cloud.tencent.com/npm/@vue%2fruntime-dom/-/runtime-dom-3.2.31.tgz#79ce01817cb3caf2c9d923f669b738d2d7953eff"
+    integrity sha512-N+o0sICVLScUjfLG7u9u5XCjvmsexAiPt17GNnaWHJUfsKed5e85/A3SWgKxzlxx2SW/Hw7RQxzxbXez9PtY3g==
+    dependencies:
+      "@vue/runtime-core" "3.2.31"
+      "@vue/shared" "3.2.31"
+      csstype "^2.6.8"
+  
   "@vue/server-renderer@3.2.30":
     version "3.2.30"
     resolved "https://mirrors.cloud.tencent.com/npm/@vue%2fserver-renderer/-/server-renderer-3.2.30.tgz#4acccad3933475d07b94560c6cb205363975b969"
@@ -329,10 +425,23 @@ Lockfile:
       "@vue/compiler-ssr" "3.2.30"
       "@vue/shared" "3.2.30"
   
+  "@vue/server-renderer@3.2.31":
+    version "3.2.31"
+    resolved "https://mirrors.cloud.tencent.com/npm/@vue%2fserver-renderer/-/server-renderer-3.2.31.tgz#201e9d6ce735847d5989403af81ef80960da7141"
+    integrity sha512-8CN3Zj2HyR2LQQBHZ61HexF5NReqngLT3oahyiVRfSSvak+oAvVmu8iNLSu6XR77Ili2AOpnAt1y8ywjjqtmkg==
+    dependencies:
+      "@vue/compiler-ssr" "3.2.31"
+      "@vue/shared" "3.2.31"
+  
   "@vue/shared@3.2.30", "@vue/shared@^3.2.21":
     version "3.2.30"
     resolved "https://mirrors.cloud.tencent.com/npm/@vue%2fshared/-/shared-3.2.30.tgz#e2ba8f6692399c27c81c668ecd3f1a4e13ee2f5e"
     integrity sha512-B3HouBtUxcfu2w2d+VhdLcVBXKYYhXiFMAfQ+hoe8NUhKkPRkWDIqhpuehCZxVQ3S2dN1P1WfKGlxGC+pfmxGg==
+  
+  "@vue/shared@3.2.31":
+    version "3.2.31"
+    resolved "https://mirrors.cloud.tencent.com/npm/@vue%2fshared/-/shared-3.2.31.tgz#c90de7126d833dcd3a4c7534d534be2fb41faa4e"
+    integrity sha512-ymN2pj6zEjiKJZbrf98UM2pfDd6F2H7ksKw7NDt/ZZ1fh5Ei39X5tABugtT03ZRlWd9imccoK0hE8hpjpU7irQ==
   
   "@vueuse/core@^7.6.0":
     version "7.6.2"
@@ -376,6 +485,13 @@ Lockfile:
     version "4.0.7"
     resolved "https://mirrors.cloud.tencent.com/npm/async-validator/-/async-validator-4.0.7.tgz#034a0fd2103a6b2ebf010da75183bec299247afe"
     integrity sha512-Pj2IR7u8hmUEDOwB++su6baaRi+QvsgajuFB9j95foM1N2gy5HM4z60hfusIO0fBPG5uLAEl6yCJr1jNSVugEQ==
+  
+  axios@*:
+    version "0.26.0"
+    resolved "https://mirrors.cloud.tencent.com/npm/axios/-/axios-0.26.0.tgz#9a318f1c69ec108f8cd5f3c3d390366635e13928"
+    integrity sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==
+    dependencies:
+      follow-redirects "^1.14.8"
   
   babel-walk@3.0.0-canary-5:
     version "3.0.0-canary-5"
@@ -704,6 +820,20 @@ Lockfile:
     dependencies:
       to-regex-range "^5.0.1"
   
+  follow-redirects@^1.14.8:
+    version "1.14.9"
+    resolved "https://mirrors.cloud.tencent.com/npm/follow-redirects/-/follow-redirects-1.14.9.tgz#dd4ea157de7bfaf9ea9b3fbd85aa16951f78d8d7"
+    integrity sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w==
+  
+  fs-extra@^8.0.1:
+    version "8.1.0"
+    resolved "https://mirrors.cloud.tencent.com/npm/fs-extra/-/fs-extra-8.1.0.tgz#49d43c45a88cd9677668cb7be1b46efdb8d2e1c0"
+    integrity sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==
+    dependencies:
+      graceful-fs "^4.2.0"
+      jsonfile "^4.0.0"
+      universalify "^0.1.0"
+  
   fsevents@~2.3.2:
     version "2.3.2"
     resolved "https://mirrors.cloud.tencent.com/npm/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
@@ -729,6 +859,11 @@ Lockfile:
     integrity sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==
     dependencies:
       is-glob "^4.0.1"
+  
+  graceful-fs@^4.1.6, graceful-fs@^4.2.0:
+    version "4.2.9"
+    resolved "https://mirrors.cloud.tencent.com/npm/graceful-fs/-/graceful-fs-4.2.9.tgz#041b05df45755e587a24942279b9d113146e1c96"
+    integrity sha512-NtNxqUcXgpW2iMrfqSfR73Glt39K+BLwWsPs94yR63v45T0Wbej7eRmL5cWfwEgqXnmjQp3zaJTshdRW/qC2ZQ==
   
   has-cors@1.1.0:
     version "1.1.0"
@@ -835,6 +970,22 @@ Lockfile:
     version "3.0.0"
     resolved "https://mirrors.cloud.tencent.com/npm/jsonc-parser/-/jsonc-parser-3.0.0.tgz#abdd785701c7e7eaca8a9ec8cf070ca51a745a22"
     integrity sha512-fQzRfAbIBnR0IQvftw9FJveWiHp72Fg20giDrHz6TdfB12UH/uue0D3hm57UB5KgAVuniLMCaS8P1IMj9NR7cA==
+  
+  jsonfile@^4.0.0:
+    version "4.0.0"
+    resolved "https://mirrors.cloud.tencent.com/npm/jsonfile/-/jsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
+    integrity sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=
+    optionalDependencies:
+      graceful-fs "^4.1.6"
+  
+  jsonfile@^5.0.0:
+    version "5.0.0"
+    resolved "https://mirrors.cloud.tencent.com/npm/jsonfile/-/jsonfile-5.0.0.tgz#e6b718f73da420d612823996fdf14a03f6ff6922"
+    integrity sha512-NQRZ5CRo74MhMMC3/3r5g2k4fjodJ/wh8MxjFbCViWKFjxrnudWSY5vomh+23ZaXzAS7J3fBZIR2dV6WbmfM0w==
+    dependencies:
+      universalify "^0.1.2"
+    optionalDependencies:
+      graceful-fs "^4.1.6"
   
   jstransformer@1.0.0:
     version "1.0.0"
@@ -966,6 +1117,11 @@ Lockfile:
       nanoid "^3.2.0"
       picocolors "^1.0.0"
       source-map-js "^1.0.2"
+  
+  prettier@^2.5.1:
+    version "2.5.1"
+    resolved "https://mirrors.cloud.tencent.com/npm/prettier/-/prettier-2.5.1.tgz#fff75fa9d519c54cf0fce328c1017d94546bc56a"
+    integrity sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==
   
   promise@^7.0.1:
     version "7.3.1"
@@ -1145,6 +1301,14 @@ Lockfile:
     dependencies:
       lru-cache "^6.0.0"
   
+  si-grenoble@^0.6.0:
+    version "0.6.0"
+    resolved "https://mirrors.cloud.tencent.com/npm/si-grenoble/-/si-grenoble-0.6.0.tgz#08188db87d628b4d70f9e12ba5f8f5e39f15aec6"
+    integrity sha512-at0RzteQChNwRfeyN7gPk9NjfWIHrW6qYZLqDIYCfi3RSt5lEnvRZCJhClbSr39fxnmMg7zNGNm2rvfKpeHveQ==
+    dependencies:
+      twemoji "^13.1.0"
+      vue "^3.2.22"
+  
   socket.io-client@^4.4.1:
     version "4.4.1"
     resolved "https://mirrors.cloud.tencent.com/npm/socket.io-client/-/socket.io-client-4.4.1.tgz#b6aa9448149d09b8d0b2bbf3d2fac310631fdec9"
@@ -1202,10 +1366,30 @@ Lockfile:
     resolved "https://mirrors.cloud.tencent.com/npm/token-stream/-/token-stream-1.0.0.tgz#cc200eab2613f4166d27ff9afc7ca56d49df6eb4"
     integrity sha1-zCAOqyYT9BZtJ/+a/HylbUnfbrQ=
   
+  twemoji-parser@13.1.0:
+    version "13.1.0"
+    resolved "https://mirrors.cloud.tencent.com/npm/twemoji-parser/-/twemoji-parser-13.1.0.tgz#65e7e449c59258791b22ac0b37077349127e3ea4"
+    integrity sha512-AQOzLJpYlpWMy8n+0ATyKKZzWlZBJN+G0C+5lhX7Ftc2PeEVdUU/7ns2Pn2vVje26AIZ/OHwFoUbdv6YYD/wGg==
+  
+  twemoji@^13.1.0:
+    version "13.1.0"
+    resolved "https://mirrors.cloud.tencent.com/npm/twemoji/-/twemoji-13.1.0.tgz#65bb71e966dae56f0d42c30176f04cbdae109913"
+    integrity sha512-e3fZRl2S9UQQdBFLYXtTBT6o4vidJMnpWUAhJA+yLGR+kaUTZAt3PixC0cGvvxWSuq2MSz/o0rJraOXrWw/4Ew==
+    dependencies:
+      fs-extra "^8.0.1"
+      jsonfile "^5.0.0"
+      twemoji-parser "13.1.0"
+      universalify "^0.1.2"
+  
   typescript@^4.5.5:
     version "4.5.5"
     resolved "https://mirrors.cloud.tencent.com/npm/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
     integrity sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==
+  
+  universalify@^0.1.0, universalify@^0.1.2:
+    version "0.1.2"
+    resolved "https://mirrors.cloud.tencent.com/npm/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
+    integrity sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==
   
   unplugin-auto-import@^0.6.0:
     version "0.6.0"
@@ -1412,6 +1596,17 @@ Lockfile:
     dependencies:
       "@volar/shared" "0.29.8"
       vscode-vue-languageservice "0.29.8"
+  
+  vue@^3.2.22:
+    version "3.2.31"
+    resolved "https://mirrors.cloud.tencent.com/npm/vue/-/vue-3.2.31.tgz#e0c49924335e9f188352816788a4cca10f817ce6"
+    integrity sha512-odT3W2tcffTiQCy57nOT93INw1auq5lYLLYtWpPYQQYQOOdHiqFct9Xhna6GJ+pJQaF67yZABraH47oywkJgFw==
+    dependencies:
+      "@vue/compiler-dom" "3.2.31"
+      "@vue/compiler-sfc" "3.2.31"
+      "@vue/runtime-dom" "3.2.31"
+      "@vue/server-renderer" "3.2.31"
+      "@vue/shared" "3.2.31"
   
   vue@^3.2.25:
     version "3.2.30"
