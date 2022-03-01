@@ -78,7 +78,7 @@
           </el-aside>
           <!--          主页右侧聊天框或功能区-->
           <el-main style="padding: 0">
-            <router-view style="width: 100%; height: 100%"></router-view>
+            <router-view v-if="viewReload" style="width: 100%; height: 100%"></router-view>
           </el-main>
         </el-container>
       </el-container>
@@ -87,9 +87,11 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue';
+import {reactive, ref} from 'vue';
 import router from '../../router';
 import { House, User, Plus } from '@element-plus/icons-vue';
+// v-if 控制聊天组件刷新
+const viewReload = ref(true)
 
 interface FriendListInterface{
   account:number, // 账号

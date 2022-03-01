@@ -12,4 +12,56 @@ Since TypeScript cannot handle type information for `.vue` imports, they are shi
 
 
 ### demo要做的功能
-    video.vue 调用摄像头，麦克风（√）通过ws传输 
+    video.vue 调用摄像头，麦克风（√）通过ws传输
+    ├─api
+    │  │  service.ts
+    │  │
+    │  └─modules
+    │          index.api.ts
+    │
+    ├─assets
+    │      back-2.webp
+    │      background.jpg
+    │      bk-3.jpg
+    │      logo.png
+    │      weather.png
+    │
+    ├─components
+    │  │  chatBubbles.vue
+    │  │  DialougeList.vue
+    │  │  FriendChat.vue
+    │  │  FriendGroups.vue
+    │  │  hashCode.ts
+    │  │  HelloWorld.vue
+    │  │
+    │  └─ribbon
+    │          MusicPlayer.vue
+    │          Ribbon.vue
+    │          WeatherCard.vue
+    │
+    ├─directives
+    │      index.ts
+    │
+    ├─router
+    │      index.ts
+    │
+    ├─store
+    │  │  index.ts
+    │  │
+    │  └─modules
+    │          user.ts
+    │
+    └─views
+    │  Test.vue
+    │  Video.vue
+    │
+    ├─chat
+    │      Chat.vue
+    │
+    ├─index
+    │      Index.vue
+    │
+    ├─login
+    │      Login.vue
+    │
+    └─management
