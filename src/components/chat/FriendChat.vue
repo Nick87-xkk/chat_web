@@ -45,7 +45,7 @@
           left: item.type !== 'send' || null
         }"
       >
-        <span class="bubble">{{ item.data }}</span>
+        <span class="bubble">{{item.data}}</span>
         <el-avatar
           style="padding: 0"
           shape="square"
@@ -96,10 +96,12 @@
           rows="4"
           class="friend-chat-textarea"
           autofocus
+          @keyup.alt.enter ='sendMessage'
         ></textarea>
       </div>
       <!-- 发送按钮 -->
-      <el-row justify="end">
+      <el-row align="middle" justify="end">
+        <span style="margin-right: 10px">Enter换行,Alt+Enter发送</span>
         <el-button
           style="margin: 0 5px 5px 0"
           type="primary"
@@ -127,8 +129,9 @@ import emojiData from '../../assets/emoji.json';
 import {inputEmoji,message} from "./chat";
 
 const route = useRoute();
-
-const socket = socketIO(`ws://127.0.0.1:9892?id=${route.query.account}`);
+// const  productionURL = 'ws://49.232.185.124:19100'
+const  developmentURL = 'ws://127.0.0.1:9892'
+const socket = socketIO(`${developmentURL}?id=${route.query.account}`);
 
 
 // 消息列表
@@ -250,9 +253,10 @@ socket.on('chat message', (msg) => {
   padding: 15px;
   max-width: 50%;
   background-color: aquamarine;
-  white-space: normal;
   word-wrap: break-word;
   word-break: break-all;
+  white-space: pre-line;
+  text-align: left;
 }
 
 .right {
@@ -265,10 +269,11 @@ socket.on('chat message', (msg) => {
   margin-top: 5px;
   padding: 15px;
   max-width: 50%;
-  white-space: normal;
   background-color: yellow;
   word-wrap: break-word;
   word-break: break-all;
+  white-space: pre-line;
+  text-align: left;
 }
 
 .bubble {
