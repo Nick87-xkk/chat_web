@@ -45,7 +45,7 @@
           left: item.type !== 'send' || null
         }"
       >
-        <span class="bubble">{{item.data}}</span>
+        <span class="bubble">{{ item.data }}</span>
         <el-avatar
           style="padding: 0"
           shape="square"
@@ -96,7 +96,7 @@
           rows="4"
           class="friend-chat-textarea"
           autofocus
-          @keyup.alt.enter ='sendMessage'
+          @keyup.alt.enter="sendMessage"
         ></textarea>
       </div>
       <!-- 发送按钮 -->
@@ -126,13 +126,12 @@ import socketIO from 'socket.io-client';
 import { reactive, ref } from 'vue';
 import { LocationQueryValue, useRoute } from 'vue-router';
 import emojiData from '../../assets/emoji.json';
-import {inputEmoji,message} from "./chat";
+import { inputEmoji, message } from './chat';
 
 const route = useRoute();
-// const  productionURL = 'ws://49.232.185.124:19100'
-const  developmentURL = 'ws://127.0.0.1:9892'
-const socket = socketIO(`${developmentURL}?id=${route.query.account}`);
 
+const developmentURL = 'ws://127.0.0.1:9892';
+const socket = socketIO(`${developmentURL}?id=${route.query.account}`);
 
 // 消息列表
 const messageList: {
@@ -182,11 +181,9 @@ socket.on('chat message', (msg) => {
       document
         .querySelector('.messages')!
         .scrollTo(0, document.querySelector('.messages')!.scrollHeight);
-    }, 500);
+    }, 0);
   }
 });
-
-
 </script>
 
 <style scoped lang="scss">
