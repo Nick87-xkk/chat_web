@@ -130,8 +130,13 @@ import { inputEmoji, message } from './chat';
 
 const route = useRoute();
 
+const productionURL = 'ws://49.232.185.124'
 const developmentURL = 'ws://127.0.0.1:9892';
-const socket = socketIO(`${developmentURL}?id=${route.query.account}`);
+const socket = socketIO(`${developmentURL}?account=${route.query.account}`);
+/*
+*
+* */
+
 
 // 消息列表
 const messageList: {
@@ -143,10 +148,24 @@ const messageList: {
   options: {};
 }[] = reactive([]);
 
+interface messageType{
+  sendAccount:number,
+  receiveAccount:number,
+  data:string
+}
+
 // 发送消息
 const sendMessage = () => {
+
+ let sendMessages:messageType ={
+   sendAccount: route.query.account as unknown as number, // 发送账号 应为当前登录用户
+   receiveAccount: 123456786, // 接收信息账号
+   data:message.value
+ }
+
+
   if (message.value) {
-    socket.emit('chat message', message.value);
+    socket.emit('chat message', sendMessages);
     messageList.push({
       send: route.query.name,
       receive: 'nick',
