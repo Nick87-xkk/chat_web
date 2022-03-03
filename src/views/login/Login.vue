@@ -39,9 +39,10 @@ const userInfo = reactive({
   passWord: '', //密码
   verification: '' //验证码
 });
+
 // 登录后将用户信息写入store
 const store =  useStore()
-store.commit('set_user_date',userInfo)
+// store.commit('set_user_date',userInfo)
 
 const router = useRouter();
 const LoginButton = () => {

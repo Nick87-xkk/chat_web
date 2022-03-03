@@ -78,7 +78,10 @@
           </el-aside>
           <!--          主页右侧聊天框或功能区-->
           <el-main style="padding: 0">
-            <router-view v-if="viewReload" style="width: 100%; height: 100%"></router-view>
+            <router-view
+              v-if="viewReload"
+              style="width: 100%; height: 100%"
+            ></router-view>
           </el-main>
         </el-container>
       </el-container>
@@ -87,14 +90,16 @@
 </template>
 
 <script lang="ts" setup>
-import {reactive, ref} from 'vue';
+import { computed, reactive, ref } from 'vue';
 import router from '../../router';
 import { House, User, Plus } from '@element-plus/icons-vue';
+import { useStore } from 'vuex';
 // v-if 控制聊天组件刷新
-const viewReload = ref(true)
+const viewReload = ref(true);
 
-interface FriendListInterface{
-  account:number, // 账号
+interface FriendListInterface {
+  type: number; // 0 单聊 1 群聊
+  account: number; // 账号
   name?: string; // 昵称
   active?: boolean; // 是否在线
   headPortrait?: string; // 头像
@@ -103,20 +108,22 @@ interface FriendListInterface{
   unreadMessageNum: number; //未读消息条数
 }
 
+// 获取用户信息 ，建立ws连接
+const store = useStore();
+console.log(computed(() => store.state.user_date));
+
 // 点击好友进入聊天
-const friendChat = (item:any) => {
+const friendChat = (item: any) => {
+  setTimeout(() => (viewReload.value = false), 100);
+  setTimeout(() => (viewReload.value = true), 100);
   // 路由传参
-  router.push(
-      {
-        path:'/index/chat',
-        query:item
-      }
-  );
+     item.type? router.push({path: '/index/group', query: item}): router.push({path: '/index/chat', query: item});
 };
-// 好友列表
+// 好友列表，从后端获取
 const friendList: Array<FriendListInterface> | null = reactive([
   {
-    account:123456789,
+    type: 0,
+    account: 123456789,
     name: 'Tom',
     active: true,
     headPortrait:
@@ -126,7 +133,8 @@ const friendList: Array<FriendListInterface> | null = reactive([
     unreadMessageNum: 1
   },
   {
-    account:123456788,
+    type: 0,
+    account: 123456788,
     name: 'Jerry',
     active: false,
     headPortrait:
@@ -136,7 +144,8 @@ const friendList: Array<FriendListInterface> | null = reactive([
     unreadMessageNum: 21
   },
   {
-    account:123456787,
+    type: 0,
+    account: 123456787,
     name: 'Lucy',
     active: false,
     headPortrait:
@@ -146,7 +155,8 @@ const friendList: Array<FriendListInterface> | null = reactive([
     unreadMessageNum: 100
   },
   {
-    account:123456786,
+    type: 0,
+    account: 123456786,
     name: 'Ben',
     active: true,
     headPortrait:
@@ -156,11 +166,23 @@ const friendList: Array<FriendListInterface> | null = reactive([
     unreadMessageNum: 2
   },
   {
-    account:123456785,
+    type: 0,
+    account: 123456785,
     name: 'Json',
     active: false,
     headPortrait:
       'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    lastMessage: 'hello',
+    lastTime: '00:00',
+    unreadMessageNum: 50
+  },
+  {
+    type: 1,
+    account: 123456785,
+    name: 'Json',
+    active: false,
+    headPortrait:
+        'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
     lastMessage: 'hello',
     lastTime: '00:00',
     unreadMessageNum: 50

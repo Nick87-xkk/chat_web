@@ -123,20 +123,24 @@ import {
   FolderAdd
 } from '@element-plus/icons-vue';
 import socketIO from 'socket.io-client';
-import { reactive, ref } from 'vue';
+import {onBeforeUnmount, reactive, ref} from 'vue';
 import { LocationQueryValue, useRoute } from 'vue-router';
 import emojiData from '../../assets/emoji.json';
 import { inputEmoji, message } from './chat';
 
 const route = useRoute();
-
-const productionURL = 'ws://49.232.185.124'
+// 群聊根据群号建立 socket namespace
+const productionURL = 'ws://49.232.185.124:19100'
 const developmentURL = 'ws://127.0.0.1:9892';
 const socket = socketIO(`${developmentURL}?account=${route.query.account}`);
-/*
-*
-* */
+// const socket = socketIO(`${productionURL}?account=${route.query.account}`);
 
+
+
+// 切换关闭socket连接
+onBeforeUnmount(()=>{
+  socket.close()
+})
 
 // 消息列表
 const messageList: {
@@ -151,7 +155,8 @@ const messageList: {
 interface messageType{
   sendAccount:number,
   receiveAccount:number,
-  data:string
+  data:string,
+  time:number
 }
 
 // 发送消息
@@ -160,7 +165,8 @@ const sendMessage = () => {
  let sendMessages:messageType ={
    sendAccount: route.query.account as unknown as number, // 发送账号 应为当前登录用户
    receiveAccount: 123456786, // 接收信息账号
-   data:message.value
+   data:message.value,
+   time:Date.now()
  }
 
 

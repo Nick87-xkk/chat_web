@@ -15,10 +15,15 @@ const routes: Array<RouteRecordRaw> = [
         path: 'ribbon',
         component: () => import('/@/components/Ribbon/Ribbon.vue')
       },
-      // 显示对话框
+      // 好友聊天
       {
         path: 'chat',
         component: () => import('/@/components/chat/FriendChat.vue')
+      },
+      // 群聊
+      {
+        path: 'group',
+        component: () => import('/@/components/chat/GroupChat.vue')
       }
     ]
   },
