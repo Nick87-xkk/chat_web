@@ -32,17 +32,23 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import {useStore} from "vuex";
 
 const userInfo = reactive({
   account: '', //账户
   passWord: '', //密码
   verification: '' //验证码
 });
+// 登录后将用户信息写入store
+const store =  useStore()
+store.commit('set_user_date',userInfo)
 
 const router = useRouter();
 const LoginButton = () => {
   router.push('/index/ribbon');
 };
+
+
 </script>
 
 <style lang="scss" scoped>

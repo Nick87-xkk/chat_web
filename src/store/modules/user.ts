@@ -7,7 +7,7 @@ export default {
       user_date: {}
     };
   },
-  mountions: {
+  mutations: {
     set_user_date(state: { user_date: any }, n: {}) {
       state.user_date = n || {};
     },
