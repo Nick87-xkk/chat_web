@@ -94,6 +94,7 @@ import { computed, reactive, ref } from 'vue';
 import router from '../../router';
 import { House, User, Plus } from '@element-plus/icons-vue';
 import { useStore } from 'vuex';
+import {LocationQuery, LocationQueryRaw, LocationQueryValue, Router, RouterOptions} from "vue-router";
 // v-if 控制聊天组件刷新
 const viewReload = ref(true);
 
@@ -113,11 +114,11 @@ const store = useStore();
 console.log(computed(() => store.state.user_date));
 
 // 点击好友进入聊天
-const friendChat = (item: any) => {
+const friendChat = (item:any) => {
   setTimeout(() => (viewReload.value = false), 100);
   setTimeout(() => (viewReload.value = true), 100);
   // 路由传参
-     item.type? router.push({path: '/index/group', query: item}): router.push({path: '/index/chat', query: item});
+  item.type? router.push({path:'/index/group',query:item}): router.push({path: '/index/chat', query: item});
 };
 // 好友列表，从后端获取
 const friendList: Array<FriendListInterface> | null = reactive([
