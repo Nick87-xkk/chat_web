@@ -21,9 +21,9 @@
 </template>
 
 <script setup lang="ts">
-import socketIO from 'socket.io-client';
+
 import { reactive, ref } from 'vue';
-const socket = socketIO('ws://127.0.0.1:9892');
+import {socket} from "../../main";
 
 let message = ref('');
 

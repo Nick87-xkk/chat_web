@@ -2,19 +2,19 @@
   <div class="login">
     <div class="login-box">
       <el-form
-        :label-position="'top'"
-        label-width="100px"
-        :model="userInfo"
-        style="max-width: 460px"
+          :label-position="'top'"
+          label-width="100px"
+          :model="userInfo"
+          style="max-width: 460px"
       >
         <el-form-item label="Account">
           <el-input v-model="userInfo.account" clearable></el-input>
         </el-form-item>
         <el-form-item label="PassWord">
           <el-input
-            type="password"
-            v-model="userInfo.passWord"
-            show-password
+              type="password"
+              v-model="userInfo.passWord"
+              show-password
           ></el-input>
         </el-form-item>
         <el-form-item label="Verification Code">
@@ -30,9 +30,12 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue';
-import { useRouter } from 'vue-router';
+import {reactive} from 'vue';
+import {useRouter} from 'vue-router';
 import {useStore} from "vuex";
+import { Md5 } from 'ts-md5/dist/md5'
+
+console.log(Md5.hashStr('a123456'))
 
 const userInfo = reactive({
   account: '', //账户
@@ -41,7 +44,7 @@ const userInfo = reactive({
 });
 
 // 登录后将用户信息写入store
-const store =  useStore()
+const store = useStore()
 // store.commit('set_user_date',userInfo)
 
 const router = useRouter();
@@ -76,6 +79,7 @@ const LoginButton = () => {
 :deep(.el-form-item__label) {
   color: black;
 }
+
 :deep(.el-input__inner::-ms-reveal) {
   display: none;
 }

@@ -1174,6 +1174,11 @@ token-stream@1.0.0:
   resolved "https://mirrors.cloud.tencent.com/npm/token-stream/-/token-stream-1.0.0.tgz#cc200eab2613f4166d27ff9afc7ca56d49df6eb4"
   integrity sha1-zCAOqyYT9BZtJ/+a/HylbUnfbrQ=
 
+ts-md5@^1.2.11:
+  version "1.2.11"
+  resolved "https://mirrors.cloud.tencent.com/npm/ts-md5/-/ts-md5-1.2.11.tgz#0bbdf884eecf7da3952fe8671a109d7e55d322c6"
+  integrity sha512-vAwy9rEuRE6a8xa1MavIVkLFyyU0ydk4CLMFA5vOVccmQKLOuGb/BHm3oEN7XHf2FoqS+z0pSvhaad/ombd1Vg==
+
 typescript@^4.5.5:
   version "4.5.5"
   resolved "https://mirrors.cloud.tencent.com/npm/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
