@@ -5,7 +5,7 @@ import {
   RouteRecordRaw
 } from 'vue-router';
 const routes: Array<RouteRecordRaw> = [
-  { path: '/', component: () => import('/@/views/Login/Login.vue') },
+  { path: '/', component: () => import('/@/views/login/Login.vue') },
   {
     path: '/index',
     component: () => import('/@/views/index/Index.vue'),
