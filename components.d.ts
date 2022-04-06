@@ -6,19 +6,19 @@ declare module 'vue' {
   export interface GlobalComponents {
     ChatBubbles: typeof import('./src/components/chat/chatBubbles.vue')['default']
     DialougeList: typeof import('./src/components/DialougeList.vue')['default']
-    ElAside: typeof import('element-plus/es')['ElAside'];
-    ElAvatar: typeof import('element-plus/es')['ElAvatar'];
-    ElBadge: typeof import('element-plus/es')['ElBadge'];
+    ElAside: typeof import('element-plus/es')['ElAside']
+    ElAvatar: typeof import('element-plus/es')['ElAvatar']
+    ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElContainer: typeof import('element-plus/es')['ElContainer'];
+    ElContainer: typeof import('element-plus/es')['ElContainer']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElHeader: typeof import('element-plus/es')['ElHeader'];
+    ElHeader: typeof import('element-plus/es')['ElHeader']
     ElInput: typeof import('element-plus/es')['ElInput']
-    ElMain: typeof import('element-plus/es')['ElMain'];
-    ElPopover: typeof import('element-plus/es')['ElPopover'];
-    ElRow: typeof import('element-plus/es')['ElRow'];
-    ElTooltip: typeof import('element-plus/es')['ElTooltip'];
+    ElMain: typeof import('element-plus/es')['ElMain']
+    ElPopover: typeof import('element-plus/es')['ElPopover']
+    ElRow: typeof import('element-plus/es')['ElRow']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     FriendChat: typeof import('./src/components/chat/FriendChat.vue')['default']
     FriendGroups: typeof import('./src/components/FriendGroups.vue')['default']
     GroupChat: typeof import('./src/components/chat/GroupChat.vue')['default']

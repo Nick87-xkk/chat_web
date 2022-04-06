@@ -34,8 +34,9 @@ import {reactive} from 'vue';
 import {useRouter} from 'vue-router';
 import {useStore} from "vuex";
 import { Md5 } from 'ts-md5/dist/md5'
-
-console.log(Md5.hashStr('a123456'))
+import {login} from "../../api/modules/index.api";
+import qs from 'qs/index'
+// console.log(Md5.hashStr('a123456'))
 
 const userInfo = reactive({
   account: '', //账户
@@ -48,8 +49,23 @@ const store = useStore()
 // store.commit('set_user_date',userInfo)
 
 const router = useRouter();
+// 点击登录
 const LoginButton = () => {
-  router.push('/index/ribbon');
+  if(!userInfo.account || !userInfo.passWord){
+    return alert('账号密码为空')!
+  }
+
+  login({
+    "account":userInfo.account,
+    "pd":Md5.hashStr(userInfo.passWord)
+  }).then((res)=>{
+    console.log(res)
+    if (res.data == 200){
+      router.push('/index/ribbon');
+    }else{
+      alert('密码错误')
+    }
+  });
 };
 
 

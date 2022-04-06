@@ -117,6 +117,11 @@
   resolved "https://mirrors.cloud.tencent.com/npm/@types%2fnode/-/node-17.0.16.tgz#e3733f46797b9df9e853ca9f719c8a6f7b84cd26"
   integrity sha512-ydLaGVfQOQ6hI1xK2A5nVh8bl0OGoIfYMxPWHqqYe9bTkWCfqiVvZoh2I/QF2sNSkZzZyROBoTefIEI+PB6iIA==
 
+"@types/qs@^6.9.7":
+  version "6.9.7"
+  resolved "https://mirrors.tencent.com/npm/@types%2fqs/-/qs-6.9.7.tgz#63bb7d067db107cc1e457c303bc25d511febf6cb"
+  integrity sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==
+
 "@types/throttle-debounce@^2.1.0":
   version "2.1.0"
   resolved "https://mirrors.cloud.tencent.com/npm/@types%2fthrottle-debounce/-/throttle-debounce-2.1.0.tgz#1c3df624bfc4b62f992d3012b84c56d41eab3776"
