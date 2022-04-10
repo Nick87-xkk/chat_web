@@ -19,6 +19,7 @@
         </el-form-item>
         <el-form-item label="Verification Code">
           <el-input v-model="userInfo.verification" clearable></el-input>
+<!--          <IdentityCode></IdentityCode>-->
         </el-form-item>
         <el-form-item>
           <el-button>Register</el-button>
@@ -35,6 +36,7 @@ import {useRouter} from 'vue-router';
 import {useStore} from "vuex";
 import { Md5 } from 'ts-md5/dist/md5'
 import {login} from "../../api/modules/index.api";
+// import IdentityCode from "../../components/IdentityCode.vue";
 
 // console.log(Md5.hashStr('a123456'))
 

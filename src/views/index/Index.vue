@@ -43,8 +43,10 @@
           </el-row>
         </el-header>
         <el-container>
+
           <el-aside>
-            <ul class="infinite-list" style="overflow: auto">
+            <!-- 消息列表-->
+            <ul v-if="false" class="infinite-list" style="overflow: auto">
               <li
                 v-for="item in friendList"
                 :key="item.name"
@@ -59,11 +61,9 @@
                 <div class="infinite-list-item-info">
                   <h2>{{ item.name }}</h2>
                   <h4>{{ item.lastMessage }}</h4>
-                  <!--
                   <el-row>
                     <h6>{{item.active?'[在线]':'[离线]'}}</h6>
                   </el-row>
--->
                 </div>
                 <div>
                   <el-badge
@@ -75,8 +75,10 @@
                 </div>
               </li>
             </ul>
+            <!--好友列表-->
+            <FriendGroups v-if="true"></FriendGroups>
           </el-aside>
-          <!--          主页右侧聊天框或功能区-->
+          <!--主页右侧聊天框或功能区-->
           <el-main style="padding: 0">
             <router-view
               v-if="viewReload"
@@ -95,6 +97,9 @@ import router from '../../router';
 import { House, User, Plus } from '@element-plus/icons-vue';
 import { useStore } from 'vuex';
 import {LocationQuery, LocationQueryRaw, LocationQueryValue, Router, RouterOptions} from "vue-router";
+import GroupChat from "../../components/chat/GroupChat.vue";
+import FriendGroups from "../../components/FriendGroups.vue";
+
 // v-if 控制聊天组件刷新
 const viewReload = ref(true);
 
