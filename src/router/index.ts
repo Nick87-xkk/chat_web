@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
       // 显示功能卡片
       {
         path: 'ribbon',
-        component: () => import('/@/components/Ribbon/Ribbon.vue')
+        component: () => import('/@/components/ribbon/Ribbon.vue')
       },
       // 好友聊天
       {

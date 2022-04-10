@@ -9,41 +9,14 @@
           @close="handleClose"
           background-color="inherit"
         >
-          <el-sub-menu index="1">
+          <el-sub-menu v-for="(item,index) in groupList" :index="index+1">
             <template #title>
-              <span>我的好友</span>
+              <span>{{ item.groupName }}</span>
             </template>
-            <el-menu-item index="1-1">item one</el-menu-item>
-            <el-menu-item index="1-2">item one</el-menu-item>
+            <!-- 后续修改样式，确定friend属性-->
+            <el-menu-item v-for="(x,y) in item.friend" :index="`${index}-${y}`">{{x}}</el-menu-item>
           </el-sub-menu>
-          <el-sub-menu index="2">
-            <template #title>
-              <span>我的家人</span>
-            </template>
-            <el-menu-item index="2-1">item one</el-menu-item>
-            <el-menu-item index="2-2">item one</el-menu-item>
-          </el-sub-menu>
-          <el-sub-menu index="3">
-            <template #title>
-              <span>我的同学</span>
-            </template>
-            <el-menu-item index="3-1">item one</el-menu-item>
-            <el-menu-item index="3-2">item one</el-menu-item>
-          </el-sub-menu>
-          <el-sub-menu index="4">
-            <template #title>
-              <span>我的同事</span>
-            </template>
-            <el-menu-item index="4-1">item one</el-menu-item>
-            <el-menu-item index="4-2">item one</el-menu-item>
-          </el-sub-menu>
-          <el-sub-menu index="5">
-            <template #title>
-              <span>特别关注</span>
-            </template>
-            <el-menu-item index="5-1">item one</el-menu-item>
-            <el-menu-item index="5-2">item one</el-menu-item>
-          </el-sub-menu>
+
         </el-menu>
       </el-col>
     </el-row>
@@ -57,6 +30,40 @@ const handleOpen = (key: string, keyPath: string[]) => {
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
+
+
+// 后续定义类型
+interface friendListType{
+
+}
+const groupList:friendListType = [
+  {
+    groupName:'我的好友',
+    friend:[
+      '1',
+      '2',
+      '3'
+    ]
+  },
+  {
+    groupName:'家人',
+    friend:[
+      '1',
+      '2',
+      '3'
+    ]
+  },
+  {
+    groupName:'同事',
+    friend:[
+      '1',
+      '2',
+      '3'
+    ]
+  }
+];
+
+
 </script>
 
 <style lang="scss" scoped>

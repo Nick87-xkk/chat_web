@@ -5,7 +5,7 @@
                 <weather-card></weather-card>
             </div>
 
-            <div class="card"></div>
+<!--            <div class="card"></div>-->
         </div>
     </div>
 </template>
@@ -20,7 +20,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-content: space-around;
+    //align-content: space-around;
     color: black;
 
     .card {
@@ -28,7 +28,7 @@
         height: 300px;
 
         border-radius: 10px;
-        box-shadow: 0 0 5px 0;
+        //box-shadow: 0 0 5px 0;
     }
 
     /*.weather-card {
