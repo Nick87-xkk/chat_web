@@ -62,6 +62,7 @@ const LoginButton = ():void => {
     "pd":Md5.hashStr(userInfo.passWord)
   }).then((res:any)=>{
     if (res.code === 200){
+      store.commit('set_user_date',userInfo.account)
       router.push('/index/ribbon');
     }else{
       alert('密码错误')

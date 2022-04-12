@@ -13,3 +13,11 @@ export const login = (data: any) =>
     method: 'POST',
     data
   });
+
+// 搜索用户
+export const searchUser = (data: any) =>
+  service({
+    url: '/user/searchUser',
+    method: 'POST',
+    data
+  });

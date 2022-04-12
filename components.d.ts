@@ -5,7 +5,6 @@
 declare module 'vue' {
   export interface GlobalComponents {
     ChatBubbles: typeof import('./src/components/chat/chatBubbles.vue')['default']
-    DialougeList: typeof import('./src/components/DialougeList.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBadge: typeof import('element-plus/es')['ElBadge']
@@ -15,12 +14,12 @@ declare module 'vue' {
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElHeader: typeof import('element-plus/es')['ElHeader']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElIcon: typeof import('element-plus/es')['ElIcon'];
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
-    ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup']
+    ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup'];
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
@@ -32,6 +31,7 @@ declare module 'vue' {
     IdentityCode: typeof import('./src/components/IdentityCode.vue')['default']
     MusicPlayer: typeof import('./src/components/ribbon/MusicPlayer.vue')['default']
     Ribbon: typeof import('./src/components/ribbon/Ribbon.vue')['default']
+    SearchUser: typeof import('./src/components/searchUser.vue')['default']
     WeatherCard: typeof import('./src/components/ribbon/WeatherCard.vue')['default']
   }
 }

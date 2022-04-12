@@ -4,10 +4,11 @@ import router from './router';
 import directives from './directives';
 import ElementPlus from 'element-plus';
 import socketIO from 'socket.io-client';
-
+import store from './store';
 const app = createApp(App);
 app.use(router);
 app.use(ElementPlus);
 app.use(directives);
+app.use(store);
 app.mount('#app');
 export const socket = socketIO('ws://127.0.0.1:9892');

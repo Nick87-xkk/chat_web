@@ -15,7 +15,7 @@
                 content="主页"
                 placement="bottom"
               >
-                <el-button type="primary" :icon="House" circle></el-button>
+                <el-button type="primary" :icon="House" circle @click="state = 'message'"></el-button>
               </el-tooltip>
               <el-tooltip
                 class="box-item"
@@ -23,7 +23,7 @@
                 content="好友分组"
                 placement="bottom"
               >
-                <el-button type="success" :icon="User" circle></el-button>
+                <el-button type="success" :icon="User" circle @click="state = 'friendGroup'"></el-button>
               </el-tooltip>
               <el-tooltip
                 class="box-item"
@@ -31,7 +31,7 @@
                 content="添加好友/群"
                 placement="bottom"
               >
-                <el-button type="info" :icon="Plus" circle></el-button>
+                <el-button type="info" :icon="Plus" circle @click="state = 'add'"></el-button>
               </el-tooltip>
             </div>
 
@@ -45,8 +45,12 @@
         <el-container>
 
           <el-aside>
+            <!--好友列表-->
+            <FriendGroups v-if="state === 'friendGroup'"></FriendGroups>
+            <!--搜索用户-->
+            <SearchUser v-else-if="state === 'add'"></SearchUser>
             <!-- 消息列表-->
-            <ul v-if="false" class="infinite-list" style="overflow: auto">
+            <ul v-else="state === 'message'" class="infinite-list" style="overflow: auto">
               <li
                 v-for="item in friendList"
                 :key="item.name"
@@ -75,8 +79,6 @@
                 </div>
               </li>
             </ul>
-            <!--好友列表-->
-            <FriendGroups v-if="true"></FriendGroups>
           </el-aside>
           <!--主页右侧聊天框或功能区-->
           <el-main style="padding: 0">
@@ -99,9 +101,11 @@ import { useStore } from 'vuex';
 import {LocationQuery, LocationQueryRaw, LocationQueryValue, Router, RouterOptions} from "vue-router";
 import GroupChat from "../../components/chat/GroupChat.vue";
 import FriendGroups from "../../components/FriendGroups.vue";
-
+import SearchUser from "../../components/searchUser.vue";
 // v-if 控制聊天组件刷新
 const viewReload = ref(true);
+
+const state = ref()
 
 interface FriendListInterface {
   type: number; // 0 单聊 1 群聊
@@ -116,7 +120,7 @@ interface FriendListInterface {
 
 // 获取用户信息 ，建立ws连接
 const store = useStore();
-console.log(computed(() => store.state.user_date));
+const user = computed(() => store.state.user_date);
 
 // 点击好友进入聊天
 const friendChat = (item:any) => {
@@ -129,7 +133,7 @@ const friendChat = (item:any) => {
 const friendList: Array<FriendListInterface> | null = reactive([
   {
     type: 0,
-    account: 123456789,
+    account: user.value,
     name: 'Tom',
     active: true,
     headPortrait:
@@ -138,61 +142,6 @@ const friendList: Array<FriendListInterface> | null = reactive([
     lastTime: '9:30',
     unreadMessageNum: 1
   },
-  {
-    type: 0,
-    account: 123456788,
-    name: 'Jerry',
-    active: false,
-    headPortrait:
-      'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-    lastMessage: 'hello',
-    lastTime: '10:10',
-    unreadMessageNum: 21
-  },
-  {
-    type: 0,
-    account: 123456787,
-    name: 'Lucy',
-    active: false,
-    headPortrait:
-      'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-    lastMessage: 'hello',
-    lastTime: '12:01',
-    unreadMessageNum: 100
-  },
-  {
-    type: 0,
-    account: 123456786,
-    name: 'Ben',
-    active: true,
-    headPortrait:
-      'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-    lastMessage: 'hello',
-    lastTime: '11:01',
-    unreadMessageNum: 2
-  },
-  {
-    type: 0,
-    account: 123456785,
-    name: 'Json',
-    active: false,
-    headPortrait:
-      'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-    lastMessage: 'hello',
-    lastTime: '00:00',
-    unreadMessageNum: 50
-  },
-  {
-    type: 1,
-    account: 123456785,
-    name: 'Json',
-    active: false,
-    headPortrait:
-        'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-    lastMessage: 'hello',
-    lastTime: '00:00',
-    unreadMessageNum: 50
-  }
 ]);
 /*const load = () => {
   friendList.push({
