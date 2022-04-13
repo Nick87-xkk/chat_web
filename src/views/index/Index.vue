@@ -15,7 +15,7 @@
                 content="主页"
                 placement="bottom"
               >
-                <el-button type="primary" :icon="House" circle @click="state = 'message'"></el-button>
+                <el-button type="primary" :icon="House" circle @click="state = 'message';router.push('/index/ribbon')"></el-button>
               </el-tooltip>
               <el-tooltip
                 class="box-item"
@@ -129,7 +129,7 @@ const friendChat = (item:any) => {
   // 路由传参
   item.type? router.push({path:'/index/group',query:item}): router.push({path: '/index/chat', query: item});
 };
-// 好友列表，从后端获取
+// 消息列表，从后端获取
 const friendList: Array<FriendListInterface> | null = reactive([
   {
     type: 0,

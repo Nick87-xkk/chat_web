@@ -33,10 +33,11 @@ const handleClose = (key: string, keyPath: string[]) => {
 
 
 // 后续定义类型
-interface friendListType{
+/*interface friendListType{
 
-}
-const groupList:friendListType = [
+}*/
+// 分组列表
+const groupList = [
   {
     groupName:'我的好友',
     friend:[

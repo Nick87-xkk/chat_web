@@ -14,12 +14,10 @@ declare module 'vue' {
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElHeader: typeof import('element-plus/es')['ElHeader']
-    ElIcon: typeof import('element-plus/es')['ElIcon'];
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
-    ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup'];
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
@@ -27,11 +25,10 @@ declare module 'vue' {
     FriendChat: typeof import('./src/components/chat/FriendChat.vue')['default']
     FriendGroups: typeof import('./src/components/FriendGroups.vue')['default']
     GroupChat: typeof import('./src/components/chat/GroupChat.vue')['default']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IdentityCode: typeof import('./src/components/IdentityCode.vue')['default']
     MusicPlayer: typeof import('./src/components/ribbon/MusicPlayer.vue')['default']
-    Ribbon: typeof import('./src/components/ribbon/Ribbon.vue')['default']
     SearchUser: typeof import('./src/components/searchUser.vue')['default']
+    UserInfo: typeof import('./src/components/ribbon/UserInfo.vue')['default']
     WeatherCard: typeof import('./src/components/ribbon/WeatherCard.vue')['default']
   }
 }
