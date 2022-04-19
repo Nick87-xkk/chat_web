@@ -23,7 +23,8 @@
         </el-form-item>
         <el-form-item>
           <el-button>Register</el-button>
-          <el-button type="primary" @click="LoginButton">Login</el-button>
+          <el-button type="primary" @click="loginButton">Login</el-button>
+          <el-button @click="visitorButton">Visitor Login</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -52,7 +53,7 @@ const store = useStore()
 
 const router = useRouter();
 // 点击登录
-const LoginButton = ():void => {
+const loginButton = ():void => {
   if(!userInfo.account || !userInfo.passWord){
     return alert('账号密码为空')!
   }
@@ -70,7 +71,9 @@ const LoginButton = ():void => {
   });
 };
 
-
+const visitorButton = ():void =>{
+  router.push("/visitor")
+}
 </script>
 
 <style lang="scss" scoped>

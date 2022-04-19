@@ -15,7 +15,15 @@
                 content="主页"
                 placement="bottom"
               >
-                <el-button type="primary" :icon="House" circle @click="state = 'message';router.push('/index/ribbon')"></el-button>
+                <el-button
+                  type="primary"
+                  :icon="House"
+                  circle
+                  @click="
+                    state = 'message';
+                    router.push('/index/ribbon');
+                  "
+                ></el-button>
               </el-tooltip>
               <el-tooltip
                 class="box-item"
@@ -23,7 +31,12 @@
                 content="好友分组"
                 placement="bottom"
               >
-                <el-button type="success" :icon="User" circle @click="state = 'friendGroup'"></el-button>
+                <el-button
+                  type="success"
+                  :icon="User"
+                  circle
+                  @click="state = 'friendGroup'"
+                ></el-button>
               </el-tooltip>
               <el-tooltip
                 class="box-item"
@@ -31,7 +44,12 @@
                 content="添加好友/群"
                 placement="bottom"
               >
-                <el-button type="info" :icon="Plus" circle @click="state = 'add'"></el-button>
+                <el-button
+                  type="info"
+                  :icon="Plus"
+                  circle
+                  @click="state = 'add'"
+                ></el-button>
               </el-tooltip>
             </div>
 
@@ -43,14 +61,17 @@
           </el-row>
         </el-header>
         <el-container>
-
           <el-aside>
             <!--好友列表-->
             <FriendGroups v-if="state === 'friendGroup'"></FriendGroups>
             <!--搜索用户-->
             <SearchUser v-else-if="state === 'add'"></SearchUser>
             <!-- 消息列表-->
-            <ul v-else="state === 'message'" class="infinite-list" style="overflow: auto">
+            <ul
+              v-else="state === 'message'"
+              class="infinite-list"
+              style="overflow: auto"
+            >
               <li
                 v-for="item in friendList"
                 :key="item.name"
@@ -66,7 +87,7 @@
                   <h2>{{ item.name }}</h2>
                   <h4>{{ item.lastMessage }}</h4>
                   <el-row>
-                    <h6>{{item.active?'[在线]':'[离线]'}}</h6>
+                    <h6>{{ item.active ? '[在线]' : '[离线]' }}</h6>
                   </el-row>
                 </div>
                 <div>
@@ -98,14 +119,20 @@ import { computed, reactive, ref } from 'vue';
 import router from '../../router';
 import { House, User, Plus } from '@element-plus/icons-vue';
 import { useStore } from 'vuex';
-import {LocationQuery, LocationQueryRaw, LocationQueryValue, Router, RouterOptions} from "vue-router";
-import GroupChat from "../../components/chat/GroupChat.vue";
-import FriendGroups from "../../components/FriendGroups.vue";
-import SearchUser from "../../components/searchUser.vue";
+import {
+  LocationQuery,
+  LocationQueryRaw,
+  LocationQueryValue,
+  Router,
+  RouterOptions
+} from 'vue-router';
+import GroupChat from '../../components/chat/GroupChat.vue';
+import FriendGroups from '../../components/FriendGroups.vue';
+import SearchUser from '../../components/searchUser.vue';
 // v-if 控制聊天组件刷新
 const viewReload = ref(true);
 
-const state = ref()
+const state = ref();
 
 interface FriendListInterface {
   type: number; // 0 单聊 1 群聊
@@ -123,11 +150,13 @@ const store = useStore();
 const user = computed(() => store.state.user_date);
 
 // 点击好友进入聊天
-const friendChat = (item:any) => {
+const friendChat = (item: any) => {
   setTimeout(() => (viewReload.value = false), 100);
   setTimeout(() => (viewReload.value = true), 100);
   // 路由传参
-  item.type? router.push({path:'/index/group',query:item}): router.push({path: '/index/chat', query: item});
+  item.type
+    ? router.push({ path: '/index/group', query: item })
+    : router.push({ path: '/index/chat', query: item });
 };
 // 消息列表，从后端获取
 const friendList: Array<FriendListInterface> | null = reactive([
@@ -141,7 +170,7 @@ const friendList: Array<FriendListInterface> | null = reactive([
     lastMessage: 'hello',
     lastTime: '9:30',
     unreadMessageNum: 1
-  },
+  }
 ]);
 /*const load = () => {
   friendList.push({
