@@ -4,6 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Avatar: typeof import('./src/components/avatar/Avatar.vue')['default']
     ChatBubbles: typeof import('./src/components/chat/chatBubbles.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
@@ -23,6 +24,7 @@ declare module 'vue' {
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    FileUpload: typeof import('./src/components/fileUpload/FileUpload.vue')['default']
     FriendChat: typeof import('./src/components/chat/FriendChat.vue')['default']
     FriendGroups: typeof import('./src/components/FriendGroups.vue')['default']
     GroupChat: typeof import('./src/components/chat/GroupChat.vue')['default']
@@ -30,6 +32,7 @@ declare module 'vue' {
     MusicPlayer: typeof import('./src/components/ribbon/MusicPlayer.vue')['default']
     SearchUser: typeof import('./src/components/searchUser.vue')['default']
     UserInfo: typeof import('./src/components/ribbon/UserInfo.vue')['default']
+    VideoChat: typeof import('./src/components/video/VideoChat.vue')['default']
     WeatherCard: typeof import('./src/components/ribbon/WeatherCard.vue')['default']
   }
 }

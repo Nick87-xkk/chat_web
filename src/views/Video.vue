@@ -8,7 +8,6 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount } from 'vue';
-import {socket} from "../main";
 
 (window as any).AudioContext =
   window.AudioContext ||

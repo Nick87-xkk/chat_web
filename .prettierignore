@@ -3,3 +3,4 @@ index.html
 /dist/*
 /src/assets/*
 /public/*
+/src/components/chat/FriendChat.vue
