@@ -122,23 +122,22 @@ import {
   PictureRounded,
   FolderAdd
 } from '@element-plus/icons-vue';
-import socketIO from 'socket.io-client';
-import { onBeforeUnmount, reactive, ref } from 'vue';
+
+import { inject, onBeforeUnmount, reactive, ref } from 'vue';
 import { LocationQueryValue, useRoute } from 'vue-router';
 import emojiData from '../../assets/emoji.json';
 import { inputEmoji, message } from './chat';
 
 const route = useRoute();
-// 群聊根据群号建立 socket namespace
-const productionURL = 'ws://49.232.185.124:19100';
-const developmentURL = 'ws://127.0.0.1:9892';
-const socket = socketIO(`${developmentURL}?account=${route.query.account}`);
-// const socket = socketIO(`${productionURL}?account=${route.query.account}`);
+// 使用socket
+const socket:any = inject('socket');
 
 // 切换关闭socket连接
+/*
 onBeforeUnmount(() => {
   socket.close();
 });
+*/
 
 // 消息列表
 const messageList: {

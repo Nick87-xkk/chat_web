@@ -115,20 +115,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from "vue";
 import router from '../../router';
 import { House, User, Plus } from '@element-plus/icons-vue';
 import { useStore } from 'vuex';
-import {
-  LocationQuery,
-  LocationQueryRaw,
-  LocationQueryValue,
-  Router,
-  RouterOptions
-} from 'vue-router';
-import GroupChat from '../../components/chat/GroupChat.vue';
 import FriendGroups from '../../components/FriendGroups.vue';
 import SearchUser from '../../components/searchUser.vue';
+import socketIO from "socket.io-client";
 // v-if 控制聊天组件刷新
 const viewReload = ref(true);
 
@@ -147,8 +140,12 @@ interface FriendListInterface {
 
 // 获取用户信息 ，建立ws连接
 const store = useStore();
-const user = computed(() => store.state.user_date);
-
+const socket = ref();
+/*onMounted(()=>{
+  if (sessionStorage.getItem('account')){
+    socket.value= socketIO(`ws://127.0.0.1:9892?account=${sessionStorage.getItem('account')}`)
+  }
+})*/
 // 点击好友进入聊天
 const friendChat = (item: any) => {
   setTimeout(() => (viewReload.value = false), 100);
@@ -159,10 +156,10 @@ const friendChat = (item: any) => {
     : router.push({ path: '/index/chat', query: item });
 };
 // 消息列表，从后端获取
-const friendList: Array<FriendListInterface> | null = reactive([
+const friendList: Array<FriendListInterface> | any = reactive([
   {
     type: 0,
-    account: user.value,
+    account: sessionStorage.getItem('account'),
     name: 'Tom',
     active: true,
     headPortrait:
