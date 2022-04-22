@@ -1,68 +1,80 @@
 <template>
-  <div class="visitor">
-    <el-dialog
-      v-model="dialogFormVisible"
-      :show-close="false"
-      :close-on-click-modal="false"
-      :close-on-press-escape="false"
-    >
-      <el-row>
-        输入昵称
-        <el-input v-model="visitorNickname"></el-input>
-      </el-row>
-      <el-row>
-        <el-button @click="joinChat">加入聊天</el-button>
-      </el-row>
-    </el-dialog>
-    <div class="visitor-room-info"><span>
+
+<!--    <div class="visitor-notice">
+      <span>当前在线人数：{{2}}</span>
+        <p>温馨提示：</p>
+        <p>网络连接你我他，文明用语靠大家。</p>
+        <p>文明上网心中记，健康网络大家建。</p>
+        <p>健康文明上网，从我做起。</p>
+        <p>你文明的语言将赢得坛友的真情。</p>
+    </div>-->
+    <div class="visitor">
+
+      <el-dialog
+        v-model="dialogFormVisible"
+        :show-close="false"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        width="400px"
+      >
+        <el-row>
+          输入昵称
+          <el-input v-model="visitorNickname"></el-input>
+        </el-row>
+        <el-row>
+          <el-button @click="joinChat">加入聊天</el-button>
+        </el-row>
+      </el-dialog>
+      <div class="visitor-room-info"><span>
       游客聊天室
     </span></div>
-    <div class="visitor-chat-message">
-      <div :class="{'visitor-send':item.type === 'send','visitor-receive':item.type=='receive'}"
-           v-for="item in visitorMessageList">
-        <div>
-          <p>{{ item.nickname }}</p>
-          <span>{{ item.val }}</span>
+      <div class="visitor-chat-message">
+        <div :class="{'visitor-send':item.type === 'send','visitor-receive':item.type=='receive'}"
+             v-for="item in visitorMessageList">
+          <div>
+            <p>{{ item.nickname }}</p>
+            <span>{{ item.val }}</span>
+          </div>
+          <el-avatar></el-avatar>
         </div>
-        <el-avatar></el-avatar>
+      </div>
+      <div class="visitor-chat-input">
+        <el-row>
+          <el-popover placement="top" :width="400" trigger="hover">
+            <template #reference>
+              <el-button :icon="PictureRounded" type="primary" circle></el-button>
+            </template>
+            <div class="emoji-list">
+              <!--表情-->
+              <a
+                href="javascript:;"
+                v-for="it in emojiData"
+                @click="inputEmoji(it)"
+                :key="it.codes"
+              >{{ it.char }}</a
+              >
+            </div>
+          </el-popover>
+        </el-row>
+        <textarea
+          v-model="message"
+          rows="4"
+          class="friend-chat-textarea"
+          autofocus
+          @keyup.alt.enter="visitorSendMessage"
+        ></textarea>
+        <el-row align="middle" justify="end">
+          <span style="margin-right: 10px">Enter换行,Alt+Enter发送</span>
+          <el-button
+            style="margin: 0 5px 5px 0"
+            type="primary"
+            @click="visitorSendMessage"
+          >Send
+          </el-button>
+        </el-row>
       </div>
     </div>
-    <div class="visitor-chat-input">
-      <el-row>
-        <el-popover placement="top" :width="400" trigger="hover">
-          <template #reference>
-            <el-button :icon="PictureRounded" type="primary" circle></el-button>
-          </template>
-          <div class="emoji-list">
-            <!--表情-->
-            <a
-              href="javascript:;"
-              v-for="it in emojiData"
-              @click="inputEmoji(it)"
-              :key="it.codes"
-            >{{ it.char }}</a
-            >
-          </div>
-        </el-popover>
-      </el-row>
-      <textarea
-        v-model="message"
-        rows="4"
-        class="friend-chat-textarea"
-        autofocus
-        @keyup.alt.enter="visitorSendMessage"
-      ></textarea>
-      <el-row align="middle" justify="end">
-        <span style="margin-right: 10px">Enter换行,Alt+Enter发送</span>
-        <el-button
-          style="margin: 0 5px 5px 0"
-          type="primary"
-          @click="visitorSendMessage"
-        >Send
-        </el-button>
-      </el-row>
-    </div>
-  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -83,14 +95,14 @@ const joinChat = () => {
 };
 onMounted(() => {
   let storageNickname = sessionStorage.getItem("nickname");
-  let storageMessage:any =  sessionStorage.getItem("visitorMessage")
+  let storageMessage: any = sessionStorage.getItem("visitorMessage");
   if (storageNickname) {
     visitorNickname.value = storageNickname;
-    if (storageMessage){
+    if (storageMessage) {
       storageMessage = JSON.parse(storageMessage);
-     storageMessage.forEach((x: any)=>{
-       visitorMessageList.push(x)
-     })
+      storageMessage.forEach((x: any) => {
+        visitorMessageList.push(x);
+      });
     }
     setTimeout(() => {
       document
@@ -123,7 +135,7 @@ const visitorSendMessage = () => {
       message.value = "";
     }, 0);
 
-    sessionStorage.setItem('visitorMessage',JSON.stringify(visitorMessageList))
+    sessionStorage.setItem("visitorMessage", JSON.stringify(visitorMessageList));
   }
 };
 // 接收消息
@@ -138,13 +150,26 @@ socket.on("visitor", (msg) => {
           document.querySelector(".visitor-chat-message")!.scrollHeight
         );
     }, 0);
-    sessionStorage.setItem('visitorMessage',JSON.stringify(visitorMessageList))
+    sessionStorage.setItem("visitorMessage", JSON.stringify(visitorMessageList));
   }
 });
 
 </script>
 
 <style scoped lang="scss">
+.visitor-notice {
+  max-width: 300px;
+  max-height: 400px;
+  z-index: 999;
+  box-shadow: 0 0 0 1px;
+  left: 80px;
+  position: fixed;
+  P{
+    color: black;
+    text-align: left;
+  }
+}
+
 .visitor {
   display: flex;
   justify-content: center;
@@ -235,10 +260,12 @@ socket.on("visitor", (msg) => {
 .visitor-send {
   display: flex;
   margin-top: 20px;
-  justify-content:end;
+  justify-content: end;
+
   div {
     max-width: 50%;
-    padding:0 5px 5px 5px;
+    padding: 0 5px 5px 5px;
+
     p {
       font-size: 10px;
       text-align: right;
@@ -267,7 +294,8 @@ socket.on("visitor", (msg) => {
 
   div {
     max-width: 50%;
-    padding:0 5px 5px 5px;
+    padding: 0 5px 5px 5px;
+
     p {
       font-size: 10px;
       text-align: left;
