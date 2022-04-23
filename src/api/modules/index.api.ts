@@ -21,3 +21,10 @@ export const searchUser = (data: any) =>
     method: 'POST',
     data
   });
+
+// 获取分组信息
+export const getFriendList = (account: any) =>
+  service({
+    url: `/user/selectUserFriend?account=${account}`,
+    method: 'GET'
+  });

@@ -24,6 +24,9 @@
 </template>
 
 <script lang="ts" setup>
+import { getFriendList, searchUser } from "../api/modules/index.api";
+import { reactive } from "vue";
+
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
@@ -31,38 +34,34 @@ const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
 
+// 分组列表
+const groupList:any = reactive([])
+
+getFriendList(sessionStorage.getItem('account')).then((res:any)=>{
+  let groups = res.message.groups;
+  for (let key of Object.keys(groups)){
+    // console.log(groups[key]);
+    let friendInfo:any = []
+    groups[key].forEach((e: any)=>{
+      searchUser({"user":e}).then((res:any)=>{
+        friendInfo.push(res.userInfoByAccount[0])
+      })
+    })
+
+    groupList.push({
+      groupName:key,
+      friend:friendInfo
+    })
+  }
+
+})
 
 // 后续定义类型
 /*interface friendListType{
 
 }*/
-// 分组列表
-const groupList = [
-  {
-    groupName:'我的好友',
-    friend:[
-      '1',
-      '2',
-      '3'
-    ]
-  },
-  {
-    groupName:'家人',
-    friend:[
-      '1',
-      '2',
-      '3'
-    ]
-  },
-  {
-    groupName:'同事',
-    friend:[
-      '1',
-      '2',
-      '3'
-    ]
-  }
-];
+
+
 
 
 </script>
