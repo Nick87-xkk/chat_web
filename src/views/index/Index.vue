@@ -72,7 +72,7 @@
               class="infinite-list"
               style="overflow: auto"
             >
-              <li
+<!--              <li
                 v-for="item in friendList"
                 :key="item.name"
                 class="infinite-list-item"
@@ -98,7 +98,8 @@
                   ></el-badge>
                   <h4>{{ item.lastTime }}</h4>
                 </div>
-              </li>
+              </li>-->
+              <p v-for="(item,index) in conversionList" :key="index">{{item}}</p>
             </ul>
           </el-aside>
           <!--主页右侧聊天框或功能区-->
@@ -122,6 +123,7 @@ import { useStore } from 'vuex';
 import FriendGroups from '../../components/FriendGroups.vue';
 import SearchUser from '../../components/searchUser.vue';
 import socketIO from "socket.io-client";
+import { getConversionList } from "../../api/modules/index.api";
 // v-if 控制聊天组件刷新
 const viewReload = ref(true);
 
@@ -156,19 +158,28 @@ const friendChat = (item: any) => {
     : router.push({ path: '/index/chat', query: item });
 };
 // 消息列表，从后端获取
-const friendList: Array<FriendListInterface> | any = reactive([
-  {
-    type: 0,
+/*const conversionList: Array<FriendListInterface> | any = reactive([
+{
+  type: 0,
     account: sessionStorage.getItem('account'),
-    name: 'Tom',
-    active: true,
-    headPortrait:
-      'https://tse1-mm.cn.bing.net/th/id/R-C.853ea6f74f3414c937f8ca0df324048a?rik=aMv%2fvuKN9ffVLQ&riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f56e62e2c906115c3587d456a6ab179e9d25c0fa0.jpg&ehk=QYbvsF8KPhxkj2Hf8GXBg%2fOFGq1okiDGqtfsAlR83M8%3d&risl=&pid=ImgRaw&r=0',
+  name: 'Tom',
+  active: true,
+  headPortrait:
+  'https://tse1-mm.cn.bing.net/th/id/R-C.853ea6f74f3414c937f8ca0df324048a?rik=aMv%2fvuKN9ffVLQ&riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f56e62e2c906115c3587d456a6ab179e9d25c0fa0.jpg&ehk=QYbvsF8KPhxkj2Hf8GXBg%2fOFGq1okiDGqtfsAlR83M8%3d&risl=&pid=ImgRaw&r=0',
     lastMessage: 'hello',
-    lastTime: '9:30',
-    unreadMessageNum: 1
-  }
-]);
+  lastTime: '9:30',
+  unreadMessageNum: 1
+}
+]);*/
+const conversionList: any = reactive([]);
+getConversionList(Number(sessionStorage.getItem('account'))).then((res:any)=>{
+  res.message.forEach((e: any)=>{
+    if (e.lastMessage){
+      conversionList.push(e)
+    }
+  })
+});
+
 /*const load = () => {
   friendList.push({
     name: 'Tom',

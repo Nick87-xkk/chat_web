@@ -20,6 +20,10 @@ export default defineConfig({
       '/user': {
         target: 'http://127.0.0.1:9892',
         changeOrigin: true
+      },
+      '/fileUpload': {
+        target: 'http://127.0.0.1:9892',
+        changeOrigin: true
       }
     }
   },

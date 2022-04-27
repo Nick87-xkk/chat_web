@@ -10,3 +10,8 @@ export const inputEmoji = (item: any) => {
   textArea!.focus(); // 未聚焦则聚焦输入框
   message.value = textArea!.value;
 };
+
+export const showUploadFlg = ref(false);
+export const showUpload = () => {
+  showUploadFlg.value = true;
+};

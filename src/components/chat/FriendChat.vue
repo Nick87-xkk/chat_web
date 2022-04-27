@@ -85,7 +85,7 @@
             content="文件发送"
             placement="bottom"
           >
-            <el-button type="primary" :icon="FolderAdd" circle></el-button>
+            <el-button type="primary" :icon="FolderAdd"  @click="showUpload" circle></el-button>
           </el-tooltip>
         </el-row>
       </div>
@@ -110,6 +110,8 @@
         </el-button>
       </el-row>
     </div>
+
+    <FileUpload></FileUpload>
   </div>
 </template>
 
@@ -122,11 +124,12 @@ import {
   PictureRounded,
   FolderAdd
 } from '@element-plus/icons-vue';
-
+import { showUpload} from "./chat";
 import { inject, onBeforeUnmount, reactive, ref } from 'vue';
 import { LocationQueryValue, useRoute } from 'vue-router';
 import emojiData from '../../assets/emoji.json';
 import { inputEmoji, message } from './chat';
+import FileUpload from "../fileUpload/FileUpload.vue";
 
 const route = useRoute();
 // 使用socket
@@ -166,7 +169,7 @@ const sendMessage = () => {
   };
 
   if (message.value) {
-    socket.emit('chat message', sendMessages);
+    socket?.emit('chat message', sendMessages);
     messageList.push({
       send: route.query.name,
       receive: 'nick',
@@ -186,7 +189,7 @@ const sendMessage = () => {
 
 const returnMessage = ref('');
 // 接收消息
-socket.on('chat message', (msg) => {
+socket?.on('chat message', (msg:any) => {
   returnMessage.value = msg;
   if (returnMessage.value) {
     messageList.push({

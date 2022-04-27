@@ -24,6 +24,7 @@ declare module 'vue' {
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     FileUpload: typeof import('./src/components/fileUpload/FileUpload.vue')['default']
     FriendChat: typeof import('./src/components/chat/FriendChat.vue')['default']
     FriendGroups: typeof import('./src/components/FriendGroups.vue')['default']
