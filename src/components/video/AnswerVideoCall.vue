@@ -27,11 +27,11 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, onMounted } from "vue";
+import { inject, onMounted, ref } from "vue";
 
 const socket: any = inject("socket");
 
-const dialogVisible = true;
+const dialogVisible = ref(true);
 const RTCPeerConnection =
   window.RTCPeerConnection ||
   (window as any).mozRTCPeerConnection ||
@@ -56,8 +56,8 @@ navigator.mediaDevices.getUserMedia =
   (navigator as any).mozGetUserMedia ||
   (navigator as any).msGetUserMedia;
 
-import socketIO from "socket.io-client";
-import { useRoute } from "vue-router";
+// import socketIO from "socket.io-client";
+// import { useRoute } from "vue-router";
 // 仅仅用于控制哪一端的浏览器发起offer，#号后面有值的一方发起
 // true 接受通话方
 
@@ -126,8 +126,7 @@ const sendAnswerFn = function(desc: any) {
 };
 
 // 获取本地音频和视频流
-navigator.mediaDevices
-  .getUserMedia({
+navigator.mediaDevices.getUserMedia({
     // 视屏设置
     video: {
       width: 300,

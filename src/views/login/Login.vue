@@ -38,7 +38,7 @@ import { useStore } from "vuex";
 import { Md5 } from "ts-md5/dist/md5";
 import { login, searchUser } from "../../api/modules/index.api";
 import { app } from "../../main";
-import socketIO from "socket.io-client";
+import io from 'socket.io-client'
 // import IdentityCode from "../../components/IdentityCode.vue";
 
 // console.log(Md5.hashStr('a123456'))
@@ -70,7 +70,7 @@ const loginButton = (): void => {
         sessionStorage.setItem('account',userInfo.account);
         sessionStorage.setItem('accountInfo',[JSON.stringify(resInfo.userInfoByAccount as any)] as any);
       })
-      let socket = socketIO(`ws://127.0.0.1:9892?account=${userInfo.account}`);
+      let socket = io(`https://192.168.31.221:443/?account=${userInfo.account}`);
       // 登录验证成功全局注册socket连接
       app.provide('socket',socket)
       router.push("/index");

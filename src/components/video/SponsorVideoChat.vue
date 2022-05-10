@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, defineProps, onMounted } from "vue";
+import { inject, defineProps, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import socketIO from "socket.io-client";
 import { Location } from "@element-plus/icons-vue";
@@ -34,7 +34,7 @@ const socket:any = inject('socket');
 
 const prop = defineProps<{receiveAccount:any}>()
 
-const dialogVisible = true;
+const dialogVisible = ref(true);
 
 const RTCPeerConnection =
   window.RTCPeerConnection ||
@@ -112,8 +112,7 @@ const sendAnswerFn = function(desc: any) {
 };
 
 // 获取本地音频和视频流
-navigator.mediaDevices
-  .getUserMedia({
+navigator.mediaDevices.getUserMedia({
     // 视屏设置
     video: {
       width: 300,
