@@ -22,7 +22,7 @@
           <!--          <IdentityCode></IdentityCode>-->
         </el-form-item>
         <el-form-item>
-          <el-button>Register</el-button>
+          <el-button @click="router.push('/register')">Register</el-button>
           <el-button type="primary" @click="loginButton">Login</el-button>
           <el-button @click="visitorButton">Visitor Login</el-button>
         </el-form-item>
@@ -36,7 +36,7 @@ import { provide, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { Md5 } from "ts-md5/dist/md5";
-import { login } from "../../api/modules/index.api";
+import { login, searchUser } from "../../api/modules/index.api";
 import { app } from "../../main";
 import socketIO from "socket.io-client";
 // import IdentityCode from "../../components/IdentityCode.vue";
@@ -66,11 +66,14 @@ const loginButton = (): void => {
   }).then((res: any) => {
     if (res.code === 200) {
       // 账号存入session中
-      sessionStorage.setItem('account',userInfo.account)
+      searchUser({"user":userInfo.account}).then((resInfo:any)=>{
+        sessionStorage.setItem('account',userInfo.account);
+        sessionStorage.setItem('accountInfo',[JSON.stringify(resInfo.userInfoByAccount as any)] as any);
+      })
       let socket = socketIO(`ws://127.0.0.1:9892?account=${userInfo.account}`);
       // 登录验证成功全局注册socket连接
       app.provide('socket',socket)
-      router.push("/index/ribbon");
+      router.push("/index");
     } else {
       alert("密码错误");
     }

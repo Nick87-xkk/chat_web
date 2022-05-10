@@ -1,38 +1,84 @@
 <template>
-  <ul class="user-info-ul">
-    <li>账号：{{ userInfoList.account }}</li>
-    <li>昵称：{{ userInfoList.nickname }}</li>
-    <li>电话：{{ userInfoList.phone }}</li>
-    <li>邮箱：{{ userInfoList.email }}</li>
-    <li>个性签名：{{ userInfoList.signature }}</li>
-  </ul>
-  <el-button @click="addFriend">添加好友</el-button>
+  <div>
+    <el-dialog
+      v-model="dialogVisible"
+      width="30%"
+      draggable
+      @close="showUserInfo=false"
+      :show-close="false"
+      :close-on-press-escape="false"
+    >
+      <ul class="user-info-ul">
+        <el-avatar :src="userInfoList.profile"></el-avatar>
+        <p>账号：{{ userInfoList.account }}</p>
+        <p>昵称：{{ userInfoList.nickname }}</p>
+        <p>电话：{{ userInfoList.phone }}</p>
+        <p>邮箱：{{ userInfoList.email }}</p>
+        <p>个性签名：{{ userInfoList.signature }}</p>
+      </ul>
+      <el-button @click="addFriend">添加好友</el-button>
+    </el-dialog>
+    <el-dialog
+      v-model="dialogVisible"
+      width="30%"
+      draggable
+      :show-close="false"
+      :close-on-press-escape="false"
+    >
+      <el-select></el-select>
+      <el-input type="textarea"></el-input>
+      <el-button>send</el-button>
+    </el-dialog>
+  </div>
+
 </template>
 
 <script setup lang="ts">
 // 用户信息
-import { reactive } from "vue";
-import {useRoute, onBeforeRouteUpdate } from "vue-router";
-const route = useRoute();
-const userInfoList: any = reactive({
-  account:route.query.account,
-  nickname: route.query.nickname,
-  phone:route.query.phone,
-  email: route.query.email,
-  profile:route.query.profile,
-  signature: route.query.signature
-});
+import { reactive, ref ,defineProps} from "vue";
+// import {useRoute, onBeforeRouteUpdate } from "vue-router";
+import { showUserInfo } from "./ribbon";
+import Avatar from "../avatar/Avatar.vue";
+import { friendRequest } from "../../api/modules/index.api";
+const prop:any = defineProps<{
+    userInfo:{
+      account:'',
+      nickname: '',
+      phone:'',
+      email: '',
+      profile:'',
+      signature: ''
+    }
+  }>()
 
-onBeforeRouteUpdate(to => {
+// console.log(prop.userInfo[0]);
+const userInfoList: any = reactive({
+  account:prop.userInfo[0].account,
+  nickname: prop.userInfo[0].nickname,
+  phone:prop.userInfo[0].phone,
+  email: prop.userInfo[0].email,
+  profile:prop.userInfo[0].profile,
+  signature: prop.userInfo[0].signature
+});
+const dialogVisible = true;
+/*onBeforeRouteUpdate(to => {
   userInfoList.account = to.query.account,
     userInfoList.nickname = to.query.nickname,
     userInfoList.phone = to.query.phone,
     userInfoList.email = to.query.email,
     userInfoList.profile = to.query.profile,
     userInfoList.signature = to.query.signature;
-});
+});*/
 const addFriend = () => {
+  // 弹出申请框
   console.log("添加好友");
+  friendRequest({ apply_account:sessionStorage.getItem('account'),
+    target_account:prop.userInfo[0].account,
+    apply_group:'',
+    message:'',
+    state:0 }).then(()=>{
+    alert('申请已发送')
+  })
 };
 </script>
 

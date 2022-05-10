@@ -21,7 +21,7 @@
                   circle
                   @click="
                     state = 'message';
-                    router.push('/index/ribbon');
+                    view = 'weather';
                   "
                 ></el-button>
               </el-tooltip>
@@ -52,7 +52,7 @@
                 ></el-button>
               </el-tooltip>
             </div>
-
+            <!-- 用户头像-->
             <el-avatar
               class="infinite-list-item-avatar"
               :fit="'fill'"
@@ -72,8 +72,8 @@
               class="infinite-list"
               style="overflow: auto"
             >
-<!--              <li
-                v-for="item in friendList"
+              <li
+                v-for="item in conversionList"
                 :key="item.name"
                 class="infinite-list-item"
                 @click="friendChat(item)"
@@ -81,13 +81,13 @@
                 <el-avatar
                   class="infinite-list-item-avatar"
                   :fit="'fill'"
-                  :src="item.headPortrait"
+
                 ></el-avatar>
                 <div class="infinite-list-item-info">
-                  <h2>{{ item.name }}</h2>
-                  <h4>{{ item.lastMessage }}</h4>
+                  <h2>{{ item.conversion_id }}</h2>
+                  <h4>{{ item.lastMessage.content }}</h4>
                   <el-row>
-                    <h6>{{ item.active ? '[在线]' : '[离线]' }}</h6>
+                    <h6>{{ item.create_time ? '[在线]' : '[离线]' }}</h6>
                   </el-row>
                 </div>
                 <div>
@@ -98,35 +98,38 @@
                   ></el-badge>
                   <h4>{{ item.lastTime }}</h4>
                 </div>
-              </li>-->
-              <p v-for="(item,index) in conversionList" :key="index">{{item}}</p>
+              </li>
+<!--              <p v-for="(item,index) in conversionList" :key="index">{{item}}</p>-->
             </ul>
           </el-aside>
           <!--主页右侧聊天框或功能区-->
           <el-main style="padding: 0">
-            <router-view
-              v-if="viewReload"
-              style="width: 100%; height: 100%"
-            ></router-view>
+            <WeatherCard v-if="view == 'weather'"></WeatherCard>
+            <FriendChat v-else-if="view == 'chat'" :conversionInfo="friendChatInfo"></FriendChat>
           </el-main>
         </el-container>
       </el-container>
     </div>
+   <AnswerVideoCall v-show="answerCall"></AnswerVideoCall>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, inject, onMounted, reactive, ref } from "vue";
 import router from '../../router';
 import { House, User, Plus } from '@element-plus/icons-vue';
 import { useStore } from 'vuex';
 import FriendGroups from '../../components/FriendGroups.vue';
 import SearchUser from '../../components/searchUser.vue';
-import socketIO from "socket.io-client";
-import { getConversionList } from "../../api/modules/index.api";
-// v-if 控制聊天组件刷新
-const viewReload = ref(true);
+import { getConversionList, searchUser } from "../../api/modules/index.api";
+import WeatherCard from "../../components/ribbon/WeatherCard.vue";
+import FriendChat from "../../components/chat/FriendChat.vue";
+import AnswerVideoCall from "../../components/video/AnswerVideoCall.vue";
+import { GLOBAL_MESSAGE_LIST } from "../../components/chat/chat";
 
+// 聊天和天气切换
+const view  = ref('weather');
+// 左上角按钮切换的状态
 const state = ref();
 
 interface FriendListInterface {
@@ -142,20 +145,32 @@ interface FriendListInterface {
 
 // 获取用户信息 ，建立ws连接
 const store = useStore();
-const socket = ref();
+const socket:any = inject('socket');
 /*onMounted(()=>{
   if (sessionStorage.getItem('account')){
     socket.value= socketIO(`ws://127.0.0.1:9892?account=${sessionStorage.getItem('account')}`)
   }
 })*/
 // 点击好友进入聊天
+const friendChatInfo = ref()
 const friendChat = (item: any) => {
-  setTimeout(() => (viewReload.value = false), 100);
-  setTimeout(() => (viewReload.value = true), 100);
+  // setTimeout(() => (viewReload.value = false), 100);
+  setTimeout(() => (view.value = 'chat'), 100);
+  friendChatInfo.value = item
+  item.conversion_id.forEach((item:any)=>{
+    if (item != sessionStorage.getItem('account')){
+      console.log(item);
+      searchUser({ "user":item }).then((info:any)=>{
+        // console.log(info.userInfoByAccount[0]);
+        friendChatInfo.value = info.userInfoByAccount[0];
+        // router.push({ path: '/index/chat', query: info.userInfoByAccount[0] })
+      })
+    }
+  })
   // 路由传参
-  item.type
+  /*item.type
     ? router.push({ path: '/index/group', query: item })
-    : router.push({ path: '/index/chat', query: item });
+    : router.push({ path: '/index/chat', query: item });*/
 };
 // 消息列表，从后端获取
 /*const conversionList: Array<FriendListInterface> | any = reactive([
@@ -174,12 +189,23 @@ const friendChat = (item: any) => {
 const conversionList: any = reactive([]);
 getConversionList(Number(sessionStorage.getItem('account'))).then((res:any)=>{
   res.message.forEach((e: any)=>{
+    // 需要会话除当前账号的另一个账号信息获取到
+    /*
+    * {
+    *  account 对方账号
+    *   avatar 对方头像
+    *   e 会话信心
+    * }
+    * */
     if (e.lastMessage){
+      // console.log(e.conversion_id);
+
       conversionList.push(e)
     }
   })
 });
 
+// 会话列表滚动加载
 /*const load = () => {
   friendList.push({
     name: 'Tom',
@@ -191,6 +217,22 @@ getConversionList(Number(sessionStorage.getItem('account'))).then((res:any)=>{
     unreadMessageNum: 2
   });
 };*/
+
+socket.on('chat message',(msg:any)=>{
+  console.log(msg);
+  GLOBAL_MESSAGE_LIST.push(msg)
+})
+
+const answerCall = ref(false);
+//
+socket.on('_ice_candidate',(msg: any)=>{
+  let json = JSON.parse(msg)
+  console.log(json);
+  if (json.receiveAccount == sessionStorage.getItem('account')){
+    answerCall.value = true;
+  }
+
+})
 </script>
 
 <style lang="scss" scoped>

@@ -4,25 +4,58 @@
       <el-form
         :label-position="'top'"
         label-width="100px"
-        :model="userInfo"
+        :model="registerInfo"
         style="max-width: 460px"
       >
         <el-form-item label="Account">
-          <el-input v-model="userInfo.account" clearable></el-input>
+          <el-input v-model="registerInfo.account" clearable></el-input>
         </el-form-item>
         <el-form-item label="PassWord">
           <el-input
             type="password"
-            v-model="userInfo.passWord"
+            v-model="registerInfo.passWord"
             show-password
           ></el-input>
         </el-form-item>
-        <el-form-item label="Verification Code">
-          <el-input v-model="userInfo.verification" clearable></el-input>
-          <!--          <IdentityCode></IdentityCode>-->
+        <el-form-item label="Nickname">
+          <el-input
+            type="nickname"
+            v-model="registerInfo.nickname"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="Phone">
+          <el-input
+            type="Phone"
+            v-model="registerInfo.phone"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="Email">
+          <el-input
+            type="Email"
+            v-model="registerInfo.email"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="Profile">
+          <el-select
+            type="profile"
+          >
+            <el-option v-for="item in avatarList" @click="registerInfo.profile = item.path">
+              <span>
+                {{item.id}}
+              </span>
+              <el-avatar :fit="fit"  :src="item.path"></el-avatar>
+            </el-option>
+            
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Signature">
+          <el-input
+            type="signature"
+            v-model="registerInfo.signature"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button>Register</el-button>
+          <el-button @click="register">Register</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -34,18 +67,46 @@ import {  reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { Md5 } from "ts-md5/dist/md5";
-import { login } from "../../api/modules/index.api";
+import { login, userRegister } from "../../api/modules/index.api";
 import { app } from "../../main";
 import socketIO from "socket.io-client";
+import avatarList from "../../components/avatar/avatar.json"
+import router from "../../router";
 // import IdentityCode from "../../components/IdentityCode.vue";
 
 // console.log(Md5.hashStr('a123456'))
 
-const userInfo = reactive({
+const registerInfo = reactive({
   account: "", //账户
   passWord: "", //密码
-  verification: "" //验证码
+  create_time:"", // 数据库生成，不用添加
+  nickname:"", // 昵称
+  phone:"",
+  email:"",
+  profile:"", // 头像地址
+  signature:"" // 个性签名
 });
+
+// 注册按钮
+const register = () =>{
+  if (registerInfo.account && registerInfo.passWord){
+    let info = {
+      account: registerInfo.account, //账户
+      passWord:Md5.hashStr(registerInfo.passWord) , //密码
+      create_time:registerInfo.create_time, // 数据库生成，不用添加
+      nickname:registerInfo.nickname, // 昵称
+      phone:registerInfo.phone,
+      email:registerInfo.email,
+      profile:registerInfo.profile, // 头像地址
+      signature:registerInfo.signature // 个性签名
+    }
+    userRegister(info).then((res:any)=>{
+      alert('注册成功');
+      router.push('/');
+    })
+  }
+
+}
 
 </script>
 
@@ -63,7 +124,7 @@ const userInfo = reactive({
     justify-content: center;
     align-items: center;
     width: 400px;
-    height: 300px;
+
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     border-radius: 10px;

@@ -10,7 +10,11 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/index',
     component: () => import('/@/views/index/Index.vue'),
-    children: [
+    meta: {
+      title: '主页',
+      keepAlive: true
+    }
+    /*children: [
       // 显示功能卡片
       {
         path: 'ribbon',
@@ -31,12 +35,16 @@ const routes: Array<RouteRecordRaw> = [
         path: 'userInfo',
         component: () => import('/@/components/ribbon/UserInfo.vue')
       }
-    ]
+    ]*/
   },
   { path: '/test', component: () => import('/@/views/Test.vue') },
-  { path: '/video', component: () => import('/@/views/Video.vue') },
+  {
+    path: '/video',
+    component: () => import('/@/components/video/SponsorVideoChat.vue')
+  },
   { path: '/chat', component: () => import('/@/views/chat/Chat.vue') },
-  { path: '/visitor', component: () => import('/@/views/visitor/Visitor.vue') }
+  { path: '/visitor', component: () => import('/@/views/visitor/Visitor.vue') },
+  { path: '/register', component: () => import('/@/views/login/Register.vue') }
 ];
 
 const router: Router = createRouter({

@@ -23,8 +23,7 @@
 <script setup lang="ts">
 
 import { reactive, ref } from 'vue';
-import {socket} from "../../main";
-
+// import  socket from '../../main'
 let message = ref('');
 
 // 消息列表
@@ -50,7 +49,7 @@ const sendMessage = () => {
 
 const returnMessage = ref('');
 // 接收消息
-socket.on('chat message', (msg) => {
+socket.on('chat message', (msg: string) => {
   returnMessage.value = msg;
   if (returnMessage.value) {
     messageList.push({

@@ -14,6 +14,7 @@
         </div>
       </li>
     </ul>
+    <UserInfo v-if="showUserInfo" :userInfo="userList"></UserInfo>
   </div>
 </template>
 
@@ -22,7 +23,8 @@
 import { ref, watch } from "vue";
 import { searchUser } from "../api/modules/index.api";
 import router from "../router";
-
+import UserInfo from "./ribbon/UserInfo.vue";
+import { showUserInfo} from "./ribbon/ribbon";
 
 const userInfo = ref();
 const userList = ref();
@@ -43,8 +45,9 @@ watch(userInfo, (newVal: string | number, oldVal: any) => {
 });
 
 // 点击检索出来的用户操作
+
 const clickUser=(item:any)=>{
-  router.push({path:'/index/userInfo',query:item})
+  showUserInfo.value = true;
 }
 </script>
 

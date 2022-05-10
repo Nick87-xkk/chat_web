@@ -38,3 +38,19 @@ export const getConversionList = (account: number) =>
     url: `/user/searchConversion?account=${account}`,
     method: 'GET'
   });
+
+// 注册
+export const userRegister = (data: any) =>
+  service({
+    url: '/user/register',
+    method: 'POST',
+    data
+  });
+
+// 发送好友请求
+export const friendRequest = (data: any) =>
+  service({
+    url: '/user/friendRequest',
+    method: 'POST',
+    data
+  });

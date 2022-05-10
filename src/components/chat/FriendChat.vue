@@ -4,7 +4,7 @@
     <div class="friend-chat-header">
       <el-avatar
         shape="square"
-        :src="route.query.headPortrait"
+        :src="conversionInfo.profile"
         :size="50"
       ></el-avatar>
       <div>
@@ -14,9 +14,10 @@
           content="视频"
           placement="bottom"
         >
-          <el-button type="success" :icon="VideoCamera" circle></el-button>
+          <el-button type="success" :icon="VideoCamera" @click="videoChat=true" circle></el-button>
         </el-tooltip>
 
+<!--
         <el-tooltip
           class="box-item"
           effect="light"
@@ -25,6 +26,7 @@
         >
           <el-button type="success" :icon="Phone" circle></el-button>
         </el-tooltip>
+-->
 
         <el-tooltip
           class="box-item"
@@ -112,7 +114,9 @@
     </div>
 
     <FileUpload></FileUpload>
+    <SponsorVideoChat v-if="videoChat" :receive-account="props.conversionInfo.account"></SponsorVideoChat>
   </div>
+
 </template>
 
 <script setup lang="ts">
@@ -124,13 +128,20 @@ import {
   PictureRounded,
   FolderAdd
 } from '@element-plus/icons-vue';
-import { showUpload} from "./chat";
-import { inject, onBeforeUnmount, reactive, ref } from 'vue';
+import { GLOBAL_MESSAGE_LIST, showUpload} from "./chat";
+import { inject, defineProps, reactive, ref } from 'vue';
 import { LocationQueryValue, useRoute } from 'vue-router';
 import emojiData from '../../assets/emoji.json';
 import { inputEmoji, message } from './chat';
 import FileUpload from "../fileUpload/FileUpload.vue";
+import SponsorVideoChat from "../video/SponsorVideoChat.vue";
 
+// 视频通话
+const videoChat = ref(false);
+// prop 传值
+const props:any = defineProps<{
+  conversionInfo:object
+}>();
 const route = useRoute();
 // 使用socket
 const socket:any = inject('socket');
@@ -162,19 +173,19 @@ interface messageType {
 // 发送消息
 const sendMessage = () => {
   let sendMessages: messageType = {
-    sendAccount: route.query.account as unknown as number, // 发送账号 应为当前登录用户
-    receiveAccount: 123456786, // 接收信息账号
+    sendAccount: Number(sessionStorage.getItem('account')), // 发送账号 应为当前登录用户
+    receiveAccount: Number(props.conversionInfo.account), // 接收信息账号
     data: message.value,
     time: Date.now()
   };
 
   if (message.value) {
-    socket?.emit('chat message', sendMessages);
+    socket.emit('chat message', sendMessages);
     messageList.push({
-      send: route.query.name,
-      receive: 'nick',
+      send:  '',
+      receive: '',
       type: 'send',
-      user_name: 'nick',
+      user_name: '',
       data: message.value,
       options: {}
     });
@@ -187,17 +198,19 @@ const sendMessage = () => {
   }
 };
 
-const returnMessage = ref('');
+const returnMessage:any = ref('');
 // 接收消息
-socket?.on('chat message', (msg:any) => {
-  returnMessage.value = msg;
-  if (returnMessage.value) {
+socket.on('chat message', (msg: any) => {
+  returnMessage.value = JSON.parse(msg);
+  // 非当前好友的消息存放到全局消息中
+  GLOBAL_MESSAGE_LIST.push(returnMessage.value)
+  if (returnMessage.value && returnMessage.value.receiveAccount == sessionStorage.getItem('account')) {
     messageList.push({
       send: '',
       receive: '',
       type: 'receive',
       user_name: 'Tom',
-      data: returnMessage.value.split(':')[1],
+      data: returnMessage.value.data,
       options: {}
     });
     setTimeout(() => {
