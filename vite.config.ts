@@ -18,15 +18,15 @@ export default defineConfig({
   server: {
     proxy: {
       '/user': {
-        target: 'http://192.168.31.221:9892',
+        target: 'http://49.232.185.124:19100',
         changeOrigin: true
       },
       '/fileUpload': {
-        target: 'http://192.168.31.221:9892',
+        target: 'http://49.232.185.124:19100',
         changeOrigin: true
       },
       '/socket': {
-        target: 'wss://192.168.31.221:443',
+        target: 'wss://49.232.185.124:19100',
         changeOrigin: true,
         ws: true
       }

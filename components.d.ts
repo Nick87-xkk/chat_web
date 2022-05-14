@@ -37,7 +37,6 @@ declare module 'vue' {
     SearchUser: typeof import('./src/components/searchUser.vue')['default']
     SponsorVideoChat: typeof import('./src/components/video/SponsorVideoChat.vue')['default']
     UserInfo: typeof import('./src/components/ribbon/UserInfo.vue')['default']
-    VideoChat: typeof import('./src/components/video/VideoChat.vue')['default']
     WeatherCard: typeof import('./src/components/ribbon/WeatherCard.vue')['default']
   }
 }

@@ -43,7 +43,7 @@
               <span>
                 {{item.id}}
               </span>
-              <el-avatar :fit="fit"  :src="item.path"></el-avatar>
+              <el-avatar :fit="'fit'"  :src="item.path"></el-avatar>
             </el-option>
             
           </el-select>

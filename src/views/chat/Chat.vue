@@ -23,9 +23,10 @@
 <script setup lang="ts">
 
 import { reactive, ref } from 'vue';
+import socketIO from "socket.io-client";
 // import  socket from '../../main'
 let message = ref('');
-
+const socket = socketIO('https://www.nick87.com')
 // 消息列表
 const messageList: {
   type: string;

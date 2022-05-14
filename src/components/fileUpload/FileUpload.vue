@@ -36,20 +36,20 @@ import { showUploadFlg } from "../chat/chat";
 
 import { ElMessage, ElMessageBox } from 'element-plus'
 
-import type { UploadProps, UploadUserFile } from 'element-plus'
+// import { UploadProps, UploadUserFile } from 'element-plus'
 
-const fileList = ref<UploadUserFile[]>([
+const fileList = ref<any[]>([
 ])
 
-const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {
+const handleRemove: any = (file: any, uploadFiles: any) => {
   console.log(file, uploadFiles)
 }
 
-const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
+const handlePreview: any = (uploadFile: any) => {
   console.log(uploadFile)
 }
 
-const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
+const handleExceed: any  = (files: string | any[], uploadFiles: string | any[]) => {
   ElMessage.warning(
     `The limit is 3, you selected ${files.length} files this time, add up to ${
       files.length + uploadFiles.length
@@ -57,7 +57,7 @@ const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
   )
 }
 
-const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) => {
+const beforeRemove: any  = (uploadFile:any, uploadFiles:any) => {
   return ElMessageBox.confirm(
     `Cancel the transfert of ${uploadFile.name} ?`
   ).then(

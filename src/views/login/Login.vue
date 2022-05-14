@@ -71,6 +71,8 @@ const loginButton = (): void => {
         sessionStorage.setItem('accountInfo',[JSON.stringify(resInfo.userInfoByAccount as any)] as any);
       })
       let socket = io(`https://192.168.31.221:443/?account=${userInfo.account}`);
+      // let socket = io(`wss://49.232.185.124:19100/?account=${userInfo.account}`);
+      // let socket = io(`ws://www.nick87.top:19100/?account=${userInfo.account}`);
       // 登录验证成功全局注册socket连接
       app.provide('socket',socket)
       router.push("/index");

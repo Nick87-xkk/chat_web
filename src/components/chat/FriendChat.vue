@@ -112,8 +112,9 @@
         </el-button>
       </el-row>
     </div>
-
+    <!--上传文件-->
     <FileUpload></FileUpload>
+    <!-- 发起视屏通话-->
     <SponsorVideoChat v-if="videoChat" :receive-account="props.conversionInfo.account"></SponsorVideoChat>
   </div>
 
@@ -140,7 +141,7 @@ import SponsorVideoChat from "../video/SponsorVideoChat.vue";
 const videoChat = ref(false);
 // prop 传值
 const props:any = defineProps<{
-  conversionInfo:object
+  conversionInfo:any //接受当前会话信息
 }>();
 const route = useRoute();
 // 使用socket
