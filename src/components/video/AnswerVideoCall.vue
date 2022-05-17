@@ -18,27 +18,33 @@
         <el-button @click="dialogVisible = false">接听</el-button>
         <!--        挂断-->
         <el-button type="primary" @click="dialogVisible = false"
-        >挂断
-        </el-button
-        >
+          >挂断
+        </el-button>
       </el-row>
     </el-dialog>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { inject, onMounted, ref } from "vue";
-import socketIO from "socket.io-client";
-import { app } from "../../main";
+import { inject, onMounted, ref } from 'vue';
+import socketIO from 'socket.io-client';
+import { app } from '../../main';
 
-let socket:any;
-if (!inject("socket")){
-  socket = socketIO(`ws://127.0.0.1:9892/?account=${sessionStorage.getItem('account')}`);
-  app.provide("socket",socket)
-}else{
-  socket = inject("socket")
+let socket: any;
+if (!inject('socket')) {
+  socket = socketIO(
+    `wss://192.168.31.221:9892/?account=${sessionStorage.getItem('account')}`
+  );
+  app.provide('socket', socket);
+} else {
+  socket = inject('socket');
 }
+
+const prop = defineProps<{ account: any }>();
+
+// 显示视屏弹窗
 const dialogVisible = ref(true);
+
 const RTCPeerConnection =
   window.RTCPeerConnection ||
   (window as any).mozRTCPeerConnection ||
@@ -63,119 +69,103 @@ navigator.mediaDevices.getUserMedia =
   (navigator as any).mozGetUserMedia ||
   (navigator as any).msGetUserMedia;
 
-// import socketIO from "socket.io-client";
-// import { useRoute } from "vue-router";
-// 仅仅用于控制哪一端的浏览器发起offer，#号后面有值的一方发起
-// true 接受通话方
-
-// 与信令服务器的WebSocket连接
-
-// stun和turn服务器
-/*
-const iceServer = {
-  iceServers: [
-    {
-      url: "stun:stun.l.google.com:19302"
-    },
-    {
-      url: "turn:numb.viagenie.ca",
-      username: "webrtc@live.com",
-      credential: "muazkh"
-    }
-  ]
-};
-*/
-
-// 创建PeerConnection实例 (参数为null则没有iceserver，即使没有stunserver和turnserver，仍可在局域网下通讯)
-const pc: any = new RTCPeerConnection();
+onMounted(()=>{
+  // 创建PeerConnection实例 (参数为null则没有iceserver，即使没有stunserver和turnserver，仍可在局域网下通讯)
+  const pc: any = new RTCPeerConnection();
 
 // 发送ICE候选到其他客户端
-pc.onicecandidate = function(event: any) {
-  console.log('onicecandidate',event);
-  if (event.candidate !== null) {
+  pc.onicecandidate = function (event: any) {
+    if (event.candidate !== null) {
+      socket.emit(
+        'ice_candidate',
+        JSON.stringify({
+          account: prop.account,
+          event: 'ice_candidate',
+          data: {
+            candidate: event.candidate
+          }
+        })
+      );
+    }
+  };
+
+// 如果检测到媒体流连接到本地，将其绑定到一个video标签上输出
+  pc.onaddstream = (event: any) => {
+    (document as any).getElementById('remoteVideo').srcObject = event.stream;
+  };
+
+// 发送offer和answer的函数，发送本地session描述
+  const sendOfferFn = function(desc: any) {
+    pc.setLocalDescription(desc);
     socket.emit(
       "ice_candidate",
       JSON.stringify({
-        event: "ice_candidate",
+        account:prop.account,
+        event: "_offer",
         data: {
-          candidate: event.candidate
+          sdp: desc
         }
       })
     );
-  }
-};
-
-
-// 发送offer和answer的函数，发送本地session描述
-const sendOfferFn = function(desc: any) {
-  pc.setLocalDescription(desc);
-  socket.emit(
-    "ice_candidate",
-    JSON.stringify({
-      event: "_offer",
-      data: {
-        sdp: desc
-      }
-    })
-  );
-};
-const sendAnswerFn = function(desc: any) {
-  pc.setLocalDescription(desc);
-  socket.emit(
-    "ice_candidate",
-    JSON.stringify({
-      event: "_answer",
-      data: {
-        sdp: desc
-      }
-    })
-  );
-};
+  };
+  const sendAnswerFn = function (desc: any) {
+    pc.setLocalDescription(desc);
+    socket.emit(
+      'ice_candidate',
+      JSON.stringify({
+        account: prop.account,
+        event: '_answer',
+        data: {
+          sdp: desc
+        }
+      })
+    );
+  };
 
 // 获取本地音频和视频流
-navigator.mediaDevices.getUserMedia({
-    // 视屏设置
-    video: {
-      width: 300,
-      height: 400,
-      facingMode: "user"
-    }
-  })
-  .then((stream: any) => {
-    //绑定本地媒体流到video标签用于输出
-    (document as any).getElementById("localVideo").srcObject = stream;
-    //向PeerConnection中加入需要发送的流
-    pc.addStream(stream);
-    //如果是发起方则发送一个offer信令
-
-  })
-  .catch((error) => {
-    //处理媒体流创建失败错误
-    console.log("getUserMedia error: " + error);
-  });
+  navigator.mediaDevices
+    .getUserMedia({
+      // 视屏设置
+      video: {
+        width: 300,
+        height: 400,
+        facingMode: 'user'
+      }
+    })
+    .then((stream: any) => {
+      //绑定本地媒体流到video标签用于输出
+      (document as any).getElementById('localVideo').srcObject = stream;
+      //向PeerConnection中加入需要发送的流
+      pc.addStream(stream);
+      //发送一个offer信令
+      pc.createOffer(sendOfferFn, function (error: any) {
+        console.log('Failure callback: ' + error);
+      });
+    })
+    .catch((error) => {
+      //处理媒体流创建失败错误
+      console.log('getUserMedia error: ' + error);
+    });
 
 //处理到来的信令
-socket.on("_ice_candidate", (event: any) => {
-  let json = JSON.parse(event);
-  // console.log("onmessage: ", json);
-  // console.log(json.event);
-  //如果是一个ICE的候选，则将其加入到PeerConnection中，否则设定对方的session描述为传递过来的描述
-  if (json.event == "ice_candidate" && json.data.candidate) {
-    pc.addIceCandidate(new RTCIceCandidate(json.data.candidate));
-  } else {
-    pc.setRemoteDescription(new RTCSessionDescription(json.data.sdp));
-    // 如果是一个offer，那么需要回复一个answer
-    if (json.event == "_offer") {
-      pc.createAnswer(sendAnswerFn, function(error: any) {
-        console.log("Failure callback: " + error);
-      });
+  socket.on('_ice_candidate', (event: any) => {
+    let json = JSON.parse(event);
+    //如果是一个ICE的候选，则将其加入到PeerConnection中，否则设定对方的session描述为传递过来的描述
+    if (json.event == 'ice_candidate') {
+      pc.addIceCandidate(new RTCIceCandidate(json.data.candidate));
+    } else {
+      pc.setRemoteDescription(new RTCSessionDescription(json.data.sdp));
+      // 如果是一个offer，那么需要回复一个answer
+      if (json.event == '_offer') {
+        pc.createAnswer(sendAnswerFn, function (error: any) {
+          console.log('Failure callback: ' + error);
+        });
+      }
     }
-  }
-});
-// 如果检测到媒体流连接到本地，将其绑定到一个video标签上输出
-  pc.onaddstream = (event: any) => {
-    (document as any).getElementById("remoteVideo").srcObject = event.stream;
-  };
+  });
+
+})
+
 </script>
 
 <style lang="scss" scoped>

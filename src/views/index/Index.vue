@@ -55,7 +55,7 @@
             <!-- 用户头像-->
             <el-avatar
               class="infinite-list-item-avatar"
-              :fit="'fill'"
+              fit="fill"
               :src="'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'"
             ></el-avatar>
           </el-row>
@@ -85,7 +85,7 @@
                 ></el-avatar>
                 <div class="infinite-list-item-info">
                   <h2>{{ item.nickname }}</h2>
-                  <h4>{{ item.latest_message || '...' }}</h4>
+                  <h4>{{ item.latest_message || "..." }}</h4>
                   <el-row>
                   </el-row>
                 </div>
@@ -103,24 +103,40 @@
           </el-aside>
           <!--主页右侧聊天框或功能区-->
           <el-main style="padding: 0">
-              <WeatherCard v-if="view == 'weather'"></WeatherCard>
-              <FriendChat v-else-if="view == 'chat'" :conversionInfo="friendChatInfo"></FriendChat>
+            <WeatherCard v-if="view == 'weather'"></WeatherCard>
+            <FriendChat v-else-if="view == 'chat'" :conversionInfo="friendChatInfo"></FriendChat>
           </el-main>
         </el-container>
       </el-container>
     </div>
-    <AnswerVideoCall v-if="answerCall"></AnswerVideoCall>
+    <AnswerVideoCall v-if="answerCall" :account="videoRequest.account"></AnswerVideoCall>
+<!--    接收或拒绝视屏通话的弹窗-->
+    <el-dialog v-model="showVideoRequest">
+      <el-avatar
+      fit="fit"
+      :show-close="false"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :src="videoRequest.profile"
+      >
+      </el-avatar>
+      <el-row style="justify-content: center">
+      <h3>{{videoRequest.nickname}} 发来视屏请求</h3>
+      </el-row>
+      <el-row style="justify-content: center">
+        <el-button @click="agreeVideoCall">接收</el-button>
+        <el-button @click="refuseVideoCall">拒绝</el-button>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, nextTick, onMounted, reactive, ref } from "vue";
-import router from "../../router";
+import { inject, nextTick, reactive, ref } from "vue";
 import { House, User, Plus } from "@element-plus/icons-vue";
-import { useStore } from "vuex";
 import FriendGroups from "../../components/FriendGroups.vue";
 import SearchUser from "../../components/searchUser.vue";
-import { getConversionList, postBatchSearchUser, searchUser } from "../../api/modules/index.api";
+import { postBatchSearchUser } from "../../api/modules/index.api";
 import WeatherCard from "../../components/ribbon/WeatherCard.vue";
 import FriendChat from "../../components/chat/FriendChat.vue";
 import AnswerVideoCall from "../../components/video/AnswerVideoCall.vue";
@@ -129,73 +145,58 @@ import { postSearchConversion } from "../../api/modules/conversion.api";
 import { postSearchFriendInfo } from "../../api/modules/friend.api";
 import socketIO from "socket.io-client";
 import { app } from "../../main";
-let socket:any;
-if (!inject("socket")){
-  socket = socketIO(`ws://127.0.0.1:9892/?account=${sessionStorage.getItem('account')}`);
-  app.provide("socket",socket)
-}else{
-  socket = inject("socket")
+
+let socket: any;
+if (!inject("socket")) {
+  socket = socketIO(`wss://192.168.31.221:9892/?account=${sessionStorage.getItem("account")}`);
+  app.provide("socket", socket);
+} else {
+  socket = inject("socket");
 }
-const GLOBAL_ACCOUNT = sessionStorage.getItem('account');
+const GLOBAL_ACCOUNT = sessionStorage.getItem("account");
 // 聊天和天气切换
 const view = ref("weather");
 // 左上角按钮切换的状态
 const state = ref();
 
-interface FriendListInterface {
-  type: number; // 0 单聊 1 群聊
-  account: number; // 账号
-  name?: string; // 昵称
-  active?: boolean; // 是否在线
-  headPortrait?: string; // 头像
-  lastMessage?: string; // 最新消息
-  lastTime?: string; // 最新消息时间
-  unreadMessageNum: number; //未读消息条数
-}
 
-/*onMounted(()=>{
-  if (sessionStorage.getItem('account')){
-    socket.value= socketIO(`ws://127.0.0.1:9892?account=${sessionStorage.getItem('account')}`)
-  }
-})*/
 // 点击好友进入聊天
 const friendChatInfo = ref();
-const reloadChat = ref(true);
 const friendChat = (item: any) => {
   friendChatInfo.value = item;
-  if (view.value == 'chat'){
-    nextTick(()=>{
-      view.value = 'weather'
-    }).then(()=>{
+  if (view.value == "chat") {
+    nextTick(() => {
+      view.value = "weather";
+    }).then(() => {
       view.value = "chat";
-    })
-  }else {
-    view.value= 'chat'
+    });
+  } else {
+    view.value = "chat";
   }
 };
 
 //获取好友信息
 // 获取所有的好友信息存储在localStorage中
 postSearchFriendInfo({
-    "account": GLOBAL_ACCOUNT
-  }).then((res: any) => {
-    //获取所有的好友账号
-    let friends: any = JSON.parse(res.message[0].friend_account);
-    //  arr中是当前用户所有好友账号
-    let arr: any = [];
-    Object.values(friends).map((it: any) => {
-      arr.push(...it);
-    });
-    postBatchSearchUser({ friends: arr }).then((batch: any) => {
-      // 数据结构转换
-      let friendMap:any = {}
-      batch.message.map( (e:any)=>{
-        friendMap[e.account] = e;
-      })
-      // 将所有好友的信息存储到localstorage中
-      localStorage.setItem("allFriendInfo", JSON.stringify(friendMap));
-    });
+  "account": GLOBAL_ACCOUNT
+}).then((res: any) => {
+  //获取所有的好友账号
+  let friends: any = JSON.parse(res.message[0].friend_account);
+  //  arr中是当前用户所有好友账号
+  let arr: any = [];
+  Object.values(friends).map((it: any) => {
+    arr.push(...it);
   });
+  postBatchSearchUser({ friends: arr }).then((batch: any) => {
+    // 数据结构转换
+    let friendMap: any = {};
+    batch.message.map((e: any) => {
+      friendMap[e.account] = e;
+    });
+    // 将所有好友的信息存储到localstorage中
+    localStorage.setItem("allFriendInfo", JSON.stringify(friendMap));
+  });
+});
 
 // 获取会话信息
 const conversionList: any = reactive([]);
@@ -203,54 +204,51 @@ postSearchConversion({
   "account": sessionStorage.getItem("account")
 }).then((res: any) => {
   // 将好友账号信息整合入对应的会话信息
-  res.message.map((item:any)=>{
-    let allFriendInfo:any = JSON.parse(localStorage.getItem('allFriendInfo') as any)
+  res.message.map((item: any) => {
+    let allFriendInfo: any = JSON.parse(localStorage.getItem("allFriendInfo") as any);
     console.log(allFriendInfo);
-    if (item.create_account != GLOBAL_ACCOUNT){
+    if (item.create_account != GLOBAL_ACCOUNT) {
       item.profile = allFriendInfo[item.create_account].profile;
       item.nickname = allFriendInfo[item.create_account].nickname;
       item.friend = item.create_account;
-    }else{
-      item.profile  = allFriendInfo[item.member_account]?.profile;
-      item.nickname  = allFriendInfo[item.member_account]?.nickname;
+    } else {
+      item.profile = allFriendInfo[item.member_account]?.profile;
+      item.nickname = allFriendInfo[item.member_account]?.nickname;
       item.friend = item.member_account;
     }
-    conversionList.push(item)
-  })
+    conversionList.push(item);
+  });
 
 });
-
-// 会话列表滚动加载
-/*const load = () => {
-  friendList.push({
-    name: 'Tom',
-    active: false,
-    headPortrait:
-      'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-    lastMessage: 'hello',
-    lastTime: '6:30',
-    unreadMessageNum: 2
-  });
-};*/
-
+// 接收消息
 socket.on("chat message", (msg: any) => {
   console.log(msg);
   GLOBAL_MESSAGE_LIST.push(msg);
 });
 
-const answerCall = ref(false);
-//
-socket.on("video request",(msg:any)=>{
-  alert(msg)
-})
-/*socket.on("_ice_candidate", (msg: any) => {
-  let json = JSON.parse(msg);
-  console.log(json);
-  if (json.receiveAccount == sessionStorage.getItem("account")) {
-    answerCall.value = true;
-  }
 
-});*/
+// 控制answerCall组件
+const answerCall = ref(false);
+
+// 视屏请求的信息
+const videoRequest = ref();
+const showVideoRequest = ref(false)
+// 收到视屏通话请求
+socket.on("video request", (msg: any) => {
+  let json = JSON.parse(msg);
+  videoRequest.value = json;
+  showVideoRequest.value = true;
+});
+// 拒接视屏通话
+const refuseVideoCall = () => {
+  socket.emit('refuse videoCall',{"account":videoRequest.value.account});
+  showVideoRequest.value=false;
+}
+// 接受视屏通话
+const agreeVideoCall = () =>{
+  showVideoRequest.value = false;
+  answerCall.value = true;
+}
 </script>
 
 <style lang="scss" scoped>

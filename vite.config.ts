@@ -4,6 +4,8 @@ import * as path from 'path';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import * as fs from 'fs';
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -18,32 +20,45 @@ export default defineConfig({
   server: {
     proxy: {
       '/user': {
-        target: 'http://127.0.0.1:9892',
+        target: 'https://192.168.31.221:9892',
+        secure: false,
         changeOrigin: true
       },
       '/fileUpload': {
-        target: 'http://127.0.0.1:9892',
+        target: 'https://192.168.31.221:9892',
+        secure: false,
         changeOrigin: true
       },
       '/socket': {
-        target: 'ws://127.0.0.1:9892',
+        target: 'wss://192.168.31.221:9892',
+        secure: false,
         changeOrigin: true,
         ws: true
       },
       '/cvn': {
-        target: 'http://127.0.0.1:9892',
+        target: 'https://192.168.31.221:9892',
+        secure: false,
         changeOrigin: true
       },
       '/friend': {
-        target: 'http://127.0.0.1:9892',
+        target: 'https://192.168.31.221:9892',
+        secure: false,
         changeOrigin: true
       },
       '/msg': {
-        target: 'http://127.0.0.1:9892',
+        target: 'https://192.168.31.221:9892',
+        secure: false,
         changeOrigin: true
       }
     },
-    https: false
+    https: {
+      key: fs.readFileSync(
+        path.join(__dirname, './public/sslKey/192.168.31.221-key.pem')
+      ),
+      cert: fs.readFileSync(
+        path.join(__dirname, './public/sslKey/192.168.31.221.pem')
+      )
+    }
   },
   resolve: {
     alias: {

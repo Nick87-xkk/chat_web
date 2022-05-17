@@ -124,7 +124,7 @@
     <!--上传文件-->
     <FileUpload></FileUpload>
     <!-- 发起视屏通话-->
-    <SponsorVideoChat v-if="videoChat" :receive-account="props.conversionInfo.account"></SponsorVideoChat>
+    <SponsorVideoChat v-if="videoChat" :receive-account="props.conversionInfo.friend"></SponsorVideoChat>
   </div>
 
 </template>
@@ -149,16 +149,16 @@ import { postAddMessage, postSearchMessage } from "../../api/modules/message.api
 import socketIO from "socket.io-client";
 import { app } from "../../main";
 
-const accountInfo:any = sessionStorage.getItem('accountInfo')
-const GLOBAL_ACCOUNT_INFO:any = JSON.parse(accountInfo)[0];
+const accountInfo: any = sessionStorage.getItem("accountInfo");
+const GLOBAL_ACCOUNT_INFO: any = JSON.parse(accountInfo)[0];
 
 // 使用socket
-let socket:any;
-if (!inject("socket")){
-  socket = socketIO(`ws://127.0.0.1:9892/?account=${sessionStorage.getItem('account')}`);
-  app.provide("socket",socket)
-}else{
-  socket = inject("socket")
+let socket: any;
+if (!inject("socket")) {
+  socket = socketIO(`wss://192.168.31.221:9892/?account=${sessionStorage.getItem('account')}`);
+  app.provide("socket", socket);
+} else {
+  socket = inject("socket");
 }
 
 
@@ -171,17 +171,18 @@ const route = useRoute();
 
 // 拉取消息
 postSearchMessage({
-  "account": sessionStorage.getItem('account'),
-  "receive_account": props.conversionInfo.friend }
-).then((res:any)=>{
-  if(res.message){
-    messageList.push(...res.message)
+    "account": sessionStorage.getItem("account"),
+    "receive_account": props.conversionInfo.friend
+  }
+).then((res: any) => {
+  if (res.message) {
+    messageList.push(...res.message);
   }
 
 });
 
 // 消息列表
-const messageList:any = reactive([]);
+const messageList: any = reactive([]);
 
 // 发送消息
 const sendMessage = () => {
@@ -240,15 +241,49 @@ socket.on("chat message", (msg: any) => {
 });
 
 // 发起视屏请求
-const videoCall = () =>{
+const videoCall = () => {
   let request = {
-    "account":GLOBAL_ACCOUNT_INFO.account,
-    "receive_account":props.conversionInfo.friend,
-    "nickname":props.conversionInfo.nickname,
+    "account": GLOBAL_ACCOUNT_INFO.account,
+    "receive_account": props.conversionInfo.friend,
+    "nickname": props.conversionInfo.nickname,
     "profile": props.conversionInfo.profile
+  };
+  postAddMessage({
+    "account": GLOBAL_ACCOUNT_INFO.account,
+    "receive_account": props.conversionInfo.friend,
+    "content_type": 1,
+    "content": "发起了视屏请求"
+  }).then(() => {
+    messageList.push({
+      "account": GLOBAL_ACCOUNT_INFO.account,
+      "receive_account": props.conversionInfo.friend,
+      "content_type": 1,
+      "content": "发起了视屏请求"
+    });
+    socket.emit("video_call", JSON.stringify(request));
+    videoChat.value = true;
+  });
+};
+// 视屏请求被拒绝
+socket.on("refuse video", (msg: any) => {
+  if (msg.refuse) {
+    postAddMessage({
+      "account": props.conversionInfo.friend,
+      "receive_account": GLOBAL_ACCOUNT_INFO.account,
+      "content_type": 1,
+      "content": "拒绝了视屏请求"
+    }).then(() => {
+      messageList.push({
+        "account": props.conversionInfo.friend,
+        "receive_account": GLOBAL_ACCOUNT_INFO.account,
+        "content_type": 1,
+        "content": "拒绝了视屏请求"
+      });
+      videoChat.value = false;
+    });
   }
-  socket.emit("video_call",JSON.stringify(request))
-}
+
+});
 </script>
 
 <style scoped lang="scss">
