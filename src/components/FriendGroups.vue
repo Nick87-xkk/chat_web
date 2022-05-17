@@ -14,7 +14,17 @@
               <span>{{ item.groupName }}</span>
             </template>
             <!-- 后续修改样式，确定friend属性-->
-            <el-menu-item v-for="(x,y) in item.friend" :index="`${index}-${y}`">{{ x }}</el-menu-item>
+            <el-menu-item v-for="(x,y) in item.friend" :index="`${index}-${y}`">
+             <el-row>
+               <el-avatar
+                 class="infinite-list-item-avatar"
+                 :fit="'fill'"
+                 :src="x.profile"
+               ></el-avatar>
+                 <h2>{{ x.nickname }}</h2>
+                 <h4>{{x.signature}}</h4>
+             </el-row>
+            </el-menu-item>
           </el-sub-menu>
 
         </el-menu>

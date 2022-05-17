@@ -29,8 +29,16 @@ import { inject, defineProps, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import socketIO from "socket.io-client";
 import { Location } from "@element-plus/icons-vue";
+import { app } from "../../main";
+
 // 与信令服务器的WebSocket连接
-const socket:any = inject('socket');
+let socket:any;
+if (!inject("socket")){
+  socket = socketIO(`ws://127.0.0.1:9892/?account=${sessionStorage.getItem('account')}`);
+  app.provide("socket",socket)
+}else{
+  socket = inject("socket")
+}
 
 const prop = defineProps<{receiveAccount:any}>()
 

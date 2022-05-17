@@ -28,9 +28,16 @@
 
 <script lang="ts" setup>
 import { inject, onMounted, ref } from "vue";
+import socketIO from "socket.io-client";
+import { app } from "../../main";
 
-const socket: any = inject("socket");
-
+let socket:any;
+if (!inject("socket")){
+  socket = socketIO(`ws://127.0.0.1:9892/?account=${sessionStorage.getItem('account')}`);
+  app.provide("socket",socket)
+}else{
+  socket = inject("socket")
+}
 const dialogVisible = ref(true);
 const RTCPeerConnection =
   window.RTCPeerConnection ||

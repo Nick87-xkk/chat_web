@@ -40,13 +40,13 @@ Since TypeScript cannot handle type information for `.vue` imports, they are shi
     │          WeatherCard.vue
     │
     ├─directives
-    │      index.ts
+    │      globIndex.ts
     │
     ├─router
-    │      index.ts
+    │      globIndex.ts
     │
     ├─store
-    │  │  index.ts
+    │  │  globIndex.ts
     │  │
     │  └─modules
     │          user.ts

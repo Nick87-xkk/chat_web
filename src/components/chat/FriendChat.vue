@@ -14,19 +14,19 @@
           content="视频"
           placement="bottom"
         >
-          <el-button type="success" :icon="VideoCamera" @click="videoChat=true" circle></el-button>
+          <el-button type="success" :icon="VideoCamera" @click="videoCall" circle></el-button>
         </el-tooltip>
 
-<!--
-        <el-tooltip
-          class="box-item"
-          effect="light"
-          content="语音"
-          placement="bottom"
-        >
-          <el-button type="success" :icon="Phone" circle></el-button>
-        </el-tooltip>
--->
+        <!--
+                <el-tooltip
+                  class="box-item"
+                  effect="light"
+                  content="语音"
+                  placement="bottom"
+                >
+                  <el-button type="success" :icon="Phone" circle></el-button>
+                </el-tooltip>
+        -->
 
         <el-tooltip
           class="box-item"
@@ -43,20 +43,20 @@
       <div
         v-for="item of messageList"
         :class="{
-          right: item.type === 'send',
-          left: item.type !== 'send' || null
+          right: item.account == GLOBAL_ACCOUNT_INFO.account,
+          left: item.account != GLOBAL_ACCOUNT_INFO.account || null
         }"
       >
-<!--        分文本消息类型和图片、文件三种类型-->
-        <span v-if="item.type==0" class="bubble">{{ item.data }}</span>
-<!--        图片-->
-        <div>
+        <!--        分文本消息类型和图片、文件三种类型-->
+        <span v-if="item.content_type==1" class="bubble">{{ item.content }}</span>
+        <!--        图片-->
+        <!--        <div>
 
-        </div>
-<!--        文件-->
-        <div>
+                </div>-->
+        <!--        文件-->
+        <!--        <div>
 
-        </div>
+                </div>-->
         <el-avatar
           style="padding: 0"
           shape="square"
@@ -85,7 +85,7 @@
                 v-for="it in emojiData"
                 @click="inputEmoji(it)"
                 :key="it.codes"
-                >{{ it.char }}</a
+              >{{ it.char }}</a
               >
             </div>
           </el-popover>
@@ -96,7 +96,7 @@
             content="文件发送"
             placement="bottom"
           >
-            <el-button type="primary" :icon="FolderAdd"  @click="showUpload" circle></el-button>
+            <el-button type="primary" :icon="FolderAdd" @click="showUpload" circle></el-button>
           </el-tooltip>
         </el-row>
       </div>
@@ -117,7 +117,7 @@
           style="margin: 0 5px 5px 0"
           type="primary"
           @click="sendMessage"
-          >Send
+        >Send
         </el-button>
       </el-row>
     </div>
@@ -137,110 +137,118 @@ import {
   Search,
   PictureRounded,
   FolderAdd
-} from '@element-plus/icons-vue';
-import { GLOBAL_MESSAGE_LIST, showUpload} from "./chat";
-import { inject, defineProps, reactive, ref } from 'vue';
-import { LocationQueryValue, useRoute } from 'vue-router';
-import emojiData from '../../assets/emoji.json';
-import { inputEmoji, message } from './chat';
+} from "@element-plus/icons-vue";
+import { GLOBAL_MESSAGE_LIST, showUpload } from "./chat";
+import { inject, defineProps, reactive, ref } from "vue";
+import { LocationQueryValue, useRoute } from "vue-router";
+import emojiData from "../../assets/emoji.json";
+import { inputEmoji, message } from "./chat";
 import FileUpload from "../fileUpload/FileUpload.vue";
 import SponsorVideoChat from "../video/SponsorVideoChat.vue";
-import { postAddMessage } from "../../api/modules/message.api";
+import { postAddMessage, postSearchMessage } from "../../api/modules/message.api";
+import socketIO from "socket.io-client";
+import { app } from "../../main";
 
-// 视频通话
+const accountInfo:any = sessionStorage.getItem('accountInfo')
+const GLOBAL_ACCOUNT_INFO:any = JSON.parse(accountInfo)[0];
+
+// 使用socket
+let socket:any;
+if (!inject("socket")){
+  socket = socketIO(`ws://127.0.0.1:9892/?account=${sessionStorage.getItem('account')}`);
+  app.provide("socket",socket)
+}else{
+  socket = inject("socket")
+}
+
+
 const videoChat = ref(false);
 // prop 传值
-const props:any = defineProps<{
-  conversionInfo:any //接受当前会话信息
+const props: any = defineProps<{
+  conversionInfo: any //接受当前会话信息
 }>();
 const route = useRoute();
-// 使用socket
-const socket:any = inject('socket');
 
-// 切换关闭socket连接
-/*
-onBeforeUnmount(() => {
-  socket.close();
+// 拉取消息
+postSearchMessage({
+  "account": sessionStorage.getItem('account'),
+  "receive_account": props.conversionInfo.friend }
+).then((res:any)=>{
+  if(res.message){
+    messageList.push(...res.message)
+  }
+
 });
-*/
 
 // 消息列表
-const messageList: {
-  send: LocationQueryValue[] | LocationQueryValue;
-  receive: string;
-  type: string;
-  user_name: string;
-  data: string;
-  options: {};
-}[] = reactive([]);
-
-interface messageType {
-  sendAccount: number;
-  receiveAccount: number;
-  data: string;
-  time: number;
-}
+const messageList:any = reactive([]);
 
 // 发送消息
 const sendMessage = () => {
-  let sendMessages: messageType = {
-    sendAccount: Number(sessionStorage.getItem('account')), // 发送账号 应为当前登录用户
-    receiveAccount: Number(props.conversionInfo.account), // 接收信息账号
-    data: message.value,
-    time: Date.now()
+  let sendMessages = {
+    "account": GLOBAL_ACCOUNT_INFO.account,
+    "receiveAccount": props.conversionInfo.friend,
+    "content_type": 1,
+    "content": message.value
   };
 
   if (message.value) {
     // 消息先入库
     postAddMessage({
-      "account":sessionStorage.getItem('account'),
-      "receive_account":props.conversionInfo.account,
-      "content_type":1,
-      "content":message.value,
-      "time":Date.now()
-    }).then((res:any)=>{
-      socket.emit('chat message', sendMessages);
+      "account": GLOBAL_ACCOUNT_INFO.account,
+      "receive_account": props.conversionInfo.friend,
+      "content_type": 1,
+      "content": message.value
+    }).then((res: any) => {
+      socket.emit("chat message", sendMessages);
       messageList.push({
-        send:  '',
-        receive: '',
-        type: 'send',
-        user_name: '',
-        data: message.value,
-        options: {}
+        "account": GLOBAL_ACCOUNT_INFO.account,
+        "receive_account": props.conversionInfo.friend,
+        "content_type": 1,
+        "content": message.value
       });
       setTimeout(() => {
         document
-          .querySelector('.messages')!
-          .scrollTo(0, document.querySelector('.messages')!.scrollHeight);
-        message.value = '';
+          .querySelector(".messages")!
+          .scrollTo(0, document.querySelector(".messages")!.scrollHeight);
+        message.value = "";
       }, 0);
-    })
+    });
 
   }
 };
 
-const returnMessage:any = ref('');
+const returnMessage: any = ref("");
 // 接收消息
-socket.on('chat message', (msg: any) => {
+socket.on("chat message", (msg: any) => {
   returnMessage.value = JSON.parse(msg);
   // 非当前好友的消息存放到全局消息中
-  GLOBAL_MESSAGE_LIST.push(returnMessage.value)
-  if (returnMessage.value && returnMessage.value.receiveAccount == sessionStorage.getItem('account')) {
+  GLOBAL_MESSAGE_LIST.push(returnMessage.value);
+  if (returnMessage.value && returnMessage.value.receiveAccount == GLOBAL_ACCOUNT_INFO.account) {
     messageList.push({
-      send: '',
-      receive: '',
-      type: 'receive',
-      user_name: 'Tom',
-      data: returnMessage.value.data,
-      options: {}
+      "account": returnMessage.value.account,
+      "receive_account": returnMessage.value.receiveAccount,
+      "content_type": 1,
+      "content": returnMessage.value.content
     });
     setTimeout(() => {
       document
-        .querySelector('.messages')!
-        .scrollTo(0, document.querySelector('.messages')!.scrollHeight);
+        .querySelector(".messages")!
+        .scrollTo(0, document.querySelector(".messages")!.scrollHeight);
     }, 0);
   }
 });
+
+// 发起视屏请求
+const videoCall = () =>{
+  let request = {
+    "account":GLOBAL_ACCOUNT_INFO.account,
+    "receive_account":props.conversionInfo.friend,
+    "nickname":props.conversionInfo.nickname,
+    "profile": props.conversionInfo.profile
+  }
+  socket.emit("video_call",JSON.stringify(request))
+}
 </script>
 
 <style scoped lang="scss">
