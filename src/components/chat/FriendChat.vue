@@ -161,7 +161,6 @@ if (!inject("socket")) {
   socket = inject("socket");
 }
 
-
 const videoChat = ref(false);
 // prop 传值
 const props: any = defineProps<{
@@ -194,6 +193,7 @@ const sendMessage = () => {
   };
 
   if (message.value) {
+    console.log(message.value);
     // 消息先入库
     postAddMessage({
       "account": GLOBAL_ACCOUNT_INFO.account,
@@ -201,6 +201,7 @@ const sendMessage = () => {
       "content_type": 1,
       "content": message.value
     }).then((res: any) => {
+      console.log(res);
       socket.emit("chat message", sendMessages);
       messageList.push({
         "account": GLOBAL_ACCOUNT_INFO.account,

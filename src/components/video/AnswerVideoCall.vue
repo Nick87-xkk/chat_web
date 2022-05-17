@@ -14,8 +14,6 @@
       <!--      接收的视频-->
       <video id="remoteVideo" class="remoteVideo" muted autoplay></video>
       <el-row style="justify-content: center">
-        <!--        接通-->
-        <el-button @click="dialogVisible = false">接听</el-button>
         <!--        挂断-->
         <el-button type="primary" @click="dialogVisible = false"
           >挂断
