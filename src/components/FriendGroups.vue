@@ -14,16 +14,16 @@
               <span>{{ item.groupName }}</span>
             </template>
             <!-- 后续修改样式，确定friend属性-->
-            <el-menu-item v-for="(x,y) in item.friend" :index="`${index}-${y}`">
-             <el-row>
-               <el-avatar
-                 class="infinite-list-item-avatar"
-                 :fit="'fill'"
-                 :src="x.profile"
-               ></el-avatar>
-                 <h2>{{ x.nickname }}</h2>
-                 <h4>{{x.signature}}</h4>
-             </el-row>
+            <el-menu-item style="height: 70px;overflow: hidden;" v-for="(x,y) in item.friend" :index="`${index}-${y}`">
+              <el-avatar
+                :fit="'fill'"
+                :src="x.profile"
+              ></el-avatar>
+              <div style="line-height:normal !important;height: 70px;display: flex;flex-direction: column;justify-content: center;text-align: left;padding-left: 10px">
+                <h2>{{ x.nickname }}</h2>
+                <h4 style="color: #3b3b43">{{ x.signature }}</h4>
+              </div>
+
             </el-menu-item>
           </el-sub-menu>
 
@@ -49,7 +49,7 @@ const handleClose = (key: string, keyPath: string[]) => {
 const groupList: any = reactive([]);
 
 postSearchFriendInfo({ "account": sessionStorage.getItem("account") }).then((res: any) => {
-  let groups =JSON.parse(res.message[0].friend_account);
+  let groups = JSON.parse(res.message[0].friend_account);
   console.log(groups);
   for (let key of Object.keys(groups)) {
     console.log(groups[key]);
@@ -87,7 +87,7 @@ postSearchFriendInfo({ "account": sessionStorage.getItem("account") }).then((res
 
 .el-sub-menu {
   font-weight: bold;
-  padding-bottom: 2px;
+
 }
 
 .el-menu-item {
@@ -99,6 +99,10 @@ postSearchFriendInfo({ "account": sessionStorage.getItem("account") }).then((res
   outline: 0 !important;
   color: #000000 !important;
   background: rgba(167, 164, 164, 0.2) !important;
+}
+
+.el-sub-menu .el-menu-item{
+  padding:0 20px !important;
 }
 
 .el-menu-item.is-active {

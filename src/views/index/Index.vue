@@ -140,7 +140,7 @@ import { postBatchSearchUser } from "../../api/modules/index.api";
 import WeatherCard from "../../components/ribbon/WeatherCard.vue";
 import FriendChat from "../../components/chat/FriendChat.vue";
 import AnswerVideoCall from "../../components/video/AnswerVideoCall.vue";
-import { GLOBAL_MESSAGE_LIST } from "../../components/chat/chat";
+import { GLOBAL_MESSAGE_LIST, message } from "../../components/chat/chat";
 import { postSearchConversion } from "../../api/modules/conversion.api";
 import { postSearchFriendInfo } from "../../api/modules/friend.api";
 import socketIO from "socket.io-client";

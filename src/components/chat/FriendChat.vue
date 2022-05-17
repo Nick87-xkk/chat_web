@@ -162,11 +162,10 @@ if (!inject("socket")) {
 }
 
 const videoChat = ref(false);
-// prop 传值
+
 const props: any = defineProps<{
   conversionInfo: any //接受当前会话信息
 }>();
-const route = useRoute();
 
 // 拉取消息
 postSearchMessage({
@@ -176,6 +175,12 @@ postSearchMessage({
 ).then((res: any) => {
   if (res.message) {
     messageList.push(...res.message);
+    setTimeout(() => {
+      document
+        .querySelector(".messages")!
+        .scrollTo(0, document.querySelector(".messages")!.scrollHeight);
+      message.value = "";
+    }, 0);
   }
 
 });
