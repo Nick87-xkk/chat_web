@@ -20,6 +20,14 @@ export const searchUser = (data: any) =>
     method: 'POST',
     data
   });
+// 批量搜索用户信息
+export const postBatchSearchUser = (data: any) =>
+  service({
+    url: '/user/batchSearch',
+    method: 'POST',
+    data
+  });
+
 // 获取分组列表
 export const getFriendGroups = (account: any) =>
   service({

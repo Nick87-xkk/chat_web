@@ -47,7 +47,16 @@
           left: item.type !== 'send' || null
         }"
       >
-        <span class="bubble">{{ item.data }}</span>
+<!--        分文本消息类型和图片、文件三种类型-->
+        <span v-if="item.type==0" class="bubble">{{ item.data }}</span>
+<!--        图片-->
+        <div>
+
+        </div>
+<!--        文件-->
+        <div>
+
+        </div>
         <el-avatar
           style="padding: 0"
           shape="square"
@@ -136,6 +145,7 @@ import emojiData from '../../assets/emoji.json';
 import { inputEmoji, message } from './chat';
 import FileUpload from "../fileUpload/FileUpload.vue";
 import SponsorVideoChat from "../video/SponsorVideoChat.vue";
+import { postAddMessage } from "../../api/modules/message.api";
 
 // 视频通话
 const videoChat = ref(false);
@@ -181,21 +191,31 @@ const sendMessage = () => {
   };
 
   if (message.value) {
-    socket.emit('chat message', sendMessages);
-    messageList.push({
-      send:  '',
-      receive: '',
-      type: 'send',
-      user_name: '',
-      data: message.value,
-      options: {}
-    });
-    setTimeout(() => {
-      document
-        .querySelector('.messages')!
-        .scrollTo(0, document.querySelector('.messages')!.scrollHeight);
-      message.value = '';
-    }, 0);
+    // 消息先入库
+    postAddMessage({
+      "account":sessionStorage.getItem('account'),
+      "receive_account":props.conversionInfo.account,
+      "content_type":1,
+      "content":message.value,
+      "time":Date.now()
+    }).then((res:any)=>{
+      socket.emit('chat message', sendMessages);
+      messageList.push({
+        send:  '',
+        receive: '',
+        type: 'send',
+        user_name: '',
+        data: message.value,
+        options: {}
+      });
+      setTimeout(() => {
+        document
+          .querySelector('.messages')!
+          .scrollTo(0, document.querySelector('.messages')!.scrollHeight);
+        message.value = '';
+      }, 0);
+    })
+
   }
 };
 

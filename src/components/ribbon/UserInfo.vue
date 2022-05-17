@@ -40,6 +40,7 @@ import { reactive, ref ,defineProps} from "vue";
 import { showUserInfo } from "./ribbon";
 import Avatar from "../avatar/Avatar.vue";
 import { friendRequest } from "../../api/modules/index.api";
+import { postCreateFriendRequest } from "../../api/modules/friend.api";
 const prop:any = defineProps<{
     userInfo:{
       account:'',
@@ -72,7 +73,8 @@ const dialogVisible = true;
 const addFriend = () => {
   // 弹出申请框
   console.log("添加好友");
-  friendRequest({ apply_account:sessionStorage.getItem('account'),
+  postCreateFriendRequest({
+    apply_account:sessionStorage.getItem('account'),
     target_account:prop.userInfo[0].account,
     apply_group:'',
     message:'',

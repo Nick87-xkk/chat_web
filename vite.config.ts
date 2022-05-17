@@ -18,20 +18,32 @@ export default defineConfig({
   server: {
     proxy: {
       '/user': {
-        target: 'http://49.232.185.124:19100',
+        target: 'http://127.0.0.1:9892',
         changeOrigin: true
       },
       '/fileUpload': {
-        target: 'http://49.232.185.124:19100',
+        target: 'http://127.0.0.1:9892',
         changeOrigin: true
       },
       '/socket': {
-        target: 'wss://49.232.185.124:19100',
+        target: 'ws://127.0.0.1:9892',
         changeOrigin: true,
         ws: true
+      },
+      '/cvn': {
+        target: 'http://127.0.0.1:9892',
+        changeOrigin: true
+      },
+      '/friend': {
+        target: 'http://127.0.0.1:9892',
+        changeOrigin: true
+      },
+      '/msg': {
+        target: 'http://127.0.0.1:9892',
+        changeOrigin: true
       }
     },
-    https: true
+    https: false
   },
   resolve: {
     alias: {

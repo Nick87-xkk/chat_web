@@ -34,6 +34,7 @@ declare module 'vue' {
     GroupChat: typeof import('./src/components/chat/GroupChat.vue')['default']
     IdentityCode: typeof import('./src/components/IdentityCode.vue')['default']
     MusicPlayer: typeof import('./src/components/ribbon/MusicPlayer.vue')['default']
+    Notefiction: typeof import('./src/components/notefiction/Notefiction.vue')['default']
     SearchUser: typeof import('./src/components/searchUser.vue')['default']
     SponsorVideoChat: typeof import('./src/components/video/SponsorVideoChat.vue')['default']
     UserInfo: typeof import('./src/components/ribbon/UserInfo.vue')['default']
