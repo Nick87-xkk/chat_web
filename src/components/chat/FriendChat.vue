@@ -140,7 +140,6 @@ import {
 } from "@element-plus/icons-vue";
 import { GLOBAL_MESSAGE_LIST, showUpload } from "./chat";
 import { inject, defineProps, reactive, ref } from "vue";
-import { LocationQueryValue, useRoute } from "vue-router";
 import emojiData from "../../assets/emoji.json";
 import { inputEmoji, message } from "./chat";
 import FileUpload from "../fileUpload/FileUpload.vue";
@@ -148,7 +147,7 @@ import SponsorVideoChat from "../video/SponsorVideoChat.vue";
 import { postAddMessage, postSearchMessage } from "../../api/modules/message.api";
 import socketIO from "socket.io-client";
 import { app } from "../../main";
-
+import { videoChat } from "../video/video";
 const accountInfo: any = sessionStorage.getItem("accountInfo");
 const GLOBAL_ACCOUNT_INFO: any = JSON.parse(accountInfo)[0];
 
@@ -161,7 +160,6 @@ if (!inject("socket")) {
   socket = inject("socket");
 }
 
-const videoChat = ref(false);
 
 const props: any = defineProps<{
   conversionInfo: any //接受当前会话信息
@@ -198,7 +196,6 @@ const sendMessage = () => {
   };
 
   if (message.value) {
-    console.log(message.value);
     // 消息先入库
     postAddMessage({
       "account": GLOBAL_ACCOUNT_INFO.account,
@@ -288,8 +285,13 @@ socket.on("refuse video", (msg: any) => {
       videoChat.value = false;
     });
   }
-
 });
+// answer方挂断通话
+socket.on("hangup videoCall",(msg:any)=>{
+  if (msg.hangup){
+    videoChat.value = false;
+  }
+})
 </script>
 
 <style scoped lang="scss">

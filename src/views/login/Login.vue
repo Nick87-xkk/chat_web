@@ -17,10 +17,6 @@
             show-password
           ></el-input>
         </el-form-item>
-        <el-form-item label="Verification Code">
-          <el-input v-model="userInfo.verification" clearable></el-input>
-          <!--          <IdentityCode></IdentityCode>-->
-        </el-form-item>
         <el-form-item>
           <el-button @click="router.push('/register')">Register</el-button>
           <el-button type="primary" @click="loginButton">Login</el-button>
@@ -32,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, reactive } from "vue";
+import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { Md5 } from "ts-md5/dist/md5";
@@ -72,7 +68,7 @@ const loginButton = (): void => {
         sessionStorage.setItem('accountInfo',[JSON.stringify(resInfo.userInfoByAccount as any)] as any);
       })
       // let socket = io(`ws://127.0.0.1:9892/?account=${userInfo.account}`)
-      let socket = io(`http://192.168.31.221:9892/?account=${userInfo.account}`);
+      let socket = io(`wss://192.168.31.221:9892/?account=${userInfo.account}`);
       // let socket = io(`wss://49.232.185.124:19100/?account=${userInfo.account}`);
       // let socket = io(`ws://www.nick87.top:19100/?account=${userInfo.account}`);
       app.provide('socket',socket)

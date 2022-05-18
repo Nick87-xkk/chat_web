@@ -15,7 +15,7 @@
       <video id="remoteVideo1" class="remoteVideo" muted autoplay></video>
       <el-row style="justify-content: center">
         <!--        挂断-->
-        <el-button type="primary" @click="dialogVisible = false"
+        <el-button type="primary" @click="sponsorHangup"
           >挂断
         </el-button>
       </el-row>
@@ -24,12 +24,13 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, defineProps, onMounted, ref } from 'vue';
+import { inject, defineProps, onMounted, ref, onBeforeUnmount } from "vue";
 import { useRoute } from 'vue-router';
 import socketIO from 'socket.io-client';
 import { Location } from '@element-plus/icons-vue';
 import { app } from '../../main';
-
+import { videoChat } from "./video";
+import { postAddMessage } from "../../api/modules/message.api";
 // 与信令服务器的WebSocket连接
 let socket: any;
 if (!inject('socket')) {
@@ -44,7 +45,8 @@ if (!inject('socket')) {
 const prop = defineProps<{ receiveAccount: any }>();
 
 const dialogVisible = ref(true);
-
+//用于关闭视屏
+let mediaStreamTrack: MediaStream | any;
 const RTCPeerConnection =
   window.RTCPeerConnection ||
   (window as any).mozRTCPeerConnection ||
@@ -68,10 +70,11 @@ navigator.mediaDevices.getUserMedia =
   (navigator as any).webkitGetUserMedia ||
   (navigator as any).mozGetUserMedia ||
   (navigator as any).msGetUserMedia;
+
+const pc: any = new RTCPeerConnection();
+
 onMounted(()=>{
   // 创建PeerConnection实例 (参数为null则没有iceserver，即使没有stunserver和turnserver，仍可在局域网下通讯)
-  const pc: any = new RTCPeerConnection();
-
 // 发送ICE候选到其他客户端
   pc.onicecandidate = function (event: any) {
     if (event.candidate !== null) {
@@ -137,6 +140,7 @@ onMounted(()=>{
       (document as any).getElementById('localVideo1').srcObject = stream;
       //向PeerConnection中加入需要发送的流
       pc.addStream(stream);
+      mediaStreamTrack = stream;
       //发送一个offer信令
       pc.createOffer(sendOfferFn, function (error: any) {
         console.log('Failure callback: ' + error);
@@ -163,6 +167,23 @@ onMounted(()=>{
     }
   });
 })
+
+onBeforeUnmount(() => {
+  // 组件销毁停止获取媒体流数据
+  mediaStreamTrack.getTracks()[0].stop();
+});
+// 发送发挂断电话
+const sponsorHangup = () =>{
+  postAddMessage({
+    "account": prop.receiveAccount,
+    "receive_account": sessionStorage.getItem("account"),
+    "content_type": 1,
+    "content": "通话结束"
+  }).then(()=>{
+    socket.emit("hangup videoCall",{"account":prop.receiveAccount});
+    videoChat.value = false;
+  })
+}
 
 </script>
 

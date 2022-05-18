@@ -14,7 +14,7 @@
               <span>{{ item.groupName }}</span>
             </template>
             <!-- 后续修改样式，确定friend属性-->
-            <el-menu-item style="height: 70px;overflow: hidden;" v-for="(x,y) in item.friend" :index="`${index}-${y}`">
+            <el-menu-item @click="clickFriend(x)" style="height: 70px;overflow: hidden;" v-for="(x,y) in item.friend" :index="`${index}-${y}`">
               <el-avatar
                 :fit="'fill'"
                 :src="x.profile"
@@ -37,13 +37,8 @@
 import { searchUser } from "../api/modules/index.api";
 import { reactive } from "vue";
 import { postSearchFriendInfo } from "../api/modules/friend.api";
+import { postSearchConversion } from "../api/modules/conversion.api";
 
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
 
 // 分组列表
 const groupList: any = reactive([]);
@@ -66,11 +61,14 @@ postSearchFriendInfo({ "account": sessionStorage.getItem("account") }).then((res
     });
   }
 });
+/*
+*点击进入用户信息详情
+* 点击发送消息按钮 先查询是否存在会话，不存在则创建会话
+*  */
+const clickFriend = (data:any) => {
 
-// 后续定义类型
-/*interface friendListType{
-
-}*/
+  // postSearchConversion({})
+}
 
 
 </script>

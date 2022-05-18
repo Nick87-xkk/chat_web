@@ -145,6 +145,7 @@ import { postSearchConversion } from "../../api/modules/conversion.api";
 import { postSearchFriendInfo } from "../../api/modules/friend.api";
 import socketIO from "socket.io-client";
 import { app } from "../../main";
+import { answerCall } from "../../components/video/video";
 
 let socket: any;
 if (!inject("socket")) {
@@ -227,8 +228,6 @@ socket.on("chat message", (msg: any) => {
 });
 
 
-// 控制answerCall组件
-const answerCall = ref(false);
 
 // 视屏请求的信息
 const videoRequest = ref();
@@ -249,6 +248,11 @@ const agreeVideoCall = () =>{
   showVideoRequest.value = false;
   answerCall.value = true;
 }
+socket.on("hangup videoCall",(msg:any)=>{
+  if (msg.hangup){
+    answerCall.value = false;
+  }
+})
 </script>
 
 <style lang="scss" scoped>
