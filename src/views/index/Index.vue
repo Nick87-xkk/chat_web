@@ -69,7 +69,7 @@
             <el-avatar
               class="infinite-list-item-avatar"
               fit="fill"
-              :src="'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'"
+              :src="GLOBAL_ACCOUNT_INFO[0].profile"
             ></el-avatar>
           </el-row>
         </el-header>
@@ -163,6 +163,7 @@ import { app } from "../../main";
 import { answerCall } from "../../components/video/video";
 import Notification from "../../components/notefiction/Notification.vue";
 import { drawer } from "../../components/notefiction/note";
+import { setEnvironmentData } from "worker_threads";
 let socket: any;
 if (!inject("socket")) {
   socket = socketIO(`wss://192.168.31.221:9892/?account=${sessionStorage.getItem("account")}`);
@@ -171,11 +172,13 @@ if (!inject("socket")) {
   socket = inject("socket");
 }
 const GLOBAL_ACCOUNT = sessionStorage.getItem("account");
+const GLOBAL_ACCOUNT_INFO:any = JSON.parse(sessionStorage.getItem("accountInfo") as any) ;
 // 聊天和天气切换
-const view = ref();
+const view = ref('weather');
 // 左上角按钮切换的状态
 const state = ref();
-
+// 会话列表
+const conversionList: any = reactive([]);
 
 const friendChatInfo = ref();
 const friendChat = (item: any) => {
@@ -209,38 +212,45 @@ postSearchFriendInfo({
     batch.message.map((e: any) => {
       friendMap[e.account] = e;
     });
+    console.log(friendMap);
     // 将所有好友的信息存储到localstorage中
     localStorage.setItem("allFriendInfo", JSON.stringify(friendMap));
+  }).then(()=>{
+    // 获取会话信息
+
+    postSearchConversion({
+      "account": sessionStorage.getItem("account")
+    }).then((res: any) => {
+      if (res.message.length){
+        // 将好友账号信息整合入对应的会话信息
+        res.message.map((item: any) => {
+          let allFriendInfo: any = JSON.parse(localStorage.getItem("allFriendInfo") as any);
+          console.log(allFriendInfo);
+          if (item.create_account != GLOBAL_ACCOUNT) {
+            console.log(item);
+            item.profile = allFriendInfo[item.create_account].profile;
+            item.nickname = allFriendInfo[item.create_account].nickname;
+            item.friend = item.create_account;
+          } else {
+            console.log(item);
+            item.profile = allFriendInfo[item.member_account]?.profile;
+            item.nickname = allFriendInfo[item.member_account]?.nickname;
+            item.friend = item.member_account;
+          }
+          conversionList.push(item);
+        });
+
+      }
+    });
   });
 });
 
-// 获取会话信息
-const conversionList: any = reactive([]);
-postSearchConversion({
-  "account": sessionStorage.getItem("account")
-}).then((res: any) => {
-  // 将好友账号信息整合入对应的会话信息
-  res.message.map((item: any) => {
-    let allFriendInfo: any = JSON.parse(localStorage.getItem("allFriendInfo") as any);
-    console.log(allFriendInfo);
-    if (item.create_account != GLOBAL_ACCOUNT) {
-      item.profile = allFriendInfo[item.create_account].profile;
-      item.nickname = allFriendInfo[item.create_account].nickname;
-      item.friend = item.create_account;
-    } else {
-      item.profile = allFriendInfo[item.member_account]?.profile;
-      item.nickname = allFriendInfo[item.member_account]?.nickname;
-      item.friend = item.member_account;
-    }
-    conversionList.push(item);
-  });
 
-});
-// 接收消息
+/*// 接收消息
 socket.on("chat message", (msg: any) => {
   console.log(msg);
   GLOBAL_MESSAGE_LIST.push(msg);
-});
+});*/
 
 
 

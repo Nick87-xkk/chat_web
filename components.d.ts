@@ -22,10 +22,8 @@ declare module 'vue' {
     ElMain: typeof import('element-plus/es')['ElMain']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
-    ElOption: typeof import('element-plus/es')['ElOption'];
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRow: typeof import('element-plus/es')['ElRow']
-    ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElUpload: typeof import('element-plus/es')['ElUpload']
@@ -35,7 +33,6 @@ declare module 'vue' {
     GroupChat: typeof import('./src/components/chat/GroupChat.vue')['default']
     IdentityCode: typeof import('./src/components/IdentityCode.vue')['default']
     MusicPlayer: typeof import('./src/components/ribbon/MusicPlayer.vue')['default']
-    Notefiction: typeof import('./src/components/notefiction/Notification.vue')['default'];
     Notification: typeof import('./src/components/notefiction/Notification.vue')['default']
     SearchUser: typeof import('./src/components/searchUser.vue')['default']
     SponsorVideoChat: typeof import('./src/components/video/SponsorVideoChat.vue')['default']

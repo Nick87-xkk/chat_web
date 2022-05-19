@@ -49,6 +49,11 @@ export default defineConfig({
         target: 'https://192.168.31.221:9892',
         secure: false,
         changeOrigin: true
+      },
+      '/file': {
+        target: 'https://192.168.31.221:9892',
+        secure: false,
+        changeOrigin: true
       }
     },
     https: {

@@ -36,17 +36,8 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="Profile">
-          <el-select
-            type="profile"
-          >
-            <el-option v-for="item in avatarList" @click="registerInfo.profile = item.path">
-              <span>
-                {{item.id}}
-              </span>
-              <el-avatar :fit="'fit'"  :src="item.path"></el-avatar>
-            </el-option>
-            
-          </el-select>
+            <el-input type="profile" v-model="registerInfo.profile">
+            </el-input>
         </el-form-item>
         <el-form-item label="Signature">
           <el-input
@@ -92,13 +83,12 @@ const register = () =>{
   if (registerInfo.account && registerInfo.passWord){
     let info = {
       account: registerInfo.account, //账户
-      passWord:Md5.hashStr(registerInfo.passWord) , //密码
-      create_time:registerInfo.create_time, // 数据库生成，不用添加
+      password:Md5.hashStr(registerInfo.passWord) , //密码
       nickname:registerInfo.nickname, // 昵称
       phone:registerInfo.phone,
       email:registerInfo.email,
       profile:registerInfo.profile, // 头像地址
-      signature:registerInfo.signature // 个性签名
+      signature:registerInfo.signature, // 个性签名
     }
     userRegister(info).then((res:any)=>{
       alert('注册成功');

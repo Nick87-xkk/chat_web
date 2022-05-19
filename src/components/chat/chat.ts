@@ -15,5 +15,9 @@ export const showUploadFlg = ref(false);
 export const showUpload = () => {
   showUploadFlg.value = true;
 };
+// 文件下载
+export const downloadFile = (data: any) => {
+  window.open(`/file/downFile?name=${data.content}`);
+};
 
 export const GLOBAL_MESSAGE_LIST: any = reactive([]);

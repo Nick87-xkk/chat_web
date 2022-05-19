@@ -48,21 +48,26 @@
         }"
       >
         <p>{{ item.nickname }}</p>
-        <!--        分文本消息类型和图片、文件三种类型-->
+        <!--        分文本消息类型和文件类型-->
         <span v-if="item.content_type==1" class="bubble">{{ item.content }}</span>
-        <!--        图片-->
-        <!--        <div>
-
-                </div>-->
         <!--        文件-->
-        <!--        <div>
-
-                </div>-->
+        <div v-if="item.content_type==2" style="border: 1px solid;background: #98bfed;border-radius: 5px;padding: 5px">
+          <el-row>发来了文件</el-row>
+          <el-button text size="small" @click="downloadFile(item)">下载</el-button>
+        </div>
         <el-avatar
+          v-if="item.account == GLOBAL_ACCOUNT_INFO.account"
           style="padding: 0"
           shape="square"
           :size="40"
-          :src="'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'"
+          :src="GLOBAL_ACCOUNT_INFO.profile"
+        ></el-avatar>
+        <el-avatar
+          v-else-if="item.account != GLOBAL_ACCOUNT_INFO.account || null"
+          style="padding: 0"
+          shape="square"
+          :size="40"
+          :src="conversionInfo.profile"
         ></el-avatar>
       </div>
     </div>
@@ -123,7 +128,7 @@
       </el-row>
     </div>
     <!--上传文件-->
-    <FileUpload></FileUpload>
+    <FileUpload :receive-account="props.conversionInfo.friend"></FileUpload>
     <!-- 发起视屏通话-->
     <SponsorVideoChat v-if="videoChat" :receive-account="props.conversionInfo.friend"></SponsorVideoChat>
   </div>
@@ -138,7 +143,7 @@ import {
   PictureRounded,
   FolderAdd
 } from "@element-plus/icons-vue";
-import { GLOBAL_MESSAGE_LIST, showUpload } from "./chat";
+import { GLOBAL_MESSAGE_LIST, showUpload ,downloadFile } from "./chat";
 import { inject, defineProps, reactive, ref } from "vue";
 import emojiData from "../../assets/emoji.json";
 import { inputEmoji, message } from "./chat";
@@ -292,6 +297,7 @@ socket.on("hangup videoCall",(msg:any)=>{
     videoChat.value = false;
   }
 })
+
 
 </script>
 
