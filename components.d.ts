@@ -14,6 +14,7 @@ declare module 'vue' {
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDialog: typeof import('element-plus/es')['ElDialog']
+    ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElHeader: typeof import('element-plus/es')['ElHeader']
@@ -21,7 +22,7 @@ declare module 'vue' {
     ElMain: typeof import('element-plus/es')['ElMain']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
-    ElOption: typeof import('element-plus/es')['ElOption']
+    ElOption: typeof import('element-plus/es')['ElOption'];
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSelect: typeof import('element-plus/es')['ElSelect']
@@ -34,7 +35,8 @@ declare module 'vue' {
     GroupChat: typeof import('./src/components/chat/GroupChat.vue')['default']
     IdentityCode: typeof import('./src/components/IdentityCode.vue')['default']
     MusicPlayer: typeof import('./src/components/ribbon/MusicPlayer.vue')['default']
-    Notefiction: typeof import('./src/components/notefiction/Notefiction.vue')['default']
+    Notefiction: typeof import('./src/components/notefiction/Notification.vue')['default'];
+    Notification: typeof import('./src/components/notefiction/Notification.vue')['default']
     SearchUser: typeof import('./src/components/searchUser.vue')['default']
     SponsorVideoChat: typeof import('./src/components/video/SponsorVideoChat.vue')['default']
     UserInfo: typeof import('./src/components/ribbon/UserInfo.vue')['default']

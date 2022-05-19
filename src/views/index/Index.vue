@@ -41,7 +41,7 @@
               <el-tooltip
                 class="box-item"
                 effect="light"
-                content="添加好友/群"
+                content="搜索用户"
                 placement="bottom"
               >
                 <el-button
@@ -49,6 +49,19 @@
                   :icon="Plus"
                   circle
                   @click="state = 'add'"
+                ></el-button>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="light"
+                content="通知"
+                placement="bottom"
+              >
+                <el-button
+                  type="danger"
+                  :icon="ChatLineSquare"
+                  circle
+                  @click="drawer=true"
                 ></el-button>
               </el-tooltip>
             </div>
@@ -68,7 +81,7 @@
             <SearchUser v-else-if="state === 'add'"></SearchUser>
             <!-- 消息列表-->
             <ul
-              v-else="state === 'message'"
+              v-elseif="state === 'message'"
               class="infinite-list"
               style="overflow: auto"
             >
@@ -103,8 +116,8 @@
           </el-aside>
           <!--主页右侧聊天框或功能区-->
           <el-main style="padding: 0">
-            <WeatherCard v-if="view == 'weather'"></WeatherCard>
-            <FriendChat v-else-if="view == 'chat'" :conversionInfo="friendChatInfo"></FriendChat>
+            <WeatherCard v-if="!view"></WeatherCard>
+            <FriendChat v-if="view" :conversionInfo="friendChatInfo"></FriendChat>
           </el-main>
         </el-container>
       </el-container>
@@ -128,25 +141,28 @@
         <el-button @click="refuseVideoCall">拒绝</el-button>
       </el-row>
     </el-dialog>
+<!--    好友请求通知-->
+  <Notification></Notification>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { inject, nextTick, reactive, ref } from "vue";
-import { House, User, Plus } from "@element-plus/icons-vue";
+import { House, User, Plus , ChatLineSquare } from "@element-plus/icons-vue";
 import FriendGroups from "../../components/FriendGroups.vue";
 import SearchUser from "../../components/searchUser.vue";
 import { postBatchSearchUser } from "../../api/modules/index.api";
 import WeatherCard from "../../components/ribbon/WeatherCard.vue";
 import FriendChat from "../../components/chat/FriendChat.vue";
 import AnswerVideoCall from "../../components/video/AnswerVideoCall.vue";
-import { GLOBAL_MESSAGE_LIST, message } from "../../components/chat/chat";
+import { GLOBAL_MESSAGE_LIST } from "../../components/chat/chat";
 import { postSearchConversion } from "../../api/modules/conversion.api";
 import { postSearchFriendInfo } from "../../api/modules/friend.api";
 import socketIO from "socket.io-client";
 import { app } from "../../main";
 import { answerCall } from "../../components/video/video";
-
+import Notification from "../../components/notefiction/Notification.vue";
+import { drawer } from "../../components/notefiction/note";
 let socket: any;
 if (!inject("socket")) {
   socket = socketIO(`wss://192.168.31.221:9892/?account=${sessionStorage.getItem("account")}`);
@@ -156,7 +172,7 @@ if (!inject("socket")) {
 }
 const GLOBAL_ACCOUNT = sessionStorage.getItem("account");
 // 聊天和天气切换
-const view = ref("weather");
+const view = ref(false);
 // 左上角按钮切换的状态
 const state = ref();
 
@@ -165,14 +181,14 @@ const state = ref();
 const friendChatInfo = ref();
 const friendChat = (item: any) => {
   friendChatInfo.value = item;
-  if (view.value == "chat") {
+  if (view.value) {
     nextTick(() => {
-      view.value = "weather";
+      view.value = false;
     }).then(() => {
-      view.value = "chat";
+      view.value = true;
     });
   } else {
-    view.value = "chat";
+    view.value =true;
   }
 };
 
@@ -234,8 +250,7 @@ const videoRequest = ref();
 const showVideoRequest = ref(false)
 // 收到视屏通话请求
 socket.on("video request", (msg: any) => {
-  let json = JSON.parse(msg);
-  videoRequest.value = json;
+  videoRequest.value = JSON.parse(msg);
   showVideoRequest.value = true;
 });
 // 拒接视屏通话

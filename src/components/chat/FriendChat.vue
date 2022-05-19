@@ -47,6 +47,7 @@
           left: item.account != GLOBAL_ACCOUNT_INFO.account || null
         }"
       >
+        <p>{{ item.nickname }}</p>
         <!--        分文本消息类型和图片、文件三种类型-->
         <span v-if="item.content_type==1" class="bubble">{{ item.content }}</span>
         <!--        图片-->
@@ -132,7 +133,6 @@
 <script setup lang="ts">
 // 导入图标
 import {
-  Phone,
   VideoCamera,
   Search,
   PictureRounded,
@@ -292,6 +292,7 @@ socket.on("hangup videoCall",(msg:any)=>{
     videoChat.value = false;
   }
 })
+
 </script>
 
 <style scoped lang="scss">

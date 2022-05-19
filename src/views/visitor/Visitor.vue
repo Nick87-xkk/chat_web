@@ -20,6 +20,8 @@
         <el-row>
           输入昵称
           <el-input v-model="visitorNickname"></el-input>
+          头像地址
+          <el-input v-model="profileSrc"></el-input>
         </el-row>
         <el-row>
           <el-button @click="joinChat">加入聊天</el-button>
@@ -35,7 +37,7 @@
             <p>{{ item.nickname }}</p>
             <span>{{ item.val }}</span>
           </div>
-          <el-avatar></el-avatar>
+          <el-avatar :src="item.profile"></el-avatar>
         </div>
       </div>
       <div class="visitor-chat-input">
@@ -87,15 +89,16 @@ import { inputEmoji, message } from "../../components/chat/chat";
 
 const dialogFormVisible = ref(false);
 const visitorNickname = ref("");
+const profileSrc = ref("")
 const joinChat = () => {
   !visitorNickname.value
     ? (dialogFormVisible.value = true)
     : (dialogFormVisible.value = false);
-  sessionStorage.setItem("nickname", visitorNickname.value);
+  sessionStorage.setItem("visitor_nickname", visitorNickname.value);
 };
 onMounted(() => {
-  let storageNickname = sessionStorage.getItem("nickname");
-  let storageMessage: any = sessionStorage.getItem("visitorMessage");
+  let storageNickname = sessionStorage.getItem("visitor_nickname");
+  let storageMessage: any = sessionStorage.getItem("visitor_visitorMessage");
   if (storageNickname) {
     visitorNickname.value = storageNickname;
     if (storageMessage) {
@@ -117,14 +120,14 @@ onMounted(() => {
   }
 });
 // 游客登录，聊天室
-const socket = socketIO("ws://127.0.0.1:9892");
+const socket = socketIO("wss://192.168.31.221:9892");
 const visitorMessage = ref("");
 const visitorMessageList: any = reactive([]);
 // 发送消息
 const visitorSendMessage = () => {
-  socket.emit("visitor", { nickname: visitorNickname.value, val: message.value });
+  socket.emit("visitor", { nickname: visitorNickname.value, val: message.value ,profile:profileSrc.value});
   if (message.value) {
-    visitorMessageList.push({ type: "send", val: message.value, nickname: visitorNickname.value });
+    visitorMessageList.push({ type: "send", val: message.value, nickname: visitorNickname.value ,profile:profileSrc.value });
     setTimeout(() => {
       document
         .querySelector(".visitor-chat-message")!
@@ -141,7 +144,7 @@ const visitorSendMessage = () => {
 // 接收消息
 socket.on("visitor", (msg) => {
   if (msg) {
-    visitorMessageList.push({ type: "receive", val: msg.val, nickname: msg.nickname });
+    visitorMessageList.push({ type: "receive", val: msg.val, nickname: msg.nickname,profile:msg.profile});
     setTimeout(() => {
       document
         .querySelector(".visitor-chat-message")!

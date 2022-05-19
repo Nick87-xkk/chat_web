@@ -27,7 +27,7 @@
 import { inject, onBeforeUnmount, onMounted, ref } from "vue";
 import socketIO from "socket.io-client";
 import { app } from "../../main";
-import { answerCall, videoChat } from "./video";
+import { answerCall } from "./video";
 import { postAddMessage } from "../../api/modules/message.api";
 
 let socket: any;
@@ -75,7 +75,7 @@ navigator.mediaDevices.getUserMedia =
 const pc: any = new RTCPeerConnection();
 
 onMounted(() => {
-  // 创建PeerConnection实例 (参数为null则没有iceserver，即使没有stunserver和turnserver，仍可在局域网下通讯)
+  // 创建PeerConnection实例 (参数为null在局域网下通讯)
 
 // 发送ICE候选到其他客户端
   pc.onicecandidate = function(event: any) {
