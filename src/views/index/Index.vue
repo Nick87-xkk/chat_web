@@ -81,7 +81,7 @@
             <SearchUser v-else-if="state === 'add'"></SearchUser>
             <!-- 消息列表-->
             <ul
-              v-elseif="state === 'message'"
+              v-else-if="state === 'message'"
               class="infinite-list"
               style="overflow: auto"
             >
