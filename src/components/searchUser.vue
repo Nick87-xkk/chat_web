@@ -47,6 +47,7 @@ watch(userInfo, (newVal: string | number, oldVal: any) => {
 // 点击检索出来的用户操作
 
 const clickUser=(item:any)=>{
+  console.log(item);
   showUserInfo.value = true;
 }
 </script>

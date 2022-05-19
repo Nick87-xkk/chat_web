@@ -5,8 +5,6 @@
         <h3>联系人</h3>
         <el-menu
           class="friend-group"
-          @open="handleOpen"
-          @close="handleClose"
           background-color="inherit"
         >
           <el-sub-menu v-for="(item,index) in groupList" :index="index+1">
@@ -45,7 +43,7 @@ const groupList: any = reactive([]);
 
 postSearchFriendInfo({ "account": sessionStorage.getItem("account") }).then((res: any) => {
   let groups = JSON.parse(res.message[0].friend_account);
-  console.log(groups);
+
   for (let key of Object.keys(groups)) {
     console.log(groups[key]);
     let friendInfo: any = [];
@@ -66,7 +64,7 @@ postSearchFriendInfo({ "account": sessionStorage.getItem("account") }).then((res
 * 点击发送消息按钮 先查询是否存在会话，不存在则创建会话
 *  */
 const clickFriend = (data:any) => {
-
+  console.log(data);
   // postSearchConversion({})
 }
 

@@ -81,7 +81,7 @@
             <SearchUser v-else-if="state === 'add'"></SearchUser>
             <!-- 消息列表-->
             <ul
-              v-else-if="state === 'message'"
+              v-else="state === 'message'"
               class="infinite-list"
               style="overflow: auto"
             >
@@ -116,8 +116,8 @@
           </el-aside>
           <!--主页右侧聊天框或功能区-->
           <el-main style="padding: 0">
-            <WeatherCard v-if="!view"></WeatherCard>
-            <FriendChat v-if="view" :conversionInfo="friendChatInfo"></FriendChat>
+            <WeatherCard v-if="view === 'weather'"></WeatherCard>
+            <FriendChat v-if="view === 'chat'" :conversionInfo="friendChatInfo"></FriendChat>
           </el-main>
         </el-container>
       </el-container>
@@ -172,23 +172,22 @@ if (!inject("socket")) {
 }
 const GLOBAL_ACCOUNT = sessionStorage.getItem("account");
 // 聊天和天气切换
-const view = ref(false);
+const view = ref();
 // 左上角按钮切换的状态
 const state = ref();
 
 
-// 点击好友进入聊天
 const friendChatInfo = ref();
 const friendChat = (item: any) => {
   friendChatInfo.value = item;
-  if (view.value) {
+  if (view.value == "chat") {
     nextTick(() => {
-      view.value = false;
+      view.value = "weather";
     }).then(() => {
-      view.value = true;
+      view.value = "chat";
     });
   } else {
-    view.value =true;
+    view.value = "chat";
   }
 };
 
