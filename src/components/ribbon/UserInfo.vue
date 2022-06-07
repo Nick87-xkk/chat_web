@@ -47,7 +47,6 @@ import { reactive, ref, defineProps } from "vue";
 // import {useRoute, onBeforeRouteUpdate } from "vue-router";
 import { showUserInfo } from "./ribbon";
 import Avatar from "../avatar/Avatar.vue";
-import { friendRequest } from "../../api/modules/index.api";
 import { postCreateFriendRequest } from "../../api/modules/friend.api";
 
 const prop: any = defineProps<{

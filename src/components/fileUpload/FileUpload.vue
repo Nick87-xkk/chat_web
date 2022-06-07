@@ -3,7 +3,7 @@
     <el-dialog v-model="showUploadFlg" draggable width="30%">
       <el-upload
         class="upload-demo"
-        action="https://192.168.31.221:9892/file/upFile"
+        action="https://192.168.28.221:9892/file/upFile"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :before-remove="beforeRemove"
@@ -16,7 +16,7 @@
         <el-button type="primary">Click to upload</el-button>
         <template #tip>
           <div class="el-upload__tip">
-            jpg/png files with a size less than 500KB.
+            jpg/png files with a size less than 2MB.
           </div>
         </template>
       </el-upload>
@@ -39,13 +39,12 @@ const prop: any = defineProps<{ receiveAccount: any }>();
 let socket: any;
 if (!inject('socket')) {
   socket = socketIO(
-    `wss://192.168.31.221:9892/?account=${sessionStorage.getItem('account')}`
+    `${process.env.BASE_API}/?account=${sessionStorage.getItem('account')}`
   );
   app.provide('socket', socket);
 } else {
   socket = inject('socket');
 }
-
 const fileList = ref<any[]>([]);
 
 const addition = sessionStorage.getItem('account');

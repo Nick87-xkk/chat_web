@@ -13,7 +13,7 @@
         <el-form-item label="PassWord">
           <el-input
             type="password"
-            v-model="registerInfo.passWord"
+            v-model="registerInfo.password"
             show-password
           ></el-input>
         </el-form-item>
@@ -69,7 +69,7 @@ import router from "../../router";
 
 const registerInfo = reactive({
   account: "", //账户
-  passWord: "", //密码
+  password: "", //密码
   create_time:"", // 数据库生成，不用添加
   nickname:"", // 昵称
   phone:"",
@@ -80,10 +80,10 @@ const registerInfo = reactive({
 
 // 注册按钮
 const register = () =>{
-  if (registerInfo.account && registerInfo.passWord){
+  if (registerInfo.account && registerInfo.password){
     let info = {
       account: registerInfo.account, //账户
-      password:Md5.hashStr(registerInfo.passWord) , //密码
+      password:Md5.hashStr(registerInfo.password) , //密码
       nickname:registerInfo.nickname, // 昵称
       phone:registerInfo.phone,
       email:registerInfo.email,
@@ -93,9 +93,10 @@ const register = () =>{
     userRegister(info).then((res:any)=>{
       alert('注册成功');
       router.push('/');
+    }).catch((e:any)=>{
+      alert("注册失败")
     })
   }
-
 }
 
 </script>

@@ -33,7 +33,7 @@ import { postAddMessage } from "../../api/modules/message.api";
 let socket: any;
 if (!inject("socket")) {
   socket = socketIO(
-    `wss://192.168.31.221:9892/?account=${sessionStorage.getItem("account")}`
+    `${process.env.BASE_API}/?account=${sessionStorage.getItem("account")}`
   );
   app.provide("socket", socket);
 } else {
@@ -149,7 +149,7 @@ onMounted(() => {
     })
     .catch((error) => {
       //处理媒体流创建失败错误
-      console.log("getUserMedia error: " + error);
+      alert("getUserMedia error: " + error);
     });
 
 //处理到来的信令

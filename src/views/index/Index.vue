@@ -61,7 +61,7 @@
                   type="danger"
                   :icon="ChatLineSquare"
                   circle
-                  @click="drawer=true"
+                  @click="drawer = true"
                 ></el-button>
               </el-tooltip>
             </div>
@@ -98,9 +98,8 @@
                 ></el-avatar>
                 <div class="infinite-list-item-info">
                   <h2>{{ item.nickname }}</h2>
-                  <h4>{{ item.latest_message || "..." }}</h4>
-                  <el-row>
-                  </el-row>
+                  <h4>{{ item.latest_message || '...' }}</h4>
+                  <el-row> </el-row>
                 </div>
                 <div>
                   <el-badge
@@ -117,62 +116,72 @@
           <!--主页右侧聊天框或功能区-->
           <el-main style="padding: 0">
             <WeatherCard v-if="view === 'weather'"></WeatherCard>
-            <FriendChat v-if="view === 'chat'" :conversionInfo="friendChatInfo"></FriendChat>
+            <FriendChat
+              v-if="view === 'chat'"
+              :conversionInfo="friendChatInfo"
+            ></FriendChat>
           </el-main>
         </el-container>
       </el-container>
     </div>
-    <AnswerVideoCall v-if="answerCall" :account="videoRequest.account"></AnswerVideoCall>
-<!--    接收或拒绝视屏通话的弹窗-->
+    <AnswerVideoCall
+      v-if="answerCall"
+      :account="videoRequest.account"
+    ></AnswerVideoCall>
+    <!--    接收或拒绝视屏通话的弹窗-->
     <el-dialog v-model="showVideoRequest">
       <el-avatar
-      fit="fit"
-      :show-close="false"
-      :close-on-click-modal="false"
-      :close-on-press-escape="false"
-      :src="videoRequest.profile"
+        fit="fit"
+        :show-close="false"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        :src="videoRequest.profile"
       >
       </el-avatar>
       <el-row style="justify-content: center">
-      <h3>{{videoRequest.nickname}} 发来视屏请求</h3>
+        <h3>{{ videoRequest.nickname }} 发来视屏请求</h3>
       </el-row>
       <el-row style="justify-content: center">
         <el-button @click="agreeVideoCall">接收</el-button>
         <el-button @click="refuseVideoCall">拒绝</el-button>
       </el-row>
     </el-dialog>
-<!--    好友请求通知-->
-  <Notification></Notification>
+    <!--    好友请求通知-->
+    <Notification></Notification>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { inject, nextTick, reactive, ref } from "vue";
-import { House, User, Plus , ChatLineSquare } from "@element-plus/icons-vue";
-import FriendGroups from "../../components/FriendGroups.vue";
-import SearchUser from "../../components/searchUser.vue";
-import { postBatchSearchUser } from "../../api/modules/index.api";
-import WeatherCard from "../../components/ribbon/WeatherCard.vue";
-import FriendChat from "../../components/chat/FriendChat.vue";
-import AnswerVideoCall from "../../components/video/AnswerVideoCall.vue";
-import { GLOBAL_MESSAGE_LIST } from "../../components/chat/chat";
-import { postSearchConversion } from "../../api/modules/conversion.api";
-import { postSearchFriendInfo } from "../../api/modules/friend.api";
-import socketIO from "socket.io-client";
-import { app } from "../../main";
-import { answerCall } from "../../components/video/video";
-import Notification from "../../components/notefiction/Notification.vue";
-import { drawer } from "../../components/notefiction/note";
-import { setEnvironmentData } from "worker_threads";
+import { inject, nextTick, reactive, ref } from 'vue';
+import { House, User, Plus, ChatLineSquare } from '@element-plus/icons-vue';
+import FriendGroups from '../../components/FriendGroups.vue';
+import SearchUser from '../../components/SearchUser.vue';
+import { postBatchSearchUser } from '../../api/modules/index.api';
+import WeatherCard from '../../components/ribbon/WeatherCard.vue';
+import FriendChat from '../../components/chat/FriendChat.vue';
+import AnswerVideoCall from '../../components/video/AnswerVideoCall.vue';
+import { GLOBAL_MESSAGE_LIST } from '../../components/chat/chat';
+import { postSearchConversion } from '../../api/modules/conversion.api';
+import { postSearchFriendInfo } from '../../api/modules/friend.api';
+import socketIO from 'socket.io-client';
+import { app } from '../../main';
+import { answerCall } from '../../components/video/video';
+import Notification from '../../components/notefiction/Notification.vue';
+import { drawer } from '../../components/notefiction/note';
+import { setEnvironmentData } from 'worker_threads';
 let socket: any;
-if (!inject("socket")) {
-  socket = socketIO(`wss://192.168.31.221:9892/?account=${sessionStorage.getItem("account")}`);
-  app.provide("socket", socket);
+if (!inject('socket')) {
+  socket = socketIO(
+    `${process.env.BASE_API}/?account=${sessionStorage.getItem('account')}`
+  );
+  app.provide('socket', socket);
 } else {
-  socket = inject("socket");
+  socket = inject('socket');
 }
-const GLOBAL_ACCOUNT = sessionStorage.getItem("account");
-const GLOBAL_ACCOUNT_INFO:any = JSON.parse(sessionStorage.getItem("accountInfo") as any) ;
+const GLOBAL_ACCOUNT = sessionStorage.getItem('account');
+const GLOBAL_ACCOUNT_INFO: any = JSON.parse(
+  sessionStorage.getItem('accountInfo') as any
+);
 // 聊天和天气切换
 const view = ref('weather');
 // 左上角按钮切换的状态
@@ -183,21 +192,21 @@ const conversionList: any = reactive([]);
 const friendChatInfo = ref();
 const friendChat = (item: any) => {
   friendChatInfo.value = item;
-  if (view.value == "chat") {
+  if (view.value == 'chat') {
     nextTick(() => {
-      view.value = "weather";
+      view.value = 'weather';
     }).then(() => {
-      view.value = "chat";
+      view.value = 'chat';
     });
   } else {
-    view.value = "chat";
+    view.value = 'chat';
   }
 };
 
 //获取好友信息
 // 获取所有的好友信息存储在localStorage中
 postSearchFriendInfo({
-  "account": GLOBAL_ACCOUNT
+  account: GLOBAL_ACCOUNT
 }).then((res: any) => {
   //获取所有的好友账号
   let friends: any = JSON.parse(res.message[0].friend_account);
@@ -206,45 +215,43 @@ postSearchFriendInfo({
   Object.values(friends).map((it: any) => {
     arr.push(...it);
   });
-  postBatchSearchUser({ friends: arr }).then((batch: any) => {
-    // 数据结构转换
-    let friendMap: any = {};
-    batch.message.map((e: any) => {
-      friendMap[e.account] = e;
+  postBatchSearchUser({ friends: arr })
+    .then((batch: any) => {
+      // 数据结构转换
+      let friendMap: any = {};
+      batch.message.map((e: any) => {
+        friendMap[e.account] = e;
+      });
+      // 将所有好友的信息存储到localstorage中
+      localStorage.setItem('allFriendInfo', JSON.stringify(friendMap));
+    })
+    .then(() => {
+      // 获取会话信息
+      postSearchConversion({
+        account: sessionStorage.getItem('account')
+      }).then((res: any) => {
+        if (res.message.length) {
+          // 将好友账号信息整合入对应的会话信息
+          res.message.map((item: any) => {
+            let allFriendInfo: any = JSON.parse(
+              localStorage.getItem('allFriendInfo') as any
+            );
+            console.log(allFriendInfo);
+            if (item.create_account != GLOBAL_ACCOUNT) {
+              item.profile = allFriendInfo[item.create_account].profile;
+              item.nickname = allFriendInfo[item.create_account].nickname;
+              item.friend = item.create_account;
+            } else {
+              item.profile = allFriendInfo[item.member_account]?.profile;
+              item.nickname = allFriendInfo[item.member_account]?.nickname;
+              item.friend = item.member_account;
+            }
+            conversionList.push(item);
+          });
+        }
+      });
     });
-    console.log(friendMap);
-    // 将所有好友的信息存储到localstorage中
-    localStorage.setItem("allFriendInfo", JSON.stringify(friendMap));
-  }).then(()=>{
-    // 获取会话信息
-
-    postSearchConversion({
-      "account": sessionStorage.getItem("account")
-    }).then((res: any) => {
-      if (res.message.length){
-        // 将好友账号信息整合入对应的会话信息
-        res.message.map((item: any) => {
-          let allFriendInfo: any = JSON.parse(localStorage.getItem("allFriendInfo") as any);
-          console.log(allFriendInfo);
-          if (item.create_account != GLOBAL_ACCOUNT) {
-            console.log(item);
-            item.profile = allFriendInfo[item.create_account].profile;
-            item.nickname = allFriendInfo[item.create_account].nickname;
-            item.friend = item.create_account;
-          } else {
-            console.log(item);
-            item.profile = allFriendInfo[item.member_account]?.profile;
-            item.nickname = allFriendInfo[item.member_account]?.nickname;
-            item.friend = item.member_account;
-          }
-          conversionList.push(item);
-        });
-
-      }
-    });
-  });
 });
-
 
 /*// 接收消息
 socket.on("chat message", (msg: any) => {
@@ -252,31 +259,29 @@ socket.on("chat message", (msg: any) => {
   GLOBAL_MESSAGE_LIST.push(msg);
 });*/
 
-
-
 // 视屏请求的信息
 const videoRequest = ref();
-const showVideoRequest = ref(false)
+const showVideoRequest = ref(false);
 // 收到视屏通话请求
-socket.on("video request", (msg: any) => {
+socket.on('video request', (msg: any) => {
   videoRequest.value = JSON.parse(msg);
   showVideoRequest.value = true;
 });
 // 拒接视屏通话
 const refuseVideoCall = () => {
-  socket.emit('refuse videoCall',{"account":videoRequest.value.account});
-  showVideoRequest.value=false;
-}
+  socket.emit('refuse videoCall', { account: videoRequest.value.account });
+  showVideoRequest.value = false;
+};
 // 接受视屏通话
-const agreeVideoCall = () =>{
+const agreeVideoCall = () => {
   showVideoRequest.value = false;
   answerCall.value = true;
-}
-socket.on("hangup videoCall",(msg:any)=>{
-  if (msg.hangup){
+};
+socket.on('hangup videoCall', (msg: any) => {
+  if (msg.hangup) {
     answerCall.value = false;
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>

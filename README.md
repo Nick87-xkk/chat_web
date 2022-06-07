@@ -1,67 +1,10 @@
-# Vue 3 + Typescript + Vite
-
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-## Recommended IDE Setup
-
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
-
-## Type Support For `.vue` Imports in TS
-
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's `.vue` type support plugin by running `Volar: Switch TS Plugin on/off` from VSCode command palette.
-
-
-### demo要做的功能
-    video.vue 调用摄像头，麦克风（√）通过ws传输
-    ├─api
-    │  │  service.ts
-    │  │
-    │  └─modules
-    │          index.api.ts
-    │
-    ├─assets
-    │      back-2.webp
-    │      background.jpg
-    │      bk-3.jpg
-    │      logo.png
-    │      weather.png
-    │
-    ├─components
-    │  │  chatBubbles.vue
-    │  │  DialougeList.vue
-    │  │  FriendChat.vue
-    │  │  FriendGroups.vue
-    │  │  hashCode.ts
-    │  │  HelloWorld.vue
-    │  │
-    │  └─ribbon
-    │          MusicPlayer.vue
-    │          Ribbon.vue
-    │          WeatherCard.vue
-    │
-    ├─directives
-    │      globIndex.ts
-    │
-    ├─router
-    │      globIndex.ts
-    │
-    ├─store
-    │  │  globIndex.ts
-    │  │
-    │  └─modules
-    │          user.ts
-    │
-    └─views
-    │  Test.vue
-    │  Video.vue
-    │
-    ├─chat
-    │      Chat.vue
-    │
-    ├─index
-    │      Index.vue
-    │
-    ├─login
-    │      Login.vue
-    │
-    └─management
+### 运行环境
+    node 14.18.1  npm 6.14.15  yarn 1.22.18
+### 使用说明
+    1.在根目录运行 npm install / yarn install
+    2.npm run dev / yarn dev 运行开发环境
+    3.npm run start / yarn start 运行生产环境
+### 注意
+    1.服务运行默认端口为 3000,根据情况可自行修改。
+    2.需要使用mkcert生成自己的局域网ssl证书，并将sslKey目录中证书以同样的名字替换为自己的。
+    3.项目中所有的https://192.168.28.221:9892域名请自行替换

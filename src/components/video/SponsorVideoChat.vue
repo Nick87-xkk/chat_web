@@ -35,7 +35,7 @@ import { postAddMessage } from "../../api/modules/message.api";
 let socket: any;
 if (!inject('socket')) {
   socket = socketIO(
-    `wss://192.168.31.221:9892/?account=${sessionStorage.getItem('account')}`
+    `${process.env.BASE_API}/?account=${sessionStorage.getItem('account')}`
   );
   app.provide('socket', socket);
 } else {
@@ -60,21 +60,16 @@ const RTCSessionDescription =
   (window as any).mozRTCSessionDescription ||
   (window as any).webkitRTCSessionDescription;
 
-const AudioContext =
-  window.AudioContext ||
-  (window as any).webkitAudioContext ||
-  (window as any).mozAudioContext;
-
 navigator.mediaDevices.getUserMedia =
   navigator.mediaDevices.getUserMedia ||
   (navigator as any).webkitGetUserMedia ||
   (navigator as any).mozGetUserMedia ||
   (navigator as any).msGetUserMedia;
 
-const pc: any = new RTCPeerConnection();
 
+// 创建PeerConnection实例 (参数为null则没有iceserver，即使没有stunserver和turnserver，仍可在局域网下通讯)
+const pc: any = new RTCPeerConnection();
 onMounted(()=>{
-  // 创建PeerConnection实例 (参数为null则没有iceserver，即使没有stunserver和turnserver，仍可在局域网下通讯)
 // 发送ICE候选到其他客户端
   pc.onicecandidate = function (event: any) {
     if (event.candidate !== null) {
@@ -90,16 +85,13 @@ onMounted(()=>{
       );
     }
   };
-
 // 如果检测到媒体流连接到本地，将其绑定到一个video标签上输出
   pc.onaddstream = async function (event: any) {
     (document as any).getElementById('remoteVideo1').srcObject = event.stream;
   };
-
 // 发送offer和answer的函数，发送本地session描述
   const sendOfferFn = function (desc: any) {
     pc.setLocalDescription(desc);
-    console.log(desc);
     socket.emit(
       'ice_candidate',
       JSON.stringify({
@@ -124,7 +116,6 @@ onMounted(()=>{
       })
     );
   };
-
 // 获取本地音频和视频流
   navigator.mediaDevices
     .getUserMedia({
@@ -148,9 +139,8 @@ onMounted(()=>{
     })
     .catch((error) => {
       //处理媒体流创建失败错误
-      console.log('getUserMedia error: ' + error);
+      alert('getUserMedia error: ' + error);
     });
-
   socket.on('_ice_candidate', (event: any) => {
     let json = JSON.parse(event);
     //如果是一个ICE的候选，则将其加入到PeerConnection中，否则设定对方的session描述为传递过来的描述

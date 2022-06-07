@@ -120,7 +120,7 @@ onMounted(() => {
   }
 });
 // 游客登录，聊天室
-const socket = socketIO("wss://192.168.31.221:9892");
+const socket = socketIO(`${process.env.BASE_API}`);
 const visitorMessage = ref("");
 const visitorMessageList: any = reactive([]);
 // 发送消息

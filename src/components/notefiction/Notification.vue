@@ -79,20 +79,17 @@ postSearchFriendRequest({ account: sessionStorage.getItem('account') }).then(
           ? arr.push(e.apply_account)
           : arr.push(e.target_account);
       });
-
       postBatchSearchUser({ friends: arr }).then((info: any) => {
         let friendMap: any = {};
         info.message.map((e: any) => {
           friendMap[e.account] = e;
         });
-
         res.message.map((item: any) => {
           item.apply_account != GLOBAL_ACCOUNT
             ? Object.assign(item, friendMap[item.apply_account])
             : Object.assign(item, friendMap[item.target_account]);
         });
       });
-
       friendRequestList.push(...res.message);
     }
   }
@@ -110,7 +107,6 @@ const agreeRequest = (data: any) => {
       create_account: data.apply_account,
       member_account: data.target_account
     }).then(() => {
-
       postUpdateFriendInfo({
         account:data.apply_account,
         friend_account:`{"${data.apply_group}":[${data.target_account}]}`

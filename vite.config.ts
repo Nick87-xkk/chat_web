@@ -17,51 +17,56 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()]
     })
   ],
+  define: {
+    'process.env': {
+      BASE_API: 'https://192.168.28.221:9892'
+    }
+  },
   server: {
     proxy: {
       '/user': {
-        target: 'https://192.168.31.221:9892',
+        target: 'https://192.168.28.221:9892',
         secure: false,
         changeOrigin: true
       },
       '/fileUpload': {
-        target: 'https://192.168.31.221:9892',
+        target: 'https://192.168.28.221:9892',
         secure: false,
         changeOrigin: true
       },
       '/socket': {
-        target: 'wss://192.168.31.221:9892',
+        target: 'https://192.168.28.221:9892',
         secure: false,
         changeOrigin: true,
         ws: true
       },
       '/cvn': {
-        target: 'https://192.168.31.221:9892',
+        target: 'https://192.168.28.221:9892',
         secure: false,
         changeOrigin: true
       },
       '/friend': {
-        target: 'https://192.168.31.221:9892',
+        target: 'https://192.168.28.221:9892',
         secure: false,
         changeOrigin: true
       },
       '/msg': {
-        target: 'https://192.168.31.221:9892',
+        target: 'https://192.168.28.221:9892',
         secure: false,
         changeOrigin: true
       },
       '/file': {
-        target: 'https://192.168.31.221:9892',
+        target: 'https://192.168.28.221:9892',
         secure: false,
         changeOrigin: true
       }
     },
     https: {
       key: fs.readFileSync(
-        path.join(__dirname, './public/sslKey/192.168.31.221-key.pem')
+        path.join(__dirname, './public/sslKey/localhost+2-key.pem')
       ),
       cert: fs.readFileSync(
-        path.join(__dirname, './public/sslKey/192.168.31.221.pem')
+        path.join(__dirname, './public/sslKey/localhost+2.pem')
       )
     }
   },

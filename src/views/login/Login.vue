@@ -13,7 +13,7 @@
         <el-form-item label="PassWord">
           <el-input
             type="password"
-            v-model="userInfo.passWord"
+            v-model="userInfo.password"
             show-password
           ></el-input>
         </el-form-item>
@@ -42,8 +42,7 @@ import io from 'socket.io-client'
 
 const userInfo = reactive({
   account: "", //账户
-  passWord: "", //密码
-  verification: "" //验证码
+  password: "", //密码
 });
 
 // 登录后将用户信息写入store
@@ -53,13 +52,12 @@ const store = useStore();
 const router = useRouter();
 // 点击登录
 const loginButton = (): void => {
-  if (!userInfo.account || !userInfo.passWord) {
+  if (!userInfo.account || !userInfo.password) {
     return alert("账号密码为空")!;
   }
-
   login({
     "account": userInfo.account,
-    "pd": Md5.hashStr(userInfo.passWord)
+    "pd": Md5.hashStr(userInfo.password)
   }).then((res: any) => {
     if (res.code === 200) {
       // 账号存入session中
@@ -68,9 +66,7 @@ const loginButton = (): void => {
         sessionStorage.setItem('accountInfo',[JSON.stringify(resInfo.userInfoByAccount as any)] as any);
       })
       // let socket = io(`ws://127.0.0.1:9892/?account=${userInfo.account}`)
-      let socket = io(`wss://192.168.31.221:9892/?account=${userInfo.account}`);
-      // let socket = io(`wss://49.232.185.124:19100/?account=${userInfo.account}`);
-      // let socket = io(`ws://www.nick87.top:19100/?account=${userInfo.account}`);
+      let socket = io(`${process.env.BASE_API}/?account=${userInfo.account}`);
       app.provide('socket',socket)
       router.push("/index");
     } else {

@@ -4,3 +4,5 @@ index.html
 /src/assets/*
 /public/*
 /src/components/chat/FriendChat.vue
+/src/api/service.ts
+/src/components/searchUser.vue

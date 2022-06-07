@@ -16,18 +16,6 @@
         >
           <el-button type="success" :icon="VideoCamera" @click="videoCall" circle></el-button>
         </el-tooltip>
-
-        <!--
-                <el-tooltip
-                  class="box-item"
-                  effect="light"
-                  content="语音"
-                  placement="bottom"
-                >
-                  <el-button type="success" :icon="Phone" circle></el-button>
-                </el-tooltip>
-        -->
-
         <el-tooltip
           class="box-item"
           effect="light"
@@ -159,7 +147,7 @@ const GLOBAL_ACCOUNT_INFO: any = JSON.parse(accountInfo)[0];
 // 使用socket
 let socket: any;
 if (!inject("socket")) {
-  socket = socketIO(`wss://192.168.31.221:9892/?account=${sessionStorage.getItem('account')}`);
+  socket = socketIO(`${process.env.BASE_API}/?account=${sessionStorage.getItem('account')}`);
   app.provide("socket", socket);
 } else {
   socket = inject("socket");
@@ -199,7 +187,6 @@ const sendMessage = () => {
     "content_type": 1,
     "content": message.value
   };
-
   if (message.value) {
     // 消息先入库
     postAddMessage({
@@ -208,22 +195,20 @@ const sendMessage = () => {
       "content_type": 1,
       "content": message.value
     }).then((res: any) => {
-      console.log(res);
-      socket.emit("chat message", sendMessages);
+      socket.emit("chat message", sendMessages); //消息推送
       messageList.push({
         "account": GLOBAL_ACCOUNT_INFO.account,
         "receive_account": props.conversionInfo.friend,
         "content_type": 1,
         "content": message.value
       });
-      setTimeout(() => {
+      setTimeout(() => { //将聊天列表移动到最底部显示最新消息
         document
           .querySelector(".messages")!
           .scrollTo(0, document.querySelector(".messages")!.scrollHeight);
         message.value = "";
       }, 0);
     });
-
   }
 };
 
@@ -231,8 +216,6 @@ const returnMessage: any = ref("");
 // 接收消息
 socket.on("chat message", (msg: any) => {
   returnMessage.value = JSON.parse(msg);
-  // 非当前好友的消息存放到全局消息中
-  GLOBAL_MESSAGE_LIST.push(returnMessage.value);
   if (returnMessage.value && returnMessage.value.receiveAccount == GLOBAL_ACCOUNT_INFO.account) {
     messageList.push({
       "account": returnMessage.value.account,
